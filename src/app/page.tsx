@@ -109,44 +109,43 @@ export default function WaitlistPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-3">
-                    {/* Email - Most important, on its own row */}
+                    {/* First name */}
+                    <input
+                      type="text"
+                      placeholder="First name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required
+                      className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    />
+
+                    {/* Email */}
                     <input
                       type="email"
-                      placeholder="Your email address"
+                      placeholder="Email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
                       className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                     />
 
-                    {/* First name and Source side by side */}
-                    <div className="flex gap-3">
-                      <input
-                        type="text"
-                        placeholder="First name"
-                        value={firstName}
-                        onChange={(e) => setFirstName(e.target.value)}
+                    {/* Source */}
+                    <div className="relative">
+                      <select
+                        value={source}
+                        onChange={(e) => setSource(e.target.value)}
                         required
-                        className="flex-1 h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
-                      />
-
-                      <div className="relative flex-1">
-                        <select
-                          value={source}
-                          onChange={(e) => setSource(e.target.value)}
-                          required
-                          className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer"
-                        >
-                          <option value="" disabled>How&apos;d you find us?</option>
-                          <option value="Internet Search">Internet Search</option>
-                          <option value="TikTok">TikTok</option>
-                          <option value="Instagram">Instagram</option>
-                          <option value="Twitter/X">Twitter/X</option>
-                          <option value="Friend">Friend</option>
-                          <option value="Other">Other</option>
-                        </select>
-                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                      </div>
+                        className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer"
+                      >
+                        <option value="" disabled>How did you find us?</option>
+                        <option value="Internet Search">Internet Search</option>
+                        <option value="TikTok">TikTok</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Twitter/X">Twitter/X</option>
+                        <option value="Friend">Friend</option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
                     </div>
 
                     {status === 'error' && (
