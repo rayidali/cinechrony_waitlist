@@ -1,104 +1,229 @@
 'use client';
 
-import { Popcorn, Film, Users, Sparkles, Heart } from 'lucide-react';
+import { useState } from 'react';
+import { Film, Users, Sparkles, Heart, ChevronDown, Check, Loader2 } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
+const FORM_ENDPOINT = 'https://app.loops.so/api/newsletter-form/cmk1swus4060d0i0fl3b686aj';
+
 export default function WaitlistPage() {
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [source, setSource] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMessage('');
+
+    const formBody = `firstName=${encodeURIComponent(firstName)}&email=${encodeURIComponent(email)}&source=${encodeURIComponent(source)}`;
+
+    try {
+      const response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        body: formBody,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      });
+
+      if (response.status === 429) {
+        setStatus('error');
+        setErrorMessage('Too many signups, please try again in a bit');
+        return;
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+        setErrorMessage(data.message || 'Something went wrong');
+      }
+    } catch {
+      setStatus('error');
+      setErrorMessage('Something went wrong. Please try again.');
+    }
+  };
+
   return (
-    <main className="min-h-screen font-body text-foreground flex flex-col">
+    <main className="h-screen font-body text-foreground flex flex-col overflow-hidden">
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4 z-20">
         <ThemeToggle />
       </div>
 
-      {/* Hero Section */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12">
-        {/* Logo and Title */}
-        <div className="flex flex-col items-center mb-8 animate-slide-up">
-          <div className="relative">
-            <img
-              src="https://i.postimg.cc/HkXDfKSb/cinechrony-ios-1024-nobg.png"
-              alt="Cinechrony"
-              className="h-28 w-28 mb-6 animate-float"
-            />
-            <Sparkles className="absolute -top-2 -right-2 h-6 w-6 text-primary animate-wiggle" />
-          </div>
-          <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-tighter text-center">
-            Cinechrony
-          </h1>
-        </div>
+      {/* Main Content - Two Column Layout */}
+      <div className="flex-1 flex items-center justify-center px-6 lg:px-12">
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
 
-        {/* Tagline */}
-        <p className="text-lg md:text-xl text-muted-foreground text-center mb-4 max-w-lg leading-relaxed animate-fade-in">
-          letterboxd if it smoked a joint and chilled out, was more social and didn&apos;t have film bros using it
-        </p>
-        <p className="text-base text-muted-foreground text-center mb-10 max-w-md animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          Create shared watchlists with friends and finally answer &quot;what should we watch?&quot;
-        </p>
+          {/* Left Side - Content */}
+          <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left max-w-xl">
+            {/* Logo and Title */}
+            <div className="flex items-center gap-4 mb-4">
+              <img
+                src="https://i.postimg.cc/HkXDfKSb/cinechrony-ios-1024-nobg.png"
+                alt="Cinechrony"
+                className="h-14 w-14 lg:h-16 lg:w-16"
+              />
+              <h1 className="text-4xl lg:text-5xl font-headline font-bold tracking-tighter">
+                Cinechrony
+              </h1>
+            </div>
 
-        {/* Feature Pills */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10 max-w-md animate-fade-in" style={{ animationDelay: '0.3s' }}>
-          <FeaturePill icon={<Users className="h-4 w-4" />} text="Collaborative Lists" />
-          <FeaturePill icon={<Film className="h-4 w-4" />} text="Movie & TV" />
-          <FeaturePill icon={<Heart className="h-4 w-4" />} text="Social Features" />
-        </div>
-
-        {/* Waitlist Form Section */}
-        <div className="w-full max-w-md animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          <div className="bg-card border-[3px] border-border rounded-2xl p-6 shadow-[6px_6px_0px_0px] shadow-border">
-            <h2 className="text-xl font-headline font-bold text-center mb-2">
-              Join the Waitlist
-            </h2>
-            <p className="text-sm text-muted-foreground text-center mb-6">
-              Be the first to know when we launch!
+            {/* Tagline */}
+            <p className="text-base lg:text-lg text-muted-foreground mb-3 leading-relaxed">
+              letterboxd if it smoked a joint and chilled out, was more social and didn&apos;t have film bros using it
+            </p>
+            <p className="text-sm text-muted-foreground mb-5">
+              Create shared watchlists with friends and finally answer &quot;what should we watch?&quot;
             </p>
 
-            {/* Form Placeholder - Replace with your form code */}
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  placeholder="you@example.com"
-                  className="w-full h-12 px-4 bg-input border-[3px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full h-12 bg-primary text-primary-foreground font-bold rounded-full border-[3px] border-border shadow-[4px_4px_0px_0px] shadow-border active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-200 flex items-center justify-center gap-2"
-              >
-                Get Early Access
-                <Sparkles className="h-4 w-4" />
-              </button>
+            {/* Feature Pills */}
+            <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">
+              <FeaturePill icon={<Users className="h-3.5 w-3.5" />} text="Collaborative Lists" />
+              <FeaturePill icon={<Film className="h-3.5 w-3.5" />} text="Movie & TV" />
+              <FeaturePill icon={<Heart className="h-3.5 w-3.5" />} text="Social Features" />
             </div>
-            {/* End Form Placeholder */}
 
+            {/* Waitlist Form */}
+            <div className="w-full">
+              <div className="bg-card border-[3px] border-border rounded-2xl p-5 shadow-[5px_5px_0px_0px] shadow-border">
+                <h2 className="text-lg font-headline font-bold mb-1">
+                  Ready for a better Letterboxd?
+                </h2>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Get early access when we launch
+                </p>
+
+                {status === 'success' ? (
+                  <div className="flex flex-col items-center py-4 gap-2">
+                    <div className="h-12 w-12 rounded-full bg-success/20 flex items-center justify-center">
+                      <Check className="h-6 w-6 text-success" />
+                    </div>
+                    <p className="font-medium">You&apos;re on the list!</p>
+                    <p className="text-sm text-muted-foreground">Check your email for next steps</p>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-3">
+                    <div className="flex gap-3">
+                      <input
+                        type="text"
+                        placeholder="First name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                        className="flex-1 h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                      />
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        className="flex-1 h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                      />
+                    </div>
+
+                    <div className="relative">
+                      <select
+                        value={source}
+                        onChange={(e) => setSource(e.target.value)}
+                        required
+                        className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer"
+                      >
+                        <option value="" disabled>How did you find us?</option>
+                        <option value="Internet Search">Internet Search</option>
+                        <option value="TikTok">TikTok</option>
+                        <option value="Instagram">Instagram</option>
+                        <option value="Twitter/X">Twitter/X</option>
+                        <option value="Friend">Friend</option>
+                        <option value="Other">Other</option>
+                      </select>
+                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                    </div>
+
+                    {status === 'error' && (
+                      <p className="text-sm text-destructive">{errorMessage}</p>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={status === 'loading'}
+                      className="w-full h-11 bg-primary text-primary-foreground font-bold rounded-full border-[3px] border-border shadow-[4px_4px_0px_0px] shadow-border active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed text-sm"
+                    >
+                      {status === 'loading' ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Please wait...
+                        </>
+                      ) : (
+                        <>
+                          Get Early Access
+                          <Sparkles className="h-4 w-4" />
+                        </>
+                      )}
+                    </button>
+                  </form>
+                )}
+              </div>
+            </div>
           </div>
+
+          {/* Right Side - Phone Mockups */}
+          <div className="flex-1 hidden lg:flex justify-center items-center relative">
+            <div className="relative w-[340px] h-[500px]">
+              {/* Back Phone */}
+              <div className="absolute top-0 right-0 w-[260px] h-[520px] rounded-[40px] bg-card border-[3px] border-border shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform rotate-6 translate-x-8">
+                <div className="w-full h-full bg-muted flex items-center justify-center">
+                  {/* Placeholder for screenshot - replace src with your actual screenshot */}
+                  <img
+                    src="/mockup-2.png"
+                    alt="Cinechrony App Screenshot"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement!.innerHTML = '<div class="flex flex-col items-center gap-2 text-muted-foreground"><span class="text-4xl">📺</span><span class="text-xs">Screenshot 2</span></div>';
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Front Phone */}
+              <div className="absolute top-8 left-0 w-[260px] h-[520px] rounded-[40px] bg-card border-[3px] border-border shadow-[12px_12px_0px_0px] shadow-border overflow-hidden transform -rotate-3 z-10">
+                <div className="w-full h-full bg-muted flex items-center justify-center">
+                  {/* Placeholder for screenshot - replace src with your actual screenshot */}
+                  <img
+                    src="/mockup-1.png"
+                    alt="Cinechrony App Screenshot"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement!.innerHTML = '<div class="flex flex-col items-center gap-2 text-muted-foreground"><span class="text-4xl">🎬</span><span class="text-xs">Screenshot 1</span></div>';
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Decorative Elements */}
+              <Sparkles className="absolute -top-4 left-1/2 h-8 w-8 text-primary animate-wiggle" />
+              <div className="absolute -bottom-2 -left-4 h-6 w-6 rounded-full bg-success border-2 border-border" />
+              <div className="absolute top-1/3 -right-6 h-4 w-4 rounded-full bg-primary border-2 border-border" />
+            </div>
+          </div>
+
         </div>
-
-        {/* Social Proof / Counter */}
-        <p className="mt-6 text-sm text-muted-foreground animate-fade-in" style={{ animationDelay: '0.5s' }}>
-          Join <span className="font-bold text-foreground">500+</span> movie lovers on the waitlist
-        </p>
       </div>
-
-      {/* Footer */}
-      <footer className="pb-8 flex flex-col items-center gap-2">
-        <Popcorn className="h-8 w-8 text-primary/50 animate-bounce-subtle" />
-        <p className="text-xs text-muted-foreground">
-          Made with love for movie nights
-        </p>
-      </footer>
     </main>
   );
 }
 
 function FeaturePill({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <div className="flex items-center gap-2 px-4 py-2 bg-secondary border-[2px] border-border rounded-full text-sm font-medium">
+    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary border-[2px] border-border rounded-full text-xs font-medium">
       {icon}
       <span>{text}</span>
     </div>
