@@ -93,10 +93,10 @@ export default function WaitlistPage() {
             <div className="w-full">
               <div className="bg-card border-[3px] border-border rounded-2xl p-5 shadow-[5px_5px_0px_0px] shadow-border">
                 <h2 className="text-lg font-headline font-bold mb-1">
-                  Ready for a better Letterboxd?
+                  Join the Waitlist
                 </h2>
                 <p className="text-xs text-muted-foreground mb-4">
-                  Get early access when we launch
+                  Be the first to know when we launch
                 </p>
 
                 {status === 'success' ? (
