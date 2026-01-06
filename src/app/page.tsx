@@ -176,36 +176,22 @@ export default function WaitlistPage() {
           {/* Right Side - Phone Mockups */}
           <div className="flex-1 hidden lg:flex justify-center items-center relative">
             <div className="relative w-[340px] h-[500px]">
-              {/* Back Phone */}
+              {/* Back Phone - Inside Lists View */}
               <div className="absolute top-0 right-0 w-[260px] h-[520px] rounded-[40px] bg-card border-[3px] border-border shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform rotate-6 translate-x-8">
-                <div className="w-full h-full bg-muted flex items-center justify-center">
-                  {/* Placeholder for screenshot - replace src with your actual screenshot */}
-                  <img
-                    src="/mockup-2.png"
-                    alt="Cinechrony App Screenshot"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.parentElement!.innerHTML = '<div class="flex flex-col items-center gap-2 text-muted-foreground"><span class="text-4xl">📺</span><span class="text-xs">Screenshot 2</span></div>';
-                    }}
-                  />
-                </div>
+                <img
+                  src="https://i.postimg.cc/yx7Gw9hF/cinechrony-poster2-nobg.png"
+                  alt="Cinechrony - Inside a watchlist"
+                  className="w-full h-full object-cover"
+                />
               </div>
 
-              {/* Front Phone */}
+              {/* Front Phone - Lists Page View */}
               <div className="absolute top-8 left-0 w-[260px] h-[520px] rounded-[40px] bg-card border-[3px] border-border shadow-[12px_12px_0px_0px] shadow-border overflow-hidden transform -rotate-3 z-10">
-                <div className="w-full h-full bg-muted flex items-center justify-center">
-                  {/* Placeholder for screenshot - replace src with your actual screenshot */}
-                  <img
-                    src="/mockup-1.png"
-                    alt="Cinechrony App Screenshot"
-                    className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.parentElement!.innerHTML = '<div class="flex flex-col items-center gap-2 text-muted-foreground"><span class="text-4xl">🎬</span><span class="text-xs">Screenshot 1</span></div>';
-                    }}
-                  />
-                </div>
+                <img
+                  src="https://i.postimg.cc/QxfLZ6y5/cinechrony-poster1-nobg.png"
+                  alt="Cinechrony - Lists page"
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               {/* Decorative Elements */}
