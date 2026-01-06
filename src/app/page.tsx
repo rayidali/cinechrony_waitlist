@@ -18,7 +18,7 @@ export default function WaitlistPage() {
     setStatus('loading');
     setErrorMessage('');
 
-    const formBody = `firstName=${encodeURIComponent(firstName)}&email=${encodeURIComponent(email)}&source=${encodeURIComponent(source)}`;
+    const formBody = `firstName=${encodeURIComponent(firstName)}&email=${encodeURIComponent(email)}&source=${encodeURIComponent(source)}&mailingLists=cmk23xm1l0ugo0i1pfwfi2y8l`;
 
     try {
       const response = await fetch(FORM_ENDPOINT, {
