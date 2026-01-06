@@ -58,7 +58,7 @@ export default function WaitlistPage() {
 
       {/* Main Content - Two Column Layout */}
       <div className="flex-1 flex items-center justify-center px-6 lg:px-12">
-        <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-16">
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
 
           {/* Left Side - Content */}
           <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left max-w-xl">
@@ -109,6 +109,17 @@ export default function WaitlistPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-3">
+                    {/* Email - Most important, on its own row */}
+                    <input
+                      type="email"
+                      placeholder="Your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    />
+
+                    {/* First name and Source side by side */}
                     <div className="flex gap-3">
                       <input
                         type="text"
@@ -118,32 +129,24 @@ export default function WaitlistPage() {
                         required
                         className="flex-1 h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
                       />
-                      <input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                        className="flex-1 h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
-                      />
-                    </div>
 
-                    <div className="relative">
-                      <select
-                        value={source}
-                        onChange={(e) => setSource(e.target.value)}
-                        required
-                        className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer"
-                      >
-                        <option value="" disabled>How did you find us?</option>
-                        <option value="Internet Search">Internet Search</option>
-                        <option value="TikTok">TikTok</option>
-                        <option value="Instagram">Instagram</option>
-                        <option value="Twitter/X">Twitter/X</option>
-                        <option value="Friend">Friend</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                      <div className="relative flex-1">
+                        <select
+                          value={source}
+                          onChange={(e) => setSource(e.target.value)}
+                          required
+                          className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer"
+                        >
+                          <option value="" disabled>How&apos;d you find us?</option>
+                          <option value="Internet Search">Internet Search</option>
+                          <option value="TikTok">TikTok</option>
+                          <option value="Instagram">Instagram</option>
+                          <option value="Twitter/X">Twitter/X</option>
+                          <option value="Friend">Friend</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+                      </div>
                     </div>
 
                     {status === 'error' && (
@@ -173,31 +176,33 @@ export default function WaitlistPage() {
             </div>
           </div>
 
-          {/* Right Side - Phone Mockups */}
-          <div className="flex-1 hidden lg:flex justify-center items-center relative">
-            <div className="relative w-[340px] h-[500px]">
-              {/* Back Phone - Inside Lists View */}
-              <div className="absolute top-0 right-0 w-[260px] h-[520px] rounded-[40px] bg-card border-[3px] border-border shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform rotate-6 translate-x-8">
-                <img
-                  src="https://i.postimg.cc/yx7Gw9hF/cinechrony-poster2-nobg.png"
-                  alt="Cinechrony - Inside a watchlist"
-                  className="w-full h-full object-cover"
-                />
+          {/* Right Side - Phone Mockups - Both Fully Visible */}
+          <div className="flex-1 hidden lg:flex justify-center items-center">
+            <div className="flex items-end gap-6">
+              {/* Left Phone - Lists Page */}
+              <div className="relative">
+                <div className="w-[200px] h-[420px] rounded-[32px] bg-card border-[3px] border-border shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform -rotate-6 hover:rotate-0 transition-transform duration-300">
+                  <img
+                    src="https://i.postimg.cc/QxfLZ6y5/cinechrony-poster1-nobg.png"
+                    alt="Cinechrony - Lists page"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="absolute -bottom-3 -left-3 h-5 w-5 rounded-full bg-primary border-2 border-border" />
               </div>
 
-              {/* Front Phone - Lists Page View */}
-              <div className="absolute top-8 left-0 w-[260px] h-[520px] rounded-[40px] bg-card border-[3px] border-border shadow-[12px_12px_0px_0px] shadow-border overflow-hidden transform -rotate-3 z-10">
-                <img
-                  src="https://i.postimg.cc/QxfLZ6y5/cinechrony-poster1-nobg.png"
-                  alt="Cinechrony - Lists page"
-                  className="w-full h-full object-cover"
-                />
+              {/* Right Phone - Inside List View */}
+              <div className="relative">
+                <div className="w-[200px] h-[420px] rounded-[32px] bg-card border-[3px] border-border shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform rotate-6 hover:rotate-0 transition-transform duration-300 -mb-8">
+                  <img
+                    src="https://i.postimg.cc/yx7Gw9hF/cinechrony-poster2-nobg.png"
+                    alt="Cinechrony - Inside a watchlist"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <Sparkles className="absolute -top-4 -right-2 h-6 w-6 text-primary animate-wiggle" />
+                <div className="absolute -bottom-1 -right-3 h-4 w-4 rounded-full bg-success border-2 border-border" />
               </div>
-
-              {/* Decorative Elements */}
-              <Sparkles className="absolute -top-4 left-1/2 h-8 w-8 text-primary animate-wiggle" />
-              <div className="absolute -bottom-2 -left-4 h-6 w-6 rounded-full bg-success border-2 border-border" />
-              <div className="absolute top-1/3 -right-6 h-4 w-4 rounded-full bg-primary border-2 border-border" />
             </div>
           </div>
 
