@@ -1,0 +1,229 @@
+@import "tailwindcss";
+
+/* Cinechrony Neo-Brutalist Design System */
+
+@theme inline {
+  /* Light Mode Colors */
+  --color-background: oklch(0.965 0.015 70);
+  --color-foreground: oklch(0.15 0.02 30);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.15 0.02 30);
+  --color-primary: oklch(0.85 0.2 90);
+  --color-primary-foreground: oklch(0.15 0.02 30);
+  --color-secondary: oklch(0.93 0.01 70);
+  --color-secondary-foreground: oklch(0.15 0.02 30);
+  --color-muted: oklch(0.91 0.008 70);
+  --color-muted-foreground: oklch(0.45 0.02 30);
+  --color-accent: oklch(0.85 0.2 90);
+  --color-accent-foreground: oklch(0.15 0.02 30);
+  --color-success: oklch(0.78 0.12 155);
+  --color-success-foreground: oklch(0.15 0.02 30);
+  --color-destructive: oklch(0.6 0.2 25);
+  --color-destructive-foreground: oklch(0.98 0 0);
+  --color-border: oklch(0.15 0.02 30);
+  --color-input: oklch(1 0 0);
+  --color-ring: oklch(0.85 0.2 90);
+
+  /* Fonts */
+  --font-headline: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Space Mono", ui-monospace, monospace;
+
+  /* Border Radius */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+}
+
+/* Dark Mode Colors */
+.dark {
+  --color-background: oklch(0.18 0.015 40);
+  --color-foreground: oklch(0.92 0.015 70);
+  --color-card: oklch(0.22 0.012 40);
+  --color-card-foreground: oklch(0.92 0.015 70);
+  --color-primary: oklch(0.82 0.18 90);
+  --color-primary-foreground: oklch(0.15 0.02 40);
+  --color-secondary: oklch(0.25 0.01 40);
+  --color-secondary-foreground: oklch(0.9 0.015 70);
+  --color-muted: oklch(0.28 0.008 40);
+  --color-muted-foreground: oklch(0.55 0.01 70);
+  --color-accent: oklch(0.82 0.18 90);
+  --color-accent-foreground: oklch(0.15 0.02 40);
+  --color-success: oklch(0.65 0.1 155);
+  --color-success-foreground: oklch(0.15 0.02 40);
+  --color-destructive: oklch(0.55 0.18 25);
+  --color-destructive-foreground: oklch(0.98 0 0);
+  --color-border: oklch(0.35 0.01 70);
+  --color-input: oklch(0.25 0.01 40);
+  --color-ring: oklch(0.82 0.18 90);
+}
+
+/* Neo-brutalist Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes pulse-shadow {
+  0%, 100% { box-shadow: 4px 4px 0px 0px currentColor; }
+  50% { box-shadow: 6px 6px 0px 0px currentColor; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Animation Utility Classes */
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 3.5s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
+.animate-wiggle {
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+.animate-pulse-shadow {
+  animation: pulse-shadow 2s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Base Styles */
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-body);
+}
+
+/* Dot Pattern Background */
+.bg-dot-pattern {
+  background-image: radial-gradient(
+    oklch(0.2 0 0 / 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 12px 12px;
+}
+
+.dark .bg-dot-pattern {
+  background-image: radial-gradient(
+    oklch(0.9 0 0 / 0.06) 1px,
+    transparent 1px
+  );
+}
+
+/* Apply dot pattern to html for consistent background */
+html {
+  background-color: var(--color-background);
+  background-image: radial-gradient(
+    oklch(0.2 0 0 / 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 12px 12px;
+  min-height: 100%;
+}
+
+html.dark {
+  background-image: radial-gradient(
+    oklch(0.9 0 0 / 0.06) 1px,
+    transparent 1px
+  );
+}
+
+body {
+  background: transparent;
+  min-height: 100%;
+}
+
+/* Touch optimization for interactive elements */
+button, a, [role="button"], input, select, textarea {
+  touch-action: manipulation;
+}
+
+button, [role="button"] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Smooth scrolling containers */
+.overflow-y-auto, .overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Neo-brutalist Button Style (utility class) */
+.btn-brutalist {
+  border-width: 3px;
+  border-color: var(--color-border);
+  box-shadow: 4px 4px 0px 0px var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.btn-brutalist:active {
+  box-shadow: none;
+  transform: translate(4px, 4px);
+}
+
+.dark .btn-brutalist {
+  border-color: var(--color-border);
+  box-shadow: 4px 4px 0px 0px var(--color-border);
+}
+
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
