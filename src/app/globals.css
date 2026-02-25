@@ -2,7 +2,7 @@
 
 /* Cinechrony Neo-Brutalist Design System */
 
-@theme inline {
+@theme {
   /* Light Mode Colors */
   --color-background: oklch(0.965 0.015 70);
   --color-foreground: oklch(0.15 0.02 30);
