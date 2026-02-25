@@ -50,15 +50,15 @@ export default function WaitlistPage() {
   };
 
   return (
-    <main className="h-screen font-body text-foreground flex flex-col overflow-hidden">
+    <main className="min-h-screen font-body text-foreground flex flex-col overflow-x-hidden">
       {/* Theme Toggle */}
       <div className="absolute top-4 right-4 z-20">
         <ThemeToggle />
       </div>
 
       {/* Main Content - Two Column Layout */}
-      <div className="flex-1 flex items-center justify-center px-6 lg:px-12">
-        <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+      <div className="flex-1 flex items-center justify-center px-6 py-8 lg:py-0 lg:px-12">
+        <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12">
 
           {/* Left Side - Content */}
           <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left max-w-xl">
@@ -176,31 +176,31 @@ export default function WaitlistPage() {
           </div>
 
           {/* Right Side - Phone Mockups - Both Fully Visible */}
-          <div className="flex-1 hidden lg:flex justify-center items-center">
-            <div className="flex items-end gap-6">
+          <div className="flex-1 flex justify-center items-center mt-8 lg:mt-0">
+            <div className="flex items-end gap-3 lg:gap-6">
               {/* Left Phone - Lists Page */}
               <div className="relative">
-                <div className="w-[200px] h-[420px] rounded-[32px] bg-card border-[3px] border-border shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform -rotate-6 hover:rotate-0 transition-transform duration-300">
+                <div className="w-[140px] h-[290px] lg:w-[200px] lg:h-[420px] rounded-[24px] lg:rounded-[32px] bg-card border-[2px] lg:border-[3px] border-border shadow-[4px_4px_0px_0px] lg:shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform -rotate-6 hover:rotate-0 transition-transform duration-300">
                   <img
                     src="https://i.postimg.cc/FFyFDK6z/Untitled-design-12.png"
                     alt="Cinechrony - Lists page"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="absolute -bottom-3 -left-3 h-5 w-5 rounded-full bg-primary border-2 border-border" />
+                <div className="absolute -bottom-2 -left-2 lg:-bottom-3 lg:-left-3 h-4 w-4 lg:h-5 lg:w-5 rounded-full bg-primary border-2 border-border" />
               </div>
 
               {/* Right Phone - Inside List View */}
               <div className="relative">
-                <div className="w-[200px] h-[420px] rounded-[32px] bg-card border-[3px] border-border shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform rotate-6 hover:rotate-0 transition-transform duration-300 -mb-8">
+                <div className="w-[140px] h-[290px] lg:w-[200px] lg:h-[420px] rounded-[24px] lg:rounded-[32px] bg-card border-[2px] lg:border-[3px] border-border shadow-[4px_4px_0px_0px] lg:shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform rotate-6 hover:rotate-0 transition-transform duration-300 -mb-4 lg:-mb-8">
                   <img
                     src="https://i.postimg.cc/yx7Gw9hF/cinechrony-poster2-nobg.png"
                     alt="Cinechrony - Inside a watchlist"
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <Sparkles className="absolute -top-4 -right-2 h-6 w-6 text-primary animate-wiggle" />
-                <div className="absolute -bottom-1 -right-3 h-4 w-4 rounded-full bg-success border-2 border-border" />
+                <Sparkles className="absolute -top-3 -right-1 lg:-top-4 lg:-right-2 h-5 w-5 lg:h-6 lg:w-6 text-primary animate-wiggle" />
+                <div className="absolute -bottom-1 -right-2 lg:-right-3 h-3 w-3 lg:h-4 lg:w-4 rounded-full bg-success border-2 border-border" />
               </div>
             </div>
           </div>
