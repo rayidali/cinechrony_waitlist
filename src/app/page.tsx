@@ -182,7 +182,7 @@ export default function WaitlistPage() {
               <div className="relative">
                 <div className="w-[200px] h-[420px] rounded-[32px] bg-card border-[3px] border-border shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform -rotate-6 hover:rotate-0 transition-transform duration-300">
                   <img
-                    src="https://i.postimg.cc/QxfLZ6y5/cinechrony-poster1-nobg.png"
+                    src="https://i.postimg.cc/pT1brgcv/IMG-1670.jpg"
                     alt="Cinechrony - Lists page"
                     className="w-full h-full object-cover"
                   />
