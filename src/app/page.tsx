@@ -1,221 +1,252 @@
-'use client';
+import Link from "next/link";
+import { Footer } from "@/components/footer";
+import { MediaSlot } from "@/components/media-slot";
+import { PhoneDemo } from "@/components/phone-demo";
+import { Reveal } from "@/components/reveal";
+import { TikTokIcon, InstagramIcon, YouTubeIcon, LinkIcon } from "@/components/icons";
+import { site } from "@/lib/site";
 
-import { useState } from 'react';
-import { Film, Users, Sparkles, Heart, ChevronDown, Check, Loader2 } from 'lucide-react';
-import { ThemeToggle } from '@/components/theme-toggle';
-
-const FORM_ENDPOINT = 'https://app.loops.so/api/newsletter-form/cmk1swus4060d0i0fl3b686aj';
-
-export default function WaitlistPage() {
-  const [firstName, setFirstName] = useState('');
-  const [email, setEmail] = useState('');
-  const [source, setSource] = useState('');
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('loading');
-    setErrorMessage('');
-
-    const formBody = `firstName=${encodeURIComponent(firstName)}&email=${encodeURIComponent(email)}&source=${encodeURIComponent(source)}&mailingLists=cmk23xm1l0ugo0i1pfwfi2y8l`;
-
-    try {
-      const response = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        body: formBody,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-      });
-
-      if (response.status === 429) {
-        setStatus('error');
-        setErrorMessage('Too many signups, please try again in a bit');
-        return;
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        setStatus('success');
-      } else {
-        setStatus('error');
-        setErrorMessage(data.message || 'Something went wrong');
-      }
-    } catch {
-      setStatus('error');
-      setErrorMessage('Something went wrong. Please try again.');
-    }
-  };
-
+export default function LandingPage() {
   return (
-    <main className="min-h-screen font-body text-foreground flex flex-col overflow-x-hidden">
-      {/* Theme Toggle */}
-      <div className="absolute top-4 right-4 z-20">
-        <ThemeToggle />
-      </div>
-
-      {/* Main Content - Two Column Layout */}
-      <div className="flex-1 flex items-center justify-center px-6 py-8 lg:py-0 lg:px-12">
-        <div className="w-full max-w-7xl flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12">
-
-          {/* Left Side - Content */}
-          <div className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left max-w-xl">
-            {/* Logo and Title */}
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src="https://i.postimg.cc/HkXDfKSb/cinechrony-ios-1024-nobg.png"
-                alt="Cinechrony"
-                className="h-14 w-14 lg:h-16 lg:w-16"
-              />
-              <h1 className="text-4xl lg:text-5xl font-headline font-bold tracking-tighter">
-                Cinechrony
+    <>
+    <main id="main">
+      {/* hero — editorial split */}
+      <section className="section">
+        <div className="wrap">
+          <div className="hero-split">
+            <Reveal>
+              <div className="eyebrow hero-eyebrow">The social movie watchlist</div>
+              <h1 className="display">
+                Doomscroll. Save. <span className="mark">Watch together.</span>
               </h1>
-            </div>
-
-            {/* Tagline */}
-            <p className="text-base lg:text-lg text-muted-foreground mb-3 leading-relaxed">
-              letterboxd if it smoked a joint and chilled out, was more social and didn&apos;t have film bros using it
-            </p>
-            <p className="text-sm text-muted-foreground mb-5">
-              Create shared watchlists with friends and finally answer &quot;what should we watch?&quot;
-            </p>
-
-            {/* Feature Pills */}
-            <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-6">
-              <FeaturePill icon={<Users className="h-3.5 w-3.5" />} text="Collaborative Lists" />
-              <FeaturePill icon={<Film className="h-3.5 w-3.5" />} text="Movie & TV" />
-              <FeaturePill icon={<Heart className="h-3.5 w-3.5" />} text="Social Features" />
-            </div>
-
-            {/* Waitlist Form */}
-            <div className="w-full">
-              <div className="bg-card border-[3px] border-border rounded-2xl p-5 shadow-[5px_5px_0px_0px] shadow-border">
-                <h2 className="text-lg font-headline font-bold mb-1">
-                  Join the Waitlist
-                </h2>
-                <p className="text-xs text-muted-foreground mb-4">
-                  Be the first to know when we launch
-                </p>
-
-                {status === 'success' ? (
-                  <div className="flex flex-col items-center py-4 gap-2">
-                    <div className="h-12 w-12 rounded-full bg-success/20 flex items-center justify-center">
-                      <Check className="h-6 w-6 text-success" />
-                    </div>
-                    <p className="font-medium">You&apos;re on the list!</p>
-                    <p className="text-sm text-muted-foreground">Check your email for next steps</p>
-                  </div>
-                ) : (
-                  <form onSubmit={handleSubmit} className="space-y-3">
-                    {/* First name */}
-                    <input
-                      type="text"
-                      placeholder="First name"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      required
-                      className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
-                    />
-
-                    {/* Email */}
-                    <input
-                      type="email"
-                      placeholder="Email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm"
-                    />
-
-                    {/* Source */}
-                    <div className="relative">
-                      <select
-                        value={source}
-                        onChange={(e) => setSource(e.target.value)}
-                        required
-                        className="w-full h-11 px-4 bg-input border-[2px] border-border rounded-xl text-foreground focus:outline-none focus:ring-2 focus:ring-primary text-sm appearance-none cursor-pointer"
-                      >
-                        <option value="" disabled>How did you find us?</option>
-                        <option value="Internet Search">Internet Search</option>
-                        <option value="TikTok">TikTok</option>
-                        <option value="Instagram">Instagram</option>
-                        <option value="Twitter/X">Twitter/X</option>
-                        <option value="Friend">Friend</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
-                    </div>
-
-                    {status === 'error' && (
-                      <p className="text-sm text-destructive">{errorMessage}</p>
-                    )}
-
-                    <button
-                      type="submit"
-                      disabled={status === 'loading'}
-                      className="w-full h-11 bg-primary text-primary-foreground font-bold rounded-full border-[3px] border-border shadow-[4px_4px_0px_0px] shadow-border active:shadow-none active:translate-x-1 active:translate-y-1 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed text-sm"
-                    >
-                      {status === 'loading' ? (
-                        <>
-                          <Loader2 className="h-4 w-4 animate-spin" />
-                          Please wait...
-                        </>
-                      ) : (
-                        <>
-                          Get Early Access
-                          <Sparkles className="h-4 w-4" />
-                        </>
-                      )}
-                    </button>
-                  </form>
-                )}
+              <p className="lead" style={{ marginTop: 26, maxWidth: "44ch" }}>
+                Most of us find our next movie on social, then lose it. Cinechrony turns any reel
+                into an organized watchlist: rated, and shared with the friends whose taste you
+                actually trust.
+              </p>
+              <div className="hero-cta-row">
+                <a className="btn btn--accent btn--lg" href={site.appUrl} target="_blank" rel="noopener">
+                  Try it here
+                </a>
+                <a className="btn btn--ghost btn--lg" href="#demo">
+                  Watch the demo
+                </a>
               </div>
-            </div>
+              <p className="meta hero-note">Free web app. Nothing to download.</p>
+            </Reveal>
+            <Reveal delay={150}>
+              <div className="hero-phone">
+                <PhoneDemo />
+              </div>
+            </Reveal>
           </div>
-
-          {/* Right Side - Phone Mockups - Both Fully Visible */}
-          <div className="flex-1 flex justify-center items-center mt-8 lg:mt-0">
-            <div className="flex items-end gap-3 lg:gap-6">
-              {/* Left Phone - Lists Page */}
-              <div className="relative">
-                <div className="w-[140px] h-[290px] lg:w-[200px] lg:h-[420px] rounded-[24px] lg:rounded-[32px] bg-card border-[2px] lg:border-[3px] border-border shadow-[4px_4px_0px_0px] lg:shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform -rotate-6 hover:rotate-0 transition-transform duration-300">
-                  <img
-                    src="https://i.postimg.cc/FFyFDK6z/Untitled-design-12.png"
-                    alt="Cinechrony - Lists page"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="absolute -bottom-2 -left-2 lg:-bottom-3 lg:-left-3 h-4 w-4 lg:h-5 lg:w-5 rounded-full bg-primary border-2 border-border" />
-              </div>
-
-              {/* Right Phone - Inside List View */}
-              <div className="relative">
-                <div className="w-[140px] h-[290px] lg:w-[200px] lg:h-[420px] rounded-[24px] lg:rounded-[32px] bg-card border-[2px] lg:border-[3px] border-border shadow-[4px_4px_0px_0px] lg:shadow-[8px_8px_0px_0px] shadow-border overflow-hidden transform rotate-6 hover:rotate-0 transition-transform duration-300 -mb-4 lg:-mb-8">
-                  <img
-                    src="https://i.postimg.cc/yx7Gw9hF/cinechrony-poster2-nobg.png"
-                    alt="Cinechrony - Inside a watchlist"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <Sparkles className="absolute -top-3 -right-1 lg:-top-4 lg:-right-2 h-5 w-5 lg:h-6 lg:w-6 text-primary animate-wiggle" />
-                <div className="absolute -bottom-1 -right-2 lg:-right-3 h-3 w-3 lg:h-4 lg:w-4 rounded-full bg-success border-2 border-border" />
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
-    </main>
-  );
-}
+      </section>
 
-function FeaturePill({ icon, text }: { icon: React.ReactNode; text: string }) {
-  return (
-    <div className="flex items-center gap-1.5 px-3 py-1.5 bg-secondary border-[2px] border-border rounded-full text-xs font-medium">
-      {icon}
-      <span>{text}</span>
-    </div>
+      <hr className="hairline" />
+
+      {/* social source strip */}
+      <section className="section--tight" id="demo">
+        <div className="wrap">
+          <Reveal>
+            <div className="block-head" style={{ marginBottom: 40 }}>
+              <div className="rule-eyebrow">
+                <span className="eyebrow">Works with the clips you already share</span>
+              </div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 36, flexWrap: "wrap" }}>
+              <span className="source">
+                <TikTokIcon />
+                TikTok
+              </span>
+              <span className="source">
+                <InstagramIcon />
+                Instagram Reels
+              </span>
+              <span className="source">
+                <YouTubeIcon />
+                YouTube Shorts
+              </span>
+              <span className="source">
+                <LinkIcon />
+                Any link you paste
+              </span>
+              <span className="pill" style={{ marginLeft: "auto" }}>
+                IMDb ratings attached
+              </span>
+            </div>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div style={{ marginTop: 48 }}>
+              <MediaSlot
+                id="demo-hero"
+                label="Demo video · a reel becomes a rated watchlist"
+                ratio="16 / 9"
+              />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <hr className="hairline" />
+
+      {/* how it works */}
+      <section className="section" id="how">
+        <div className="wrap">
+          <Reveal>
+            <div className="block-head">
+              <div className="rule-eyebrow">
+                <span className="eyebrow">How it works</span>
+              </div>
+              <h2 className="h2" style={{ maxWidth: "22ch" }}>
+                From a clip in the group chat to a list you&apos;ll actually finish.
+              </h2>
+            </div>
+          </Reveal>
+          <div className="steps">
+            <Reveal className="step" delay={0}>
+              <span className="step__num">01</span>
+              <h3 className="h3">Share the clip</h3>
+              <p className="body">Paste a reel, TikTok, or short. Or share it straight from the app.</p>
+            </Reveal>
+            <Reveal className="step" delay={120}>
+              <span className="step__num">02</span>
+              <h3 className="h3">The AI watches it</h3>
+              <p className="body">It identifies every film in the clip and pulls each IMDb rating.</p>
+            </Reveal>
+            <Reveal className="step" delay={240}>
+              <span className="step__num">03</span>
+              <h3 className="h3">Save to a shared list</h3>
+              <p className="body">
+                Everything lands on a shared list. Your friends see it instantly, and the clip stays
+                attached.
+              </p>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <hr className="hairline" />
+
+      {/* features */}
+      <section className="section" id="features">
+        <div className="wrap">
+          <div className="feature">
+            <Reveal className="feature__copy">
+              <div className="eyebrow">Built for the group chat</div>
+              <h2 className="h2">
+                Watchlists you build <span className="mark">together.</span>
+              </h2>
+              <p className="body" style={{ color: "var(--fg-soft)" }}>
+                Add up to ten friends to any list. Everyone adds, everyone sees. No more digging
+                through the group chat for that one film someone swore was good.
+              </p>
+              <div style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 6, flexWrap: "wrap" }}>
+                <span className="pill">Up to 10 people</span>
+                <span className="pill">Real-time sync</span>
+              </div>
+            </Reveal>
+            <Reveal className="feature__media" delay={120}>
+              <MediaSlot id="feature-shared-list" label="App screenshot · shared list with members" />
+            </Reveal>
+          </div>
+
+          <div className="feature feature--flip">
+            <Reveal className="feature__copy">
+              <div className="eyebrow">Rated before you save</div>
+              <h2 className="h2">Never save a dud.</h2>
+              <p className="body" style={{ color: "var(--fg-soft)" }}>
+                Every film arrives with its rating, so you know what&apos;s worth your evening before
+                it ever hits the list.
+              </p>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 6 }}>
+                <span className="rating rating--good">8.1</span>
+                <span className="rating rating--good">7.6</span>
+                <span className="rating rating--mid">6.4</span>
+                <span className="rating rating--bad">4.9</span>
+              </div>
+            </Reveal>
+            <Reveal className="feature__media" delay={120}>
+              <MediaSlot id="feature-ratings" label="App screenshot · list with rating chips" />
+            </Reveal>
+          </div>
+
+          <div className="feature">
+            <Reveal className="feature__copy">
+              <div className="eyebrow">The clip stays attached</div>
+              <h2 className="h2">Remember why you saved it.</h2>
+              <p className="body" style={{ color: "var(--fg-soft)" }}>
+                The reel that sold you stays with the film. Tap any card and it&apos;s right there.
+                The context never gets lost.
+              </p>
+            </Reveal>
+            <Reveal className="feature__media" delay={120}>
+              <MediaSlot id="feature-clip-attached" label="App screenshot · film card with attached clip" />
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* our story */}
+      <section className="story-section" id="story">
+        <div className="wrap story-grid">
+          <Reveal className="story-lead">
+            <div className="eyebrow" style={{ marginBottom: 24 }}>
+              Why we built Cinechrony
+            </div>
+            <h2 className="display">Movies live on social now. Your watchlist doesn&apos;t.</h2>
+          </Reveal>
+          <Reveal className="story-body" delay={120}>
+            <p className="story__p">
+              Most people discover their next film on social media: a reel, a TikTok, a screen
+              recording from a friend. Then you scroll past, and it&apos;s gone.
+            </p>
+            <p className="story__pull">
+              There&apos;s Beli for restaurants. There&apos;s never really been one for the movies
+              you watch with friends.
+            </p>
+            <p className="story__p">
+              Letterboxd is a diary built for critics, not for the group chat. Cinechrony closes the
+              gap between finding a film on social and finally having somewhere to keep it, together.
+            </p>
+            <p className="story__sign">The Cinechrony team</p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* try-it band */}
+      <section className="band section" id="try">
+        <div className="wrap wrap--narrow" style={{ textAlign: "center" }}>
+          <Reveal>
+            <div className="eyebrow" style={{ marginBottom: 22 }}>
+              Start your first list
+            </div>
+            <h2 className="display">Give it a try.</h2>
+            <p className="lead" style={{ margin: "24px auto 0", maxWidth: "44ch" }}>
+              The web app is live and free. Open it, paste a clip, add a friend. The iOS app is on
+              its way.
+            </p>
+            <div className="hero-cta-row" style={{ justifyContent: "center" }}>
+              <a className="btn btn--accent btn--lg" href={site.appUrl} target="_blank" rel="noopener">
+                Try it here
+              </a>
+              <Link className="btn btn--lg btn--outline-cream" href="/install">
+                Add to home screen
+              </Link>
+            </div>
+            <p className="meta" style={{ marginTop: 20 }}>
+              Want a heads-up when the iOS app ships?{" "}
+              <Link href="/waitlist" style={{ textDecoration: "underline" }}>
+                Join the waitlist
+              </Link>
+              .
+            </p>
+          </Reveal>
+        </div>
+      </section>
+    </main>
+    <Footer />
+    </>
   );
 }
