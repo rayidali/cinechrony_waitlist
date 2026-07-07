@@ -91,6 +91,9 @@ export function Footer({
           <span className="meta">The social movie watchlist</span>
         </div>
       </div>
+      <div className="footer-ghost" aria-hidden="true">
+        cinechrony
+      </div>
     </footer>
   );
 }

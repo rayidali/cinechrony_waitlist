@@ -13,7 +13,7 @@ export default function NotFound() {
       <section className="section">
         <div className="wrap wrap--narrow" style={{ textAlign: "center" }}>
           <div className="eyebrow hero-eyebrow">404 · not on the list</div>
-          <h1 className="display">This one&apos;s not in the archive.</h1>
+          <h1 className="display-2">This one&apos;s not in the archive.</h1>
           <p className="body" style={{ marginTop: 24, color: "var(--fg-soft)" }}>
             The page you&apos;re after moved, or never made the cut.
           </p>
@@ -21,7 +21,7 @@ export default function NotFound() {
             <Link className="btn btn--accent btn--lg" href="/">
               Back to the homepage
             </Link>
-            <Link className="btn btn--ghost btn--lg" href="/support">
+            <Link className="link-quiet" href="/support">
               Get support
             </Link>
           </div>

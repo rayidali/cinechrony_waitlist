@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore, type ReactNode } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { SafariIcon, ShareIcon, AddSquareIcon, ChromeIcon, DownloadIcon } from "@/components/icons";
 import { site } from "@/lib/site";
 
@@ -14,30 +14,19 @@ const detectPlatform = (): Platform => (/android/i.test(navigator.userAgent) ? "
 const serverPlatform = (): Platform => "ios";
 
 /**
- * Platform picker + the compact install steps from the mockup. The page
- * passes its header copy as children so the segmented control can sit
- * beside it in the same flex row, exactly like the mockup layout.
+ * Platform picker + the compact install steps from the mockup, centered
+ * above the step grid it controls (not floating beside the page hero).
  * Defaults to iPhone; the user agent flips Android users to the Chrome
  * steps, and the segmented control overrides either way.
  */
-export function InstallSteps({ children }: { children?: ReactNode }) {
+export function InstallSteps() {
   const detected = useSyncExternalStore(noopSubscribe, detectPlatform, serverPlatform);
   const [override, setPlatform] = useState<Platform | null>(null);
   const platform = override ?? detected;
 
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-          gap: 32,
-          flexWrap: "wrap",
-          marginBottom: 40,
-        }}
-      >
-        {children}
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 40 }}>
         <div className="seg" role="group" aria-label="choose your phone">
           <button type="button" aria-pressed={platform === "ios"} onClick={() => setPlatform("ios")}>
             iPhone

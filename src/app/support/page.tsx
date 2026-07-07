@@ -16,13 +16,13 @@ export default function SupportPage() {
       <section className="section">
         <div className="wrap wrap--narrow">
           <Reveal>
-            <div className="eyebrow" style={{ marginBottom: 22 }}>
-              Support
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <span className="eyebrow">Support</span>
+              <h1 className="display-2">Need a hand?</h1>
+              <p className="lead">
+                A real person, a real inbox. Email us and you&apos;ll usually hear back within a day.
+              </p>
             </div>
-            <h1 className="display">Need a hand?</h1>
-            <p className="lead" style={{ marginTop: 24, maxWidth: "46ch" }}>
-              A real person, a real inbox. Email us and you&apos;ll usually hear back within a day.
-            </p>
           </Reveal>
 
           <Reveal delay={120}>
@@ -52,8 +52,6 @@ export default function SupportPage() {
           </Reveal>
         </div>
       </section>
-
-      <hr className="hairline" />
 
       <section className="section">
         <div className="wrap wrap--narrow">
@@ -119,7 +117,7 @@ export default function SupportPage() {
         </div>
       </section>
     </main>
-    <Footer variant="minimal" />
+    <Footer />
     </>
   );
 }

@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Node CLI verification script (CommonJS, run outside the app bundle).
+    "scripts/**",
   ]),
 ]);
 

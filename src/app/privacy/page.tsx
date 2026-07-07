@@ -21,7 +21,7 @@ export default function PrivacyPage() {
               <div className="eyebrow" style={{ marginBottom: 20 }}>
                 Legal
               </div>
-              <h1 className="display">Privacy policy</h1>
+              <h1 className="display-2">Privacy policy</h1>
               <p className="meta" style={{ marginTop: 16 }}>
                 Last updated {site.legalUpdated}
               </p>
