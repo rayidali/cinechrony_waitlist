@@ -86,6 +86,16 @@ export function DownloadIcon() {
   );
 }
 
+export function TapInstallIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="5" y="2.5" width="14" height="19" rx="3" />
+      <path d="M9 18h6" />
+      <circle cx="12" cy="10.5" r="2.6" />
+    </svg>
+  );
+}
+
 export function InviteLinkIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

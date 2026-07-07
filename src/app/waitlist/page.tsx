@@ -13,27 +13,32 @@ export default function WaitlistPage() {
   return (
     <>
     <main id="main">
-      <section className="section">
+      <section className="section--tight">
+        <div className="wrap wrap--narrow">
+          <Reveal>
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <span className="eyebrow">The waitlist · est. 2025</span>
+              <h1 className="display-2">Get in early.</h1>
+              <p className="lead">
+                Drop your email and the TestFlight invite lands the moment the beta opens.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="section--tight" style={{ paddingTop: 0 }}>
         <div className="wrap">
           <div className="hero-split" style={{ alignItems: "start" }}>
             <Reveal>
-              <div className="eyebrow" style={{ marginBottom: 22 }}>
-                The waitlist · est. 2025
-              </div>
-              <h1 className="display">Get in early.</h1>
-              <p className="lead" style={{ marginTop: 24, maxWidth: "42ch" }}>
-                The iOS app is on its way. Drop your email and you&apos;ll get the TestFlight
-                invite the moment the beta opens, plus a nudge when the full app lands.
-              </p>
-
-              <div style={{ marginTop: 44, display: "flex", flexDirection: "column", gap: 22 }}>
-                <div className="block-head">
-                  <div className="rule-eyebrow">
-                    <span className="eyebrow">what you&apos;re joining</span>
-                  </div>
+              <div className="block-head">
+                <div className="rule-eyebrow">
+                  <span className="eyebrow">what you&apos;re joining</span>
                 </div>
+              </div>
+              <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 22 }}>
                 <div style={{ display: "flex", gap: 16, alignItems: "baseline" }}>
-                  <span className="meta" style={{ color: "var(--accent)" }}>
+                  <span className="meta" style={{ color: "var(--accent-text)" }}>
                     01
                   </span>
                   <p className="body" style={{ margin: 0 }}>
@@ -41,7 +46,7 @@ export default function WaitlistPage() {
                   </p>
                 </div>
                 <div style={{ display: "flex", gap: 16, alignItems: "baseline" }}>
-                  <span className="meta" style={{ color: "var(--accent)" }}>
+                  <span className="meta" style={{ color: "var(--accent-text)" }}>
                     02
                   </span>
                   <p className="body" style={{ margin: 0 }}>
@@ -49,7 +54,7 @@ export default function WaitlistPage() {
                   </p>
                 </div>
                 <div style={{ display: "flex", gap: 16, alignItems: "baseline" }}>
-                  <span className="meta" style={{ color: "var(--accent)" }}>
+                  <span className="meta" style={{ color: "var(--accent-text)" }}>
                     03
                   </span>
                   <p className="body" style={{ margin: 0 }}>
@@ -68,7 +73,7 @@ export default function WaitlistPage() {
         </div>
       </section>
     </main>
-    <Footer variant="minimal" />
+    <Footer />
     </>
   );
 }

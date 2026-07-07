@@ -1,6 +1,6 @@
 # Asset capture list
 
-Every screenshot and video the site wants, in priority order. Each slot renders a styled placeholder until its file exists. To wire one up: drop the file in `public/media/`, then set its `src` in the `media` map in `src/lib/site.ts` (for example `src: "/media/demo-hero.mp4"`).
+Every screenshot and video the site wants, in priority order. Since the 2026-07 redesign, no slot looks unfinished anymore: each one renders a designed stand-in (CSS product mockups on the feature rows, a "screening room" video frame for the demo, a mocked phone on /beta) until its real file exists. Real captures still upgrade the site from "looks real" to "is real", so this list is still worth doing, in this order. To wire one up: drop the file in `public/media/`, then set its `src` in the `media` map in `src/lib/site.ts` (for example `src: "/media/demo-hero.mp4"`); the mockup disappears automatically.
 
 General notes for all captures:
 
@@ -10,7 +10,7 @@ General notes for all captures:
 
 ## 1. demo-hero (video, highest priority)
 
-- Slot: the 16:9 frame in the "Works with the clips you already share" section on the landing page.
+- Slot: the 16:9 "screening room" frame in the "Works with the clips you already share" section on the landing page (currently a dark styled player frame with a play button).
 - Content: the full hero flow in one continuous take, about 30 to 45 seconds. Share a TikTok or reel to Cinechrony, show the AI scan running, show the films appearing with IMDb ratings, end on the shared list with the clip attached to a film card.
 - Format: MP4 (H.264), 1920x1080 or a clean 16:9 screen recording composited onto a simple background. It autoplays muted and loops, so it must read clearly without sound. Keep it under ~8 MB if possible.
 

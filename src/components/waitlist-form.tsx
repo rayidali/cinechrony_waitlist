@@ -98,21 +98,6 @@ export function WaitlistForm() {
         />
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <label className="lbl" htmlFor="wl-email">
-          Email
-        </label>
-        <input
-          className="field"
-          id="wl-email"
-          type="email"
-          required
-          placeholder="you@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          autoComplete="email"
-        />
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         <label className="lbl" htmlFor="wl-src">
           How&apos;d you find us? <span style={{ opacity: 0.5 }}>optional</span>
         </label>
@@ -125,19 +110,31 @@ export function WaitlistForm() {
           onChange={(e) => setSource(e.target.value)}
         />
       </div>
+      <div className="wl-row">
+        <div className="wl-row__field">
+          <label className="lbl" htmlFor="wl-email">
+            Email
+          </label>
+          <input
+            className="field"
+            id="wl-email"
+            type="email"
+            required
+            placeholder="you@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+          />
+        </div>
+        <button className="btn btn--accent btn--lg wl-row__btn" type="submit" disabled={status === "loading"}>
+          {status === "loading" ? "Joining…" : "Join the waitlist"}
+        </button>
+      </div>
       {status === "error" && (
         <p className="form-error" role="alert">
           {errorMessage}
         </p>
       )}
-      <button
-        className="btn btn--accent btn--lg"
-        type="submit"
-        disabled={status === "loading"}
-        style={{ width: "100%", marginTop: 6 }}
-      >
-        {status === "loading" ? "Joining…" : "Join the waitlist"}
-      </button>
       <p className="meta" style={{ textAlign: "center" }}>
         No spam, ever. Unsubscribe in one tap.
       </p>

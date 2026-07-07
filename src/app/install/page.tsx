@@ -15,30 +15,32 @@ export default function InstallPage() {
     <>
     <main id="main">
       <section className="section--tight" style={{ paddingTop: 80 }}>
-        <div className="wrap">
+        <div className="wrap wrap--narrow">
           <Reveal>
-            <InstallSteps>
-              <div style={{ maxWidth: "52ch" }}>
-                <div className="eyebrow" style={{ marginBottom: 18 }}>
-                  The web app · no app store needed
-                </div>
-                <h1 className="display" style={{ fontSize: "clamp(2.4rem, 5vw, 3.6rem)" }}>
-                  Add it to your home screen.
-                </h1>
-                <p className="lead" style={{ marginTop: 18, maxWidth: "48ch" }}>
-                  It works today, and it&apos;s free. Add it once and it opens full screen, just
-                  like a native app.
-                </p>
-              </div>
-            </InstallSteps>
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <span className="eyebrow">The web app · no app store needed</span>
+              <h1 className="display-2">Add it to your home screen.</h1>
+              <p className="lead">
+                It works today, and it&apos;s free. Add it once and it opens full screen, just
+                like a native app.
+              </p>
+            </div>
           </Reveal>
 
-          <Reveal delay={120}>
-            <div style={{ display: "flex", alignItems: "center", gap: 22, flexWrap: "wrap", marginTop: 32 }}>
+          <Reveal delay={100}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 14,
+                marginTop: 32,
+              }}
+            >
               <a className="btn btn--accent" href={site.appUrl} target="_blank" rel="noopener">
                 Open the web app
               </a>
-              <p className="meta" style={{ margin: 0, maxWidth: "52ch" }}>
+              <p className="meta" style={{ margin: 0, maxWidth: "52ch", textAlign: "center" }}>
                 Opened this from TikTok or Instagram? Tap the browser menu, then Open in browser
                 first. In-app browsers can&apos;t install.
               </p>
@@ -46,8 +48,16 @@ export default function InstallPage() {
           </Reveal>
         </div>
       </section>
+
+      <section className="section--tight" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <Reveal delay={120}>
+            <InstallSteps />
+          </Reveal>
+        </div>
+      </section>
     </main>
-    <Footer variant="minimal" />
+    <Footer />
     </>
   );
 }

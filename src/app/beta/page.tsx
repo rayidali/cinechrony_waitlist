@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
 import { MediaSlot } from "@/components/media-slot";
+import { PhoneStatic } from "@/components/phone-static";
 import { Reveal } from "@/components/reveal";
-import { DownloadIcon, InviteLinkIcon } from "@/components/icons";
+import { DownloadIcon, InviteLinkIcon, TapInstallIcon } from "@/components/icons";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -19,14 +20,14 @@ export default function BetaPage() {
   return (
     <>
     <main id="main">
-      {/* hero — beta status split */}
+      {/* hero — centered, matching the waitlist/install/support pattern */}
       <section className="section">
-        <div className="wrap">
-          <div className="hero-split">
-            <Reveal>
-              <div className="eyebrow hero-eyebrow">TestFlight beta · iPhone</div>
-              <h1 className="display">{betaLive ? "The beta is open." : "The beta opens soon."}</h1>
-              <p className="lead" style={{ marginTop: 24, maxWidth: "42ch" }}>
+        <div className="wrap wrap--narrow">
+          <Reveal>
+            <div className="section-head" style={{ marginBottom: 0 }}>
+              <span className="eyebrow">TestFlight beta · iPhone</span>
+              <h1 className="display-2">{betaLive ? "The beta is open." : "The beta opens soon."}</h1>
+              <p className="lead">
                 {betaLive ? (
                   <>
                     Cinechrony runs on TestFlight right now. It takes about two minutes to join, and
@@ -39,43 +40,51 @@ export default function BetaPage() {
                   </>
                 )}
               </p>
-              <div className="hero-cta-row">
-                {betaLive ? (
-                  <a
-                    className="btn btn--accent btn--lg"
-                    href={site.testflightUrl!}
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    Open in TestFlight
-                  </a>
-                ) : (
-                  <Link className="btn btn--accent btn--lg" href="/waitlist">
-                    Join the waitlist
-                  </Link>
-                )}
-              </div>
-              <p className="meta hero-note">
-                {betaLive ? <>You&apos;ll need an iPhone. No iPhone? </> : <>No iPhone? </>}
-                <Link href="/install" style={{ textDecoration: "underline" }}>
-                  Use the web app
+            </div>
+            <div className="hero-cta-row" style={{ justifyContent: "center" }}>
+              {betaLive ? (
+                <a
+                  className="btn btn--accent btn--lg"
+                  href={site.testflightUrl!}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Open in TestFlight
+                </a>
+              ) : (
+                <Link className="btn btn--accent btn--lg" href="/waitlist">
+                  Join the waitlist
                 </Link>
-                {betaLive ? <>.</> : <>, it works today.</>}
-              </p>
-            </Reveal>
-            <Reveal delay={150}>
-              <MediaSlot
-                id="beta-phone"
-                label="App screen · beta build"
-                ratio="320 / 640"
-                style={{ maxWidth: 290, margin: "0 auto", borderRadius: 42 }}
-              />
-            </Reveal>
-          </div>
+              )}
+            </div>
+            <p className="meta hero-note" style={{ textAlign: "center" }}>
+              {betaLive ? <>You&apos;ll need an iPhone. No iPhone? </> : <>No iPhone? </>}
+              <Link href="/install" style={{ textDecoration: "underline" }}>
+                Use the web app
+              </Link>
+              {betaLive ? <>.</> : <>, it works today.</>}
+            </p>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <MediaSlot
+              id="beta-phone"
+              label="App screen · beta build"
+              ratio="320 / 640"
+              style={{
+                maxWidth: 290,
+                margin: "56px auto 0",
+                background: "transparent",
+                border: "none",
+                boxShadow: "none",
+                overflow: "visible",
+              }}
+            >
+              <PhoneStatic variant="list" tag="TestFlight beta" />
+            </MediaSlot>
+          </Reveal>
         </div>
       </section>
-
-      <hr className="hairline" />
 
       {/* how to join */}
       <section className="section">
@@ -113,7 +122,7 @@ export default function BetaPage() {
               </div>
               <div className="istep">
                 <div className="istep__ic">
-                  <DownloadIcon />
+                  <TapInstallIcon />
                 </div>
                 <div className="istep__t">
                   <span className="n">Step 3</span>
@@ -164,7 +173,7 @@ export default function BetaPage() {
         </div>
       </section>
     </main>
-    <Footer variant="minimal" />
+    <Footer />
     </>
   );
 }

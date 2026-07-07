@@ -9,10 +9,10 @@ import { site } from "@/lib/site";
 const links = [
   { href: "/#how", label: "How it works" },
   { href: "/#features", label: "Features" },
-  { href: "/#story", label: "Our story" },
   { href: "/install", label: "Install" },
-  { href: "/support", label: "Support" },
+  { href: "/beta", label: "iOS beta" },
   { href: "/waitlist", label: "Waitlist" },
+  { href: "/support", label: "Support" },
 ];
 
 export function Nav() {
@@ -62,12 +62,12 @@ export function Nav() {
           })}
           <ThemeToggle />
           <a
-            className="btn btn--accent btn--sm nav-cta"
+            className="btn btn--sm nav-cta"
             href={site.appUrl}
             target="_blank"
             rel="noopener"
           >
-            Try it here
+            Open the app
           </a>
         </nav>
       </div>

@@ -21,7 +21,7 @@ export default function TermsPage() {
               <div className="eyebrow" style={{ marginBottom: 20 }}>
                 Legal
               </div>
-              <h1 className="display">Terms of service</h1>
+              <h1 className="display-2">Terms of service</h1>
               <p className="meta" style={{ marginTop: 16 }}>
                 Last updated {site.legalUpdated}
               </p>

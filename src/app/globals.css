@@ -28,6 +28,8 @@
 
   --cc-coffee: oklch(0.2 0.012 60);
   --cc-cream-on-dark: oklch(0.92 0.012 78);
+  /* the screening-room video placeholder: near-black, same in both themes */
+  --cc-screening: oklch(0.14 0.01 60);
 
   /* semantic tokens (light) */
   --bg: var(--cc-paper);
@@ -164,11 +166,82 @@ a {
 .section--tight {
   padding: 64px 0;
 }
+.section--xl {
+  padding: 140px 0;
+}
 .hairline {
   height: 1px;
   background: var(--rule);
   border: 0;
   margin: 0;
+}
+
+/* ---------- scene flow (replaces hairline-stacked sections) ---------- */
+/* Sections melt into each other via long soft gradients instead of hard
+   rule dividers, so the page reads as one continuous composed canvas. */
+.scene--paper {
+  background: var(--bg);
+}
+.scene--warm {
+  background: linear-gradient(
+    180deg,
+    var(--bg) 0%,
+    color-mix(in oklab, var(--accent) 6%, var(--bg)) 55%,
+    var(--bg) 100%
+  );
+}
+.scene--bone {
+  background: linear-gradient(
+    180deg,
+    var(--bg) 0%,
+    var(--surface) 55%,
+    var(--bg) 100%
+  );
+}
+[data-theme="dark"] .scene--warm {
+  background: linear-gradient(
+    180deg,
+    var(--bg) 0%,
+    color-mix(in oklab, var(--accent) 9%, var(--bg)) 55%,
+    var(--bg) 100%
+  );
+}
+
+/* film-grain texture: a static noise overlay, the one "cinema" signature.
+   Applied to the hero and the ink band only. Never animated. */
+.grain {
+  position: relative;
+}
+/* rendered on ::after (not ::before) so it never collides with a section's
+   own ::before effect (e.g. the try-band's radial glow, .band::before) --
+   two independent pseudo-elements, two independent effects. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  mix-blend-mode: overlay;
+  background-repeat: repeat;
+  background-size: 220px 220px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* section head pattern: centered eyebrow + display-2 + one-line lead */
+.section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 56px;
+}
+.section-head .display-2 {
+  max-width: 20ch;
+}
+.section-head .lead {
+  max-width: 46ch;
 }
 
 .eyebrow {
@@ -198,24 +271,33 @@ a {
 
 .display {
   font-family: var(--font-display);
-  font-weight: 600;
-  letter-spacing: -0.028em;
-  line-height: 1.03;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
   color: var(--fg);
   margin: 0;
-  font-size: clamp(2.6rem, 5.6vw, 4.3rem);
+  font-size: clamp(3.4rem, 8vw, 7rem);
 }
 .display--xl {
   font-size: clamp(3rem, 8vw, 5.8rem);
   line-height: 0.98;
   letter-spacing: -0.035em;
 }
+.display-2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  color: var(--fg);
+  margin: 0;
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+}
 .h2 {
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.08;
-  font-size: clamp(1.85rem, 3.4vw, 2.5rem);
+  font-size: clamp(2rem, 3.6vw, 2.8rem);
   margin: 0;
   color: var(--fg);
 }
@@ -231,19 +313,16 @@ a {
 .lead {
   font-family: var(--font-body);
   font-weight: 400;
-  font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  font-size: clamp(1.1rem, 1.7vw, 1.35rem);
   line-height: 1.55;
   color: var(--fg-soft);
   margin: 0;
+  max-width: 46ch;
   text-wrap: pretty;
 }
-.mark {
-  background: linear-gradient(
-    transparent 58%,
-    color-mix(in oklab, var(--highlight) 82%, transparent) 58%
-  );
-  padding: 0 0.08em;
-  color: var(--fg);
+/* one word of emphasis max, hero only: plain color, no highlighter trope */
+.accent-word {
+  color: var(--accent-text);
 }
 .body {
   font-family: var(--font-body);
@@ -290,11 +369,6 @@ a {
   background: var(--accent);
   color: var(--accent-fg);
 }
-.btn--ghost {
-  background: transparent;
-  color: var(--fg);
-  border: 1px solid var(--fg);
-}
 .btn--soft {
   background: var(--surface);
   color: var(--fg);
@@ -324,6 +398,33 @@ a {
   border: 1px solid var(--cc-cream-on-dark);
 }
 
+/* secondary CTA language: an underlined text link with a trailing arrow,
+   used instead of a second competing button style */
+.link-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--fg-soft);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.link-quiet:hover {
+  color: var(--fg);
+}
+.link-quiet::after {
+  content: "\2192";
+  font-family: var(--font-mono);
+  text-decoration: none;
+}
+.band .link-quiet {
+  color: var(--cc-cream-on-dark);
+}
+
 .pill {
   display: inline-flex;
   align-items: center;
@@ -351,6 +452,25 @@ a {
   width: 20px;
   height: 20px;
   flex: none;
+}
+/* the bluejay-style logo strip: bigger, quiet, monochrome */
+.source-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.source--lg {
+  gap: 12px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  letter-spacing: -0.01em;
+}
+.source--lg svg {
+  width: 26px;
+  height: 26px;
 }
 
 .rating {
@@ -391,7 +511,7 @@ a {
   display: flex;
   align-items: center;
   gap: 24px;
-  height: 72px;
+  height: 76px;
 }
 .brand {
   display: flex;
@@ -530,22 +650,135 @@ a {
   text-align: center;
   max-width: 80%;
 }
-.ph--video::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 0;
-  border-left: 20px solid var(--accent);
-  border-top: 13px solid transparent;
-  border-bottom: 13px solid transparent;
-  left: calc(50% - 5px);
-  top: calc(50% - 40px);
-}
 .ph > img,
 .ph > video {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* ---------- screening room: the video-slot placeholder at rest ---------- */
+/* Reads as a deliberately styled player, not a missing asset: a near-black
+   surface, grain, a real play button, a caption, a fake progress rail. */
+.ph--screening {
+  background: var(--cc-screening);
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 34px;
+}
+.screening-play {
+  width: 56px;
+  height: 56px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-lift);
+}
+.screening-play::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 16px solid var(--cc-bone);
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  margin-left: 4px;
+}
+.screening-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+.screening-caption .l1 {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
+  color: var(--cc-cream-on-dark);
+}
+.screening-caption .l2 {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: oklch(0.72 0.012 60);
+}
+.screening-rail {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 20px;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--cc-cream-on-dark) 8%, transparent);
+  overflow: hidden;
+}
+.screening-rail::after {
+  content: "";
+  position: absolute;
+  inset: 0 70% 0 0;
+  background: var(--accent);
+}
+
+/* fake progress rail reused in the how-it-works vignettes */
+.progress-rail {
+  position: relative;
+  height: 3px;
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--fg) 8%, transparent);
+  overflow: hidden;
+}
+.progress-rail__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+/* ---------- hero product stage: animated phone flanked by two static ones ---------- */
+.hero-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px;
+}
+.hero-stage__center {
+  position: relative;
+  z-index: 2;
+}
+.hero-stage__flank {
+  position: relative;
+  z-index: 1;
+  flex: none;
+  width: 78%;
+  max-width: 234px;
+  opacity: 0.9;
+  transform: translateY(40px);
+}
+.hero-stage__flank--left {
+  margin-right: -18px;
+  transform: translateY(40px) rotate(-3deg);
+}
+.hero-stage__flank--right {
+  margin-left: -18px;
+  transform: translateY(40px) rotate(3deg);
+}
+.stage-floor {
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  width: 72%;
+  height: 60px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    closest-side,
+    color-mix(in oklab, var(--fg) 6%, transparent),
+    transparent 72%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* ---------- animated phone demo ---------- */
@@ -793,6 +1026,78 @@ a {
   background: var(--surface);
 }
 
+/* ---------- static phone (flanking hero screens, beta screen) ---------- */
+/* Same demo-phone/demo-screen chrome as the animated demo, at rest: no
+   phases, no live state, just the finished frame. */
+.demo-watched {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--cc-sage-deep);
+}
+[data-theme="dark"] .demo-watched {
+  color: var(--success);
+}
+.demo-detail__poster {
+  width: 100%;
+  height: 108px;
+  border-radius: var(--radius-md);
+  margin-bottom: 4px;
+}
+.demo-detail__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.demo-detail__head .name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.demo-detail__meta {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--fg-soft);
+  margin-top: 2px;
+}
+.demo-detail__friends {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.demo-detail__friends .meta {
+  font-size: 9px;
+}
+.demo-more {
+  margin-top: auto;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-soft);
+}
+.demo-detail__save {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 30px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 10px;
+}
+
 /* ---------- how it works ---------- */
 .steps {
   display: grid;
@@ -817,6 +1122,96 @@ a {
 .step p {
   margin: 0;
 }
+.step-vignette {
+  margin-top: 6px;
+  padding: 16px;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.step-vignette .demo-clip {
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.step-vignette .demo-film {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.step-vignette .demo-saved {
+  margin-top: 0;
+  justify-content: flex-start;
+}
+
+/* ---------- claim band: the honest "huge stat" section ---------- */
+.claim-pills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.filmstrip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px;
+  overflow: hidden;
+  padding: 20px 0 8px;
+}
+.filmstrip__cell {
+  flex: none;
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* extra horizontal inset (20px) is deliberately GREATER than the -10px
+     overlap margin below, so a neighbouring card's edge only ever
+     overlaps this card's own padding -- never its title or rating chip. */
+  padding: 14px 20px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-photo);
+  margin: 0 -10px;
+}
+.filmstrip__cell:nth-child(odd) {
+  transform: rotate(-1.5deg);
+}
+.filmstrip__cell:nth-child(even) {
+  transform: rotate(1.5deg);
+}
+.filmstrip__poster {
+  width: 100%;
+  height: 130px;
+  border-radius: var(--radius-md);
+}
+.filmstrip__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+.filmstrip__yr {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-soft);
+}
+.filmstrip__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
 
 /* ---------- feature rows ---------- */
 .feature {
@@ -840,11 +1235,122 @@ a {
   aspect-ratio: 4 / 3;
 }
 
+/* ---------- feature-row mockups (rendered as MediaSlot placeholder children) ---------- */
+.fm-card {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  justify-content: center;
+}
+.fm-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.fm-head .t {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.fm-meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-soft);
+  margin-top: -6px;
+}
+.fm-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+.fm-row--new {
+  border-left: 3px solid var(--accent);
+}
+.fm-row .poster {
+  width: 32px;
+  height: 46px;
+  flex: none;
+  border-radius: var(--radius-xs);
+}
+.fm-row .txt {
+  min-width: 0;
+  flex: 1;
+}
+.fm-row .name {
+  display: block;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fm-row .added {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-soft);
+  margin-top: 2px;
+}
+.fm-legend {
+  display: flex;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg-soft);
+}
+.fm-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+}
+.fm-detail__poster {
+  flex: 1;
+  min-height: 0;
+  border-radius: var(--radius-md);
+}
+.fm-detail__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.fm-detail__title .t {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.fm-detail__link {
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ---------- cards ---------- */
 .card {
   background: var(--surface);
   border: 1px solid var(--rule);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lift);
   padding: 32px;
 }
@@ -854,13 +1360,36 @@ a {
 
 /* ---------- dark band ---------- */
 .band {
+  position: relative;
   background: var(--cc-ink);
   color: var(--cc-cream-on-dark);
   --fg: var(--cc-cream-on-dark);
   --fg-soft: oklch(0.72 0.012 60);
   --rule: oklch(0.92 0.012 78 / 0.16);
 }
+.band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    60% 50% at 50% 0%,
+    color-mix(in oklab, var(--accent) 18%, transparent),
+    transparent 70%
+  );
+}
+[data-theme="dark"] .band::before {
+  background: radial-gradient(
+    60% 50% at 50% 0%,
+    color-mix(in oklab, var(--accent) 10%, transparent),
+    transparent 70%
+  );
+}
+.band > * {
+  position: relative;
+}
 .band .display,
+.band .display-2,
 .band .h2,
 .band .h3 {
   color: var(--cc-cream-on-dark);
@@ -868,8 +1397,13 @@ a {
 
 /* ---------- forms ---------- */
 .field {
-  flex: 1;
-  min-width: 240px;
+  /* width (not flex:1) -- inside a column-direction wrapper (the common
+     case: every field is wrapped in a column flex "label above input"
+     div) flex:1 sets a flex-basis of 0 on the CROSS axis's main axis
+     (height, since the wrapper is column), collapsing the input to its
+     line box and silently overriding the height below. width:100% fills
+     the wrapper on any axis without touching height. */
+  width: 100%;
   height: 3.4rem;
   padding: 0 1.2rem;
   font-family: var(--font-body);
@@ -953,6 +1487,21 @@ a {
   margin-top: 0;
   border-top: 0;
   padding-top: 0;
+}
+.footer-ghost {
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: center;
+  user-select: none;
+  margin-top: 40px;
+  margin-bottom: -0.18em;
+  line-height: 0.8;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(4rem, 14vw, 13rem);
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+  color: color-mix(in oklab, var(--fg) 7%, transparent);
 }
 
 /* ---------- legal / doc layout ---------- */
@@ -1181,24 +1730,24 @@ a {
   position: relative;
   padding: 108px 0;
   overflow: hidden;
+  /* the corner glow is centered INSIDE the section (not off the top edge)
+     and sized so it fades fully to transparent before reaching the
+     section's own top edge -- otherwise the section starts already
+     part-tinted while the section above it ends at plain var(--bg),
+     producing a hard-edged seam instead of a melt. */
   background:
     radial-gradient(
-      80% 120% at 82% -10%,
-      color-mix(in oklab, var(--accent) 10%, transparent),
-      transparent 58%
+      70% 70% at 84% 40%,
+      color-mix(in oklab, var(--accent) 6%, transparent),
+      transparent 50%
     ),
     linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
 }
 .story-grid {
   display: grid;
   grid-template-columns: 0.95fr 1.05fr;
   gap: 72px;
   align-items: start;
-}
-.story-lead .display {
-  font-size: clamp(2.1rem, 4.2vw, 3.3rem);
 }
 .story-body {
   display: flex;
@@ -1279,20 +1828,16 @@ a {
 }
 
 /* ---------- responsive ---------- */
-@media (max-width: 860px) {
-  .wrap {
-    padding: 0 22px;
-  }
-  .section {
-    padding: 64px 0;
-  }
+/* the nav carries six links + toggle + CTA, so it collapses to the burger
+   earlier than the rest of the layout */
+@media (max-width: 1020px) {
   .nav-links {
     display: none;
   }
   .nav-links.open {
     display: flex;
     position: absolute;
-    top: 72px;
+    top: 76px;
     left: 0;
     right: 0;
     flex-direction: column;
@@ -1314,6 +1859,14 @@ a {
   }
   .nav-burger {
     display: inline-flex;
+  }
+}
+@media (max-width: 860px) {
+  .wrap {
+    padding: 0 22px;
+  }
+  .section {
+    padding: 64px 0;
   }
   .steps {
     grid-template-columns: 1fr;
@@ -1367,6 +1920,71 @@ a {
     margin-left: auto;
     margin-right: auto;
   }
+  .section--xl {
+    padding: 72px 0;
+  }
+  .hero-stage__flank {
+    display: none;
+  }
+  .filmstrip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 40px;
+    overflow: visible;
+    padding: 0;
+  }
+  .filmstrip__cell {
+    width: auto;
+    margin: 0;
+    transform: none !important;
+  }
+  .filmstrip__cell:nth-child(5) {
+    display: none;
+  }
+  .source-row {
+    gap: 24px;
+  }
+  /* a smaller floor + gentler vw multiplier keeps the whole word inside
+     the viewport (bottom-crop only, per the ghost wordmark's design) --
+     the old 3rem/22vw floor made "cinechrony" wider than 390px, so it
+     was clipped mid-glyph at the right edge instead. */
+  .footer-ghost {
+    font-size: clamp(2.2rem, 14vw, 6rem);
+  }
+
+  /* the hero display floor (3.4rem) is too wide for "Watch together." to
+     hold one line at narrow widths, forcing an unintended 4-line wrap;
+     drop to the same floor used by .display-2 (already verified to fit
+     comparable phrases at this breakpoint) for this breakpoint only. */
+  .display {
+    font-size: clamp(2.4rem, 8vw, 7rem);
+  }
+  /* a deliberate desktop-only line break (e.g. the how-it-works head) --
+     hidden on mobile so the phrase reflows naturally instead of
+     shattering into a 3-line stack with an orphaned word. */
+  .brk-desktop {
+    display: none;
+  }
+
+  /* feature-row mockups: the 4/3 media frame is shorter than the mockup
+     content at narrow widths, so `.fm-card`'s height:100% forced a crop
+     top and bottom. Let the frame grow to the content's natural height
+     instead of clipping it. */
+  .feature__media .ph {
+    aspect-ratio: auto;
+    min-height: 300px;
+  }
+  .fm-card {
+    height: auto;
+  }
+  .fm-detail {
+    height: auto;
+  }
+  .fm-detail__poster {
+    flex: none;
+    height: 200px;
+  }
 }
 
 /* ---------- reduced motion ---------- */
@@ -1387,5 +2005,36 @@ a {
   .demo-scan .bar::after {
     animation: none;
     transform: none;
+  }
+}
+
+/* ============================================================
+   stage 2 additions — subpage alignment (waitlist/install/beta/
+   support/legal/not-found). Everything else reuses stage 1 tokens
+   and classes (.display-2, .section-head, .link-quiet, .scene--*).
+   ============================================================ */
+
+/* waitlist form: the email field sits beside its submit button on one
+   row (desktop), matching the single CTA-language button placement used
+   site-wide; wraps to a stacked, full-width button on small screens. */
+.wl-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.wl-row__field {
+  flex: 1 1 220px;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.wl-row__btn {
+  flex: none;
+}
+@media (max-width: 640px) {
+  .wl-row__btn {
+    width: 100%;
   }
 }
