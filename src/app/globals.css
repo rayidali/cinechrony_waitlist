@@ -31,6 +31,21 @@
   /* the screening-room video placeholder: near-black, same in both themes */
   --cc-screening: oklch(0.14 0.01 60);
 
+  /* atmosphere pass — five color scenes, like reels of one film (light) */
+  --scn-amber: oklch(0.9 0.09 85);
+  --scn-blush: oklch(0.93 0.03 40);
+  --scn-dusk: oklch(0.9 0.04 290);
+  --scn-sagefield: oklch(0.92 0.04 150);
+
+  /* poster duotone stops — fake movie-poster artwork, same both themes
+     (they're artwork, not UI, so they don't flip with the color scheme) */
+  --pd-crimson: oklch(0.45 0.16 25);
+  --pd-dusk: oklch(0.35 0.1 290);
+  --pd-teal: oklch(0.5 0.09 200);
+  --pd-amber: oklch(0.62 0.12 75);
+  --pd-rose: oklch(0.6 0.12 10);
+  --pd-forest: oklch(0.42 0.08 155);
+
   /* semantic tokens (light) */
   --bg: var(--cc-paper);
   --fg: var(--cc-ink);
@@ -116,6 +131,18 @@
   --shadow-press: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-photo: 0 4px 12px rgba(0, 0, 0, 0.4), 0 24px 56px rgba(0, 0, 0, 0.5);
   --shadow-stamp: 3px 3px 0 0 var(--cc-cream-on-dark);
+
+  /* atmosphere pass — same five scenes, halved chroma so dark mode never
+     reads neon; --pd-* poster stops are deliberately unchanged (artwork).
+     --scn-blush sits closer to the ink bg's own warm-brown hue (60) than
+     dusk (290) or sagefield (150) do, so at the original 0.26L/0.03C it
+     was blending into the page instead of reading as a color field --
+     nudged toward a rosier hue with a touch more L/C, matching how the
+     other two scenes already survive the halved-chroma rule. */
+  --scn-amber: oklch(0.32 0.05 80);
+  --scn-blush: oklch(0.3 0.05 22);
+  --scn-dusk: oklch(0.28 0.05 290);
+  --scn-sagefield: oklch(0.27 0.04 150);
 }
 
 /* ---------- base ---------- */
@@ -182,13 +209,44 @@ a {
 .scene--paper {
   background: var(--bg);
 }
+/* the claim band: a real amber color field (not just a tinted paper wash),
+   melting in/out at the top and bottom edges */
 .scene--warm {
+  position: relative;
   background: linear-gradient(
     180deg,
-    var(--bg) 0%,
-    color-mix(in oklab, var(--accent) 6%, var(--bg)) 55%,
-    var(--bg) 100%
+    transparent,
+    var(--scn-amber) 18%,
+    var(--scn-amber) 82%,
+    transparent
   );
+}
+/* a soft white-hot center, light theme only -- in dark the field is already
+   a deep amber-brown and needs no extra lift */
+.scene--warm::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    70% 60% at 50% 30%,
+    color-mix(in oklab, white 30%, transparent),
+    transparent
+  );
+}
+[data-theme="dark"] .scene--warm::before {
+  background: none;
+}
+/* the amber field is lighter than the coffee bg --fg-soft was tuned
+   against, so the muted eyebrow/lead text fell under 4.5:1 here -- pin it
+   to cream on this field only (per spec: "in dark ... text stays cream"). */
+[data-theme="dark"] .scene--warm {
+  --fg-soft: oklch(0.88 0.02 80);
+}
+.scene--warm > .wrap {
+  position: relative;
+  z-index: 1;
 }
 .scene--bone {
   background: linear-gradient(
@@ -198,14 +256,71 @@ a {
     var(--bg) 100%
   );
 }
-[data-theme="dark"] .scene--warm {
+
+/* screening room: the source strip + demo video, a full-bleed dark scene
+   that melts in from the hero and back out into the claim band. Overrides
+   --fg/--fg-soft/--rule like .band does, so every existing label class
+   (eyebrow, source, .ph border) goes cream automatically. Deliberately
+   IDENTICAL in both themes -- it's already the darkest point on the page. */
+.scene--screening {
+  position: relative;
+  /* the melt must fully resolve to --cc-screening BEFORE the section's own
+     top/bottom padding (.section--tight = 64px) ends -- otherwise the
+     eyebrow/source-row text (which overrides --fg/--fg-soft to a fixed
+     cream tone here, assuming a solid dark backdrop) lands on a mid-gray
+     transitional pixel and fails contrast. 48px < 64px leaves a safe margin. */
   background: linear-gradient(
     180deg,
     var(--bg) 0%,
-    color-mix(in oklab, var(--accent) 9%, var(--bg)) 55%,
+    var(--cc-screening) 48px,
+    var(--cc-screening) calc(100% - 48px),
     var(--bg) 100%
   );
+  color: var(--cc-cream-on-dark);
+  --fg: var(--cc-cream-on-dark);
+  --fg-soft: oklch(0.72 0.012 60);
+  --rule: oklch(0.92 0.012 78 / 0.14);
 }
+.scene--screening::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* the video frame is nearly as wide/tall as the section itself, so a
+     glow centered mid-section painted here sits entirely behind its
+     opaque placeholder fill and never reaches the eye -- pull the
+     visible part of this layer up into the source-row band above the
+     frame (a real dead zone) and let the frame carry its own glow
+     directly (below) so the effect survives regardless of frame size.
+     The last two layers are a warm amber wash bleeding in from the very
+     top/bottom edges: the raw cream<->ink color-stop above must fully
+     resolve within 48px (kept, for the text-contrast reason explained
+     there), which reads as a short/flat cut on its own -- this additive
+     haze (painted on top, not part of that cross-fade) softens the seam
+     into something closer to the spec's ~180px melt without touching the
+     safety margin. */
+  background:
+    radial-gradient(60% 55% at 50% 22%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 75%),
+    linear-gradient(135deg, color-mix(in oklab, var(--cc-amber) 20%, transparent), transparent 50%),
+    linear-gradient(180deg, color-mix(in oklab, var(--cc-amber) 16%, transparent) 0%, transparent 24%),
+    linear-gradient(0deg, color-mix(in oklab, var(--cc-amber) 16%, transparent) 0%, transparent 24%);
+}
+.scene--screening > .wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- poster duotone artwork (tokens only -- every fake poster/thumb
+   on the page draws from this set instead of an inline gradient) ---------- */
+.pd-crimson-dusk { background: linear-gradient(160deg, var(--pd-crimson), var(--pd-dusk)); }
+.pd-dusk-crimson { background: linear-gradient(160deg, var(--pd-dusk), var(--pd-crimson)); }
+.pd-teal-forest { background: linear-gradient(160deg, var(--pd-teal), var(--pd-forest)); }
+.pd-forest-teal { background: linear-gradient(160deg, var(--pd-forest), var(--pd-teal)); }
+.pd-teal-dusk { background: linear-gradient(160deg, var(--pd-teal), var(--pd-dusk)); }
+.pd-amber-rose { background: linear-gradient(160deg, var(--pd-amber), var(--pd-rose)); }
+.pd-rose-amber { background: linear-gradient(160deg, var(--pd-rose), var(--pd-amber)); }
+.pd-amber-forest { background: linear-gradient(160deg, var(--pd-amber), var(--pd-forest)); }
 
 /* film-grain texture: a static noise overlay, the one "cinema" signature.
    Applied to the hero and the ink band only. Never animated. */
@@ -225,6 +340,33 @@ a {
   background-repeat: repeat;
   background-size: 220px 220px;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* gentle drift used by every atmosphere decoration (orbs, posters, stamps).
+   Applied to an INNER element so a static rotate on the outer wrapper never
+   gets clobbered by the animated transform. Reduced motion turns it off. */
+@keyframes float {
+  from {
+    transform: translateY(-10px) rotate(-0.5deg);
+  }
+  to {
+    transform: translateY(10px) rotate(0.5deg);
+  }
+}
+.floaty {
+  animation: float 9s ease-in-out infinite alternate;
+}
+.floaty--d1 {
+  animation-delay: 0s;
+}
+.floaty--d2 {
+  animation-delay: 1.2s;
+}
+.floaty--d3 {
+  animation-delay: 2.4s;
+}
+.floaty--d4 {
+  animation-delay: 3.6s;
 }
 
 /* section head pattern: centered eyebrow + display-2 + one-line lead */
@@ -620,6 +762,190 @@ a {
   align-items: center;
 }
 
+/* ---------- hero atmosphere: lobby daylight ---------- */
+/* the hero <section> itself needs the positioning context; overflow:hidden
+   lets the poster cluster bleed past the wrap and clip cleanly at the
+   section edge instead of causing horizontal scroll. */
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+.hero > .wrap {
+  position: relative;
+  z-index: 1;
+}
+.hero-atmo,
+.hero-posters,
+.hero-stamps {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.hero-beam {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] .hero-beam {
+  mix-blend-mode: screen;
+}
+.hero-beam--amber {
+  background: linear-gradient(115deg, color-mix(in oklab, var(--cc-amber) 26%, transparent), transparent 55%);
+}
+.hero-beam--red {
+  background: linear-gradient(245deg, color-mix(in oklab, var(--accent) 14%, transparent), transparent 55%);
+}
+/* dark mode's screen blend mode lifts the background more than light's
+   multiply does -- at the spec'd opacities the centered hero subcopy
+   (--fg-soft) measured a borderline ~4.3:1 over the brightened center.
+   Trim the dark beams slightly so the atmosphere stays without eating
+   the text's contrast margin. */
+[data-theme="dark"] .hero-beam--amber {
+  background: linear-gradient(115deg, color-mix(in oklab, var(--cc-amber) 18%, transparent), transparent 55%);
+}
+[data-theme="dark"] .hero-beam--red {
+  background: linear-gradient(245deg, color-mix(in oklab, var(--accent) 9%, transparent), transparent 55%);
+}
+.hero-orb {
+  position: absolute;
+  width: 480px;
+  height: 480px;
+  border-radius: 50%;
+  filter: blur(80px);
+}
+.hero-orb--amber {
+  top: -100px;
+  left: -80px;
+  background: color-mix(in oklab, var(--cc-amber) 30%, transparent);
+}
+.hero-orb--red {
+  top: 60px;
+  right: -140px;
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+}
+
+/* the floating "poster" cluster around the product stage: two nested
+   elements per card -- the outer positions + statically rotates, the inner
+   carries the float animation, so the two transforms compose instead of
+   one clobbering the other. */
+.poster-card {
+  position: absolute;
+  width: 120px;
+  height: 170px;
+}
+.poster-card__body {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-photo);
+  opacity: 0.9;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.poster-card__body::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: inherit;
+  border: 1px solid color-mix(in oklab, white 25%, transparent);
+  pointer-events: none;
+}
+.poster-card__cap {
+  position: relative;
+  padding: 6px 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+  color: color-mix(in oklab, white 88%, transparent);
+  background: linear-gradient(0deg, color-mix(in oklab, black 55%, transparent), transparent);
+}
+.poster-card--1 {
+  left: -30px;
+  top: 4%;
+  transform: rotate(-8deg);
+}
+.poster-card--2 {
+  left: 44px;
+  top: 58%;
+  transform: rotate(-4deg);
+}
+.poster-card--3 {
+  right: -30px;
+  top: 8%;
+  transform: rotate(5deg);
+}
+.poster-card--4 {
+  right: 44px;
+  top: 60%;
+  transform: rotate(9deg);
+}
+
+.hero-stamp {
+  position: absolute;
+}
+.hero-stamp--sage {
+  left: 8%;
+  top: 32%;
+  transform: rotate(-6deg);
+}
+.hero-stamp--red {
+  /* mirrors the sage stamp (left:8%/top:32%) so it sits in the same
+     headline-adjacent dead zone instead of the product-stage band below,
+     where the right flank phone was clipping "films found" mid-word. */
+  right: 8%;
+  top: 30%;
+  transform: rotate(5deg);
+}
+.hero-stamp__body {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
+  box-shadow: var(--shadow-lift);
+  white-space: nowrap;
+}
+.hero-stamp--sage .hero-stamp__body {
+  background: var(--cc-sage);
+  color: var(--cc-ink);
+}
+.hero-stamp--red .hero-stamp__body {
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+@media (max-width: 860px) {
+  /* mobile: one poster peeking per edge + one orb; stamps hidden entirely.
+     The desktop `top` values (4%/8%) put both posters at headline height --
+     fine next to the flanking phones, but on mobile those phones are
+     hidden (.hero-stage__flank below) so the posters landed directly over
+     "Watch together." and the lead paragraph instead. Anchor them lower,
+     beside the demo phone (a dead zone -- no copy there), so they read as
+     edge decoration instead of colliding with the text column. */
+  .poster-card--2,
+  .poster-card--4,
+  .hero-orb--red,
+  .hero-stamps {
+    display: none;
+  }
+  .poster-card--1 {
+    left: -46px;
+    top: 44%;
+  }
+  .poster-card--3 {
+    right: -46px;
+    top: 50%;
+  }
+}
+
 /* ---------- media placeholder frame ---------- */
 .ph {
   position: relative;
@@ -659,9 +985,17 @@ a {
 
 /* ---------- screening room: the video-slot placeholder at rest ---------- */
 /* Reads as a deliberately styled player, not a missing asset: a near-black
-   surface, grain, a real play button, a caption, a fake progress rail. */
+   surface, grain, a real play button, a caption, a fake progress rail.
+   The frame fills almost the entire scene, so the section-level glow
+   behind it (.scene--screening::before) never reaches the eye -- the
+   red projector glow + amber beam are painted directly on the frame
+   itself instead, so "a screening room with a projector on" reads
+   regardless of how much of the section the frame occupies. */
 .ph--screening {
-  background: var(--cc-screening);
+  background:
+    radial-gradient(55% 55% at 50% 45%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 78%),
+    linear-gradient(135deg, color-mix(in oklab, var(--cc-amber) 16%, transparent), transparent 55%),
+    var(--cc-screening);
   flex-direction: column;
   gap: 16px;
   padding-bottom: 34px;
@@ -858,7 +1192,7 @@ a {
   height: 44px;
   flex: none;
   border-radius: var(--radius-sm);
-  background: linear-gradient(160deg, oklch(0.35 0.06 300), oklch(0.55 0.12 20));
+  background: linear-gradient(160deg, var(--pd-dusk), var(--pd-rose));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1122,6 +1456,41 @@ a {
 .step p {
   margin: 0;
 }
+/* a soft per-step color wash BEHIND the vignette card (not on the card
+   itself) -- the card stays the plain --surface it already is. Sized to
+   bleed well past the card into the column's own whitespace (not just a
+   card-sized halo) and faded out slowly, since scn-blush/amber/sagefield
+   sit close in lightness to the bone page background -- a small, tightly
+   faded patch was disappearing entirely. */
+.step-glow {
+  position: relative;
+}
+.step-glow::before {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: -55%;
+  bottom: -55%;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(36px);
+  opacity: 0.75;
+}
+.step-glow--blush::before {
+  background: radial-gradient(closest-side, var(--scn-blush), transparent 85%);
+}
+.step-glow--amber::before {
+  background: radial-gradient(closest-side, var(--scn-amber), transparent 85%);
+}
+.step-glow--sagefield::before {
+  background: radial-gradient(closest-side, var(--scn-sagefield), transparent 85%);
+}
+.step-glow > .step-vignette {
+  position: relative;
+  z-index: 1;
+}
 .step-vignette {
   margin-top: 6px;
   padding: 16px;
@@ -1159,7 +1528,52 @@ a {
   flex-wrap: wrap;
   margin-top: 8px;
 }
+/* three giant rating glyphs scattered behind the film strip, as texture --
+   echoes of the rating chips, not real content (aria-hidden). */
+.claim-strip {
+  position: relative;
+}
+.claim-glyphs {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.claim-glyph {
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 9rem;
+  line-height: 1;
+  color: color-mix(in oklab, var(--fg) 6%, transparent);
+  user-select: none;
+}
+.claim-glyph--1 {
+  left: 2%;
+  top: -12%;
+  transform: rotate(-8deg);
+}
+.claim-glyph--2 {
+  right: 6%;
+  top: 6%;
+  transform: rotate(6deg);
+}
+.claim-glyph--3 {
+  left: 38%;
+  bottom: -22%;
+  transform: rotate(-4deg);
+}
+@media (max-width: 860px) {
+  .claim-glyph--2,
+  .claim-glyph--3 {
+    display: none;
+  }
+}
+
 .filmstrip {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1233,6 +1647,87 @@ a {
 }
 .feature__media .ph {
   aspect-ratio: 4 / 3;
+}
+
+/* ---------- product stages: the feature-row mockups sit on a colored
+   field instead of bare paper. Real screenshots land on the same stage
+   once captured, so this is the standard product-shot treatment, not a
+   placeholder-only trick. ---------- */
+.stage {
+  position: relative;
+  border-radius: var(--radius-xl);
+  padding: 40px;
+}
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background: radial-gradient(60% 60% at 15% 10%, color-mix(in oklab, white 35%, transparent), transparent 65%);
+}
+[data-theme="dark"] .stage::before {
+  background: radial-gradient(60% 60% at 15% 10%, color-mix(in oklab, white 10%, transparent), transparent 65%);
+}
+.stage > * {
+  position: relative;
+  z-index: 1;
+}
+.stage--blush {
+  background: var(--scn-blush);
+}
+.stage--sagefield {
+  background: var(--scn-sagefield);
+}
+.stage--dusk {
+  background: var(--scn-dusk);
+}
+.stage-tilt--1 {
+  transform: rotate(-1.5deg);
+}
+.stage-tilt--2 {
+  transform: rotate(1.5deg);
+}
+.stage-tilt--3 {
+  transform: rotate(-1deg);
+}
+.stage-stamp {
+  position: absolute;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-mono);
+  background: var(--fg);
+  color: var(--bg);
+  pointer-events: none;
+  box-shadow: var(--shadow-lift);
+  white-space: nowrap;
+}
+.stage-stamp--1 {
+  top: -16px;
+  left: 28px;
+  transform: rotate(-3deg);
+}
+.stage-stamp--2 {
+  top: -16px;
+  right: 28px;
+  transform: rotate(4deg);
+}
+.stage-stamp--3 {
+  bottom: -16px;
+  left: 28px;
+  transform: rotate(-2deg);
+}
+@media (max-width: 860px) {
+  .stage {
+    padding: 24px;
+  }
 }
 
 /* ---------- feature-row mockups (rendered as MediaSlot placeholder children) ---------- */
@@ -1361,7 +1856,15 @@ a {
 /* ---------- dark band ---------- */
 .band {
   position: relative;
-  background: var(--cc-ink);
+  /* a short ink feather at the top -- the story scene above ends in
+     scn-blush at full strength, so easing the first ~140px toward ink
+     (instead of a flat cut) keeps the after-dark band a deliberate cut
+     without reading as a stray hard edge in the scene flow. */
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--scn-blush) 32%, var(--cc-ink)),
+    var(--cc-ink) 140px
+  );
   color: var(--cc-cream-on-dark);
   --fg: var(--cc-cream-on-dark);
   --fg-soft: oklch(0.72 0.012 60);
@@ -1374,14 +1877,14 @@ a {
   pointer-events: none;
   background: radial-gradient(
     60% 50% at 50% 0%,
-    color-mix(in oklab, var(--accent) 18%, transparent),
+    color-mix(in oklab, var(--accent) 20%, transparent),
     transparent 70%
   );
 }
 [data-theme="dark"] .band::before {
   background: radial-gradient(
     60% 50% at 50% 0%,
-    color-mix(in oklab, var(--accent) 10%, transparent),
+    color-mix(in oklab, var(--accent) 12%, transparent),
     transparent 70%
   );
 }
@@ -1393,6 +1896,77 @@ a {
 .band .h2,
 .band .h3 {
   color: var(--cc-cream-on-dark);
+}
+
+/* after-dark marquee: a slow scrolling row of outlined film titles above
+   the try-band headline. Decorative and aria-hidden, so it's exempt from
+   text-contrast requirements -- it never carries meaningful copy. */
+.marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* breathing room above "start your first list" -- the outlined type's
+     descenders were nearly touching the eyebrow below it */
+  margin-bottom: 48px;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+.marquee__track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  animation: marquee 45s linear infinite;
+  pointer-events: none;
+}
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: lowercase;
+  padding: 0 0.4em;
+  pointer-events: none;
+  /* fallback fill for browsers without text-stroke support */
+  color: color-mix(in oklab, var(--cc-cream-on-dark) 14%, transparent);
+}
+@supports (-webkit-text-stroke: 1px black) {
+  .marquee__item {
+    color: transparent;
+    -webkit-text-stroke: 1px oklch(0.92 0.012 78 / 0.3);
+  }
+}
+.marquee__dot {
+  font-family: var(--font-mono);
+  margin: 0 0.15em;
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 860px) {
+  .marquee__item {
+    font-size: 2.2rem;
+    /* the outline stroke reads close to the noise floor at this size --
+       a touch more opacity keeps it legible as "marquee" instead of
+       stray ghost text (desktop keeps the spec'd 0.3 exactly). */
+    color: color-mix(in oklab, var(--cc-cream-on-dark) 22%, transparent);
+  }
+}
+@media (max-width: 860px) {
+  @supports (-webkit-text-stroke: 1px black) {
+    .marquee__item {
+      color: transparent;
+      -webkit-text-stroke: 1px oklch(0.92 0.012 78 / 0.42);
+    }
+  }
 }
 
 /* ---------- forms ---------- */
@@ -1730,20 +2304,32 @@ a {
   position: relative;
   padding: 108px 0;
   overflow: hidden;
-  /* the corner glow is centered INSIDE the section (not off the top edge)
-     and sized so it fades fully to transparent before reaching the
-     section's own top edge -- otherwise the section starts already
-     part-tinted while the section above it ends at plain var(--bg),
-     producing a hard-edged seam instead of a melt. */
+  /* dusk blush, flowing straight into the ink try-band below with no
+     return-to-paper gap -- the field holds at full strength to the bottom
+     edge, then the ink band begins. */
   background:
     radial-gradient(
       70% 70% at 84% 40%,
       color-mix(in oklab, var(--accent) 6%, transparent),
       transparent 50%
     ),
-    linear-gradient(180deg, var(--bg) 0%, var(--surface) 100%);
+    linear-gradient(180deg, var(--bg) 0%, var(--scn-blush) 30%, var(--scn-blush) 100%);
+}
+.story-orb {
+  position: absolute;
+  z-index: 0;
+  width: 480px;
+  height: 480px;
+  left: 40%;
+  top: 22%;
+  border-radius: 50%;
+  filter: blur(100px);
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+  pointer-events: none;
 }
 .story-grid {
+  position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: 0.95fr 1.05fr;
   gap: 72px;
@@ -2005,6 +2591,17 @@ a {
   .demo-scan .bar::after {
     animation: none;
     transform: none;
+  }
+  .floaty,
+  .floaty--d1,
+  .floaty--d2,
+  .floaty--d3,
+  .floaty--d4 {
+    animation: none;
+    transform: none;
+  }
+  .marquee__track {
+    animation: none;
   }
 }
 

@@ -1,8 +1,9 @@
 /**
  * Bespoke rich mockups rendered as MediaSlot placeholder children on the
  * three feature rows. Pure CSS/JSX on design tokens, in the same spirit as
- * the demo-film / demo-clip patterns used in the hero. Server components:
- * static, no interaction.
+ * the demo-film / demo-clip patterns used in the hero. Poster art draws from
+ * the shared --pd-* duotone token set (see globals.css) instead of inline
+ * gradients. Server components: static, no interaction.
  */
 
 export function MockupSharedList() {
@@ -19,10 +20,7 @@ export function MockupSharedList() {
       <span className="fm-meta">4 films · updated just now</span>
 
       <div className="fm-row fm-row--new">
-        <span
-          className="poster"
-          style={{ background: "linear-gradient(160deg, oklch(0.42 0.09 50), oklch(0.2 0.02 60))" }}
-        />
+        <span className="poster pd-amber-rose" />
         <span className="txt">
           <span className="name">Whiplash</span>
           <span className="added">added by MK</span>
@@ -30,10 +28,7 @@ export function MockupSharedList() {
         <span className="rating rating--good">8.5</span>
       </div>
       <div className="fm-row">
-        <span
-          className="poster"
-          style={{ background: "linear-gradient(160deg, oklch(0.38 0.06 250), oklch(0.2 0.02 60))" }}
-        />
+        <span className="poster pd-teal-forest" />
         <span className="txt">
           <span className="name">Heat</span>
           <span className="added">added by RA</span>
@@ -41,10 +36,7 @@ export function MockupSharedList() {
         <span className="rating rating--good">8.3</span>
       </div>
       <div className="fm-row">
-        <span
-          className="poster"
-          style={{ background: "linear-gradient(160deg, oklch(0.55 0.1 90), oklch(0.2 0.02 60))" }}
-        />
+        <span className="poster pd-rose-amber" />
         <span className="txt">
           <span className="name">The Nice Guys</span>
           <span className="added">added by JT</span>
@@ -91,10 +83,7 @@ export function MockupRatings() {
 export function MockupClipAttached() {
   return (
     <div className="fm-card fm-detail">
-      <span
-        className="fm-detail__poster"
-        style={{ background: "linear-gradient(160deg, oklch(0.55 0.1 90), oklch(0.2 0.02 60))" }}
-      />
+      <span className="fm-detail__poster pd-rose-amber" />
       <div className="fm-detail__title">
         <span className="t">The Nice Guys · 2016</span>
         <span className="rating rating--mid">7.3</span>

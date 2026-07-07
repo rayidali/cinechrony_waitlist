@@ -9,12 +9,73 @@ import { MockupSharedList, MockupRatings, MockupClipAttached } from "@/component
 import { TikTokIcon, InstagramIcon, YouTubeIcon, LinkIcon } from "@/components/icons";
 import { site } from "@/lib/site";
 
+const MARQUEE_TITLES = [
+  "whiplash",
+  "heat",
+  "parasite",
+  "arrival",
+  "the nice guys",
+  "dune",
+  "past lives",
+  "knives out",
+];
+
+function MarqueeGroup() {
+  return (
+    <span className="marquee__group">
+      {MARQUEE_TITLES.map((title) => (
+        <span className="marquee__item" key={title}>
+          {title}
+          <span className="marquee__dot">·</span>
+        </span>
+      ))}
+    </span>
+  );
+}
+
 export default function LandingPage() {
   return (
     <>
     <main id="main">
-      {/* hero: centered, product-stage */}
-      <section className="section section--xl grain">
+      {/* hero: lobby daylight -- projector beams, glow orbs, a floating
+          poster cluster around the product stage */}
+      <section className="section section--xl grain hero">
+        <div className="hero-atmo" aria-hidden="true">
+          <span className="hero-beam hero-beam--amber" />
+          <span className="hero-beam hero-beam--red" />
+          <span className="hero-orb hero-orb--amber floaty floaty--d1" />
+          <span className="hero-orb hero-orb--red floaty floaty--d2" />
+        </div>
+        <div className="hero-posters" aria-hidden="true">
+          <span className="poster-card poster-card--1">
+            <span className="poster-card__body pd-crimson-dusk floaty floaty--d1">
+              <span className="poster-card__cap">reel found</span>
+            </span>
+          </span>
+          <span className="poster-card poster-card--2">
+            <span className="poster-card__body pd-teal-forest floaty floaty--d2">
+              <span className="poster-card__cap">clip saved</span>
+            </span>
+          </span>
+          <span className="poster-card poster-card--3">
+            <span className="poster-card__body pd-amber-rose floaty floaty--d3">
+              <span className="poster-card__cap">watch party</span>
+            </span>
+          </span>
+          <span className="poster-card poster-card--4">
+            <span className="poster-card__body pd-rose-amber floaty floaty--d4">
+              <span className="poster-card__cap">friday night</span>
+            </span>
+          </span>
+        </div>
+        <div className="hero-stamps" aria-hidden="true">
+          <span className="hero-stamp hero-stamp--sage">
+            <span className="hero-stamp__body floaty floaty--d3">imdb 8.5</span>
+          </span>
+          <span className="hero-stamp hero-stamp--red">
+            <span className="hero-stamp__body floaty floaty--d1">3 films found</span>
+          </span>
+        </div>
         <div className="wrap">
           <Reveal>
             <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto" }}>
@@ -53,8 +114,8 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* social source strip + demo video */}
-      <section className="section--tight scene--paper" id="demo">
+      {/* screening room: source strip + demo video go full-bleed dark */}
+      <section className="section--tight scene--screening grain" id="demo">
         <div className="wrap">
           <Reveal>
             <div className="section-head" style={{ marginBottom: 40 }}>
@@ -129,7 +190,7 @@ export default function LandingPage() {
             <div className="section-head">
               <span className="eyebrow">How it works</span>
               <h2 className="display-2" style={{ textWrap: "balance" }}>
-                From the group chat
+                From the group chat{" "}
                 <br className="brk-desktop" />
                 to movie night.
               </h2>
@@ -140,13 +201,15 @@ export default function LandingPage() {
               <span className="step__num">01</span>
               <h3 className="h3">Share the clip</h3>
               <p className="body">Paste a reel, TikTok, or short. Or share it straight from the app.</p>
-              <div className="step-vignette">
-                <div className="demo-clip">
-                  <span className="thumb" />
-                  <span className="txt">
-                    <span className="l1">tiktok.com/@filmtok…</span>
-                    <span className="l2">shared by MK</span>
-                  </span>
+              <div className="step-glow step-glow--blush">
+                <div className="step-vignette">
+                  <div className="demo-clip">
+                    <span className="thumb" />
+                    <span className="txt">
+                      <span className="l1">tiktok.com/@filmtok…</span>
+                      <span className="l2">shared by MK</span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </Reveal>
@@ -154,10 +217,12 @@ export default function LandingPage() {
               <span className="step__num">02</span>
               <h3 className="h3">The AI watches it</h3>
               <p className="body">It identifies every film in the clip and pulls each IMDb rating.</p>
-              <div className="step-vignette">
-                <span className="meta">3 films found</span>
-                <div className="progress-rail">
-                  <span className="progress-rail__fill" style={{ width: "100%" }} />
+              <div className="step-glow step-glow--amber">
+                <div className="step-vignette">
+                  <span className="meta">3 films found</span>
+                  <div className="progress-rail">
+                    <span className="progress-rail__fill" style={{ width: "100%" }} />
+                  </div>
                 </div>
               </div>
             </Reveal>
@@ -168,22 +233,24 @@ export default function LandingPage() {
                 Everything lands on a shared list. Your friends see it instantly, and the clip stays
                 attached.
               </p>
-              <div className="step-vignette">
-                <div className="demo-saved">
-                  <svg
-                    width="11"
-                    height="11"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M20 6L9 17l-5-5" />
-                  </svg>
-                  saved to friday night club
+              <div className="step-glow step-glow--sagefield">
+                <div className="step-vignette">
+                  <div className="demo-saved">
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                    saved to friday night club
+                  </div>
                 </div>
               </div>
             </Reveal>
@@ -207,8 +274,13 @@ export default function LandingPage() {
                 <span className="pill">Real-time sync</span>
               </div>
             </Reveal>
-            <Reveal className="feature__media" delay={120}>
-              <MediaSlot id="feature-shared-list" label="App screenshot · shared list with members">
+            <Reveal className="feature__media stage stage--blush" delay={120}>
+              <span className="stage-stamp stage-stamp--1" aria-hidden="true">up to 10 friends</span>
+              <MediaSlot
+                id="feature-shared-list"
+                label="App screenshot · shared list with members"
+                className="stage-tilt--1"
+              >
                 <MockupSharedList />
               </MediaSlot>
             </Reveal>
@@ -229,8 +301,13 @@ export default function LandingPage() {
                 <span className="rating rating--bad">4.9</span>
               </div>
             </Reveal>
-            <Reveal className="feature__media" delay={120}>
-              <MediaSlot id="feature-ratings" label="App screenshot · list with rating chips">
+            <Reveal className="feature__media stage stage--sagefield" delay={120}>
+              <span className="stage-stamp stage-stamp--2" aria-hidden="true">8.1 worth it</span>
+              <MediaSlot
+                id="feature-ratings"
+                label="App screenshot · list with rating chips"
+                className="stage-tilt--2"
+              >
                 <MockupRatings />
               </MediaSlot>
             </Reveal>
@@ -244,8 +321,13 @@ export default function LandingPage() {
                 The reel that sold you stays with the film. Tap any card and it&apos;s right there.
               </p>
             </Reveal>
-            <Reveal className="feature__media" delay={120}>
-              <MediaSlot id="feature-clip-attached" label="App screenshot · film card with attached clip">
+            <Reveal className="feature__media stage stage--dusk" delay={120}>
+              <span className="stage-stamp stage-stamp--3" aria-hidden="true">the clip stays attached</span>
+              <MediaSlot
+                id="feature-clip-attached"
+                label="App screenshot · film card with attached clip"
+                className="stage-tilt--3"
+              >
                 <MockupClipAttached />
               </MediaSlot>
             </Reveal>
@@ -255,6 +337,7 @@ export default function LandingPage() {
 
       {/* our story */}
       <section className="story-section" id="story">
+        <span className="story-orb" aria-hidden="true" />
         <div className="wrap story-grid">
           <Reveal className="story-lead">
             <div className="eyebrow" style={{ marginBottom: 24 }}>
@@ -282,6 +365,12 @@ export default function LandingPage() {
 
       {/* try-it band */}
       <section className="band section section--xl grain" id="try">
+        <div className="marquee" aria-hidden="true">
+          <div className="marquee__track">
+            <MarqueeGroup />
+            <MarqueeGroup />
+          </div>
+        </div>
         <div className="wrap wrap--narrow" style={{ textAlign: "center" }}>
           <Reveal>
             <div className="eyebrow" style={{ marginBottom: 22 }}>
