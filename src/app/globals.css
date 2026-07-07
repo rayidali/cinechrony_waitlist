@@ -1828,13 +1828,9 @@ a {
 }
 
 /* ---------- responsive ---------- */
-@media (max-width: 860px) {
-  .wrap {
-    padding: 0 22px;
-  }
-  .section {
-    padding: 64px 0;
-  }
+/* the nav carries six links + toggle + CTA, so it collapses to the burger
+   earlier than the rest of the layout */
+@media (max-width: 1020px) {
   .nav-links {
     display: none;
   }
@@ -1863,6 +1859,14 @@ a {
   }
   .nav-burger {
     display: inline-flex;
+  }
+}
+@media (max-width: 860px) {
+  .wrap {
+    padding: 0 22px;
+  }
+  .section {
+    padding: 64px 0;
   }
   .steps {
     grid-template-columns: 1fr;

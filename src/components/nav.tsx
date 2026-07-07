@@ -9,7 +9,9 @@ import { site } from "@/lib/site";
 const links = [
   { href: "/#how", label: "How it works" },
   { href: "/#features", label: "Features" },
-  { href: "/#story", label: "Our story" },
+  { href: "/install", label: "Install" },
+  { href: "/beta", label: "iOS beta" },
+  { href: "/waitlist", label: "Waitlist" },
   { href: "/support", label: "Support" },
 ];
 

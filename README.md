@@ -2,7 +2,9 @@
 
 The marketing website for [Cinechrony](https://www.cinechrony.com), the social movie watchlist. Share a reel or TikTok, the AI pulls out every film with its IMDb rating, and it lands on a watchlist you keep with friends.
 
-Built with Next.js (App Router) and the cinechrony v2 editorial cinema design system: newsprint cream, cinema black, film red, Bricolage Grotesque display type, Manrope body, Space Mono data labels. Light and dark themes.
+Built with Next.js (App Router) and the cinechrony editorial cinema design system: newsprint cream, cinema black, film red, Bricolage Grotesque display type, Manrope body, Space Mono data labels. Light and dark themes.
+
+The 2026-07 polish pass rebuilt the visual layer to indie-startup quality (benchmark: getbluejay.ai): oversized display type, scene-gradient section flow with a film-grain texture, a three-phone product stage in the hero, rich CSS app mockups in every media slot until real captures land (see [ASSETS.md](./ASSETS.md)), one CTA language, and a ghost-wordmark footer. The top nav carries the full product path: How it works, Features, Install, iOS beta, Waitlist, Support.
 
 ## Routes
 
