@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Footer } from "@/components/footer";
 import { MediaSlot } from "@/components/media-slot";
 import { PhoneDemo } from "@/components/phone-demo";
-import { PhoneStatic } from "@/components/phone-static";
+import { ReelCard } from "@/components/reel-card";
 import { Reveal } from "@/components/reveal";
 import { FilmStrip } from "@/components/film-strip";
 import { MockupSharedList, MockupRatings, MockupClipAttached } from "@/components/feature-mockups";
@@ -37,44 +37,15 @@ export default function LandingPage() {
   return (
     <>
     <main id="main">
-      {/* hero: lobby daylight -- projector beams, glow orbs, a floating
-          poster cluster around the product stage */}
+      {/* hero: lobby daylight (projector beams, glow orbs) behind a single
+          composed diorama -- the doomscroll, the AI catching it, the shared
+          list with friends -- read left to right as one sentence */}
       <section className="section section--xl grain hero">
         <div className="hero-atmo" aria-hidden="true">
           <span className="hero-beam hero-beam--amber" />
           <span className="hero-beam hero-beam--red" />
           <span className="hero-orb hero-orb--amber floaty floaty--d1" />
           <span className="hero-orb hero-orb--red floaty floaty--d2" />
-        </div>
-        <div className="hero-posters" aria-hidden="true">
-          <span className="poster-card poster-card--1">
-            <span className="poster-card__body pd-crimson-dusk floaty floaty--d1">
-              <span className="poster-card__cap">reel found</span>
-            </span>
-          </span>
-          <span className="poster-card poster-card--2">
-            <span className="poster-card__body pd-teal-forest floaty floaty--d2">
-              <span className="poster-card__cap">clip saved</span>
-            </span>
-          </span>
-          <span className="poster-card poster-card--3">
-            <span className="poster-card__body pd-amber-rose floaty floaty--d3">
-              <span className="poster-card__cap">watch party</span>
-            </span>
-          </span>
-          <span className="poster-card poster-card--4">
-            <span className="poster-card__body pd-rose-amber floaty floaty--d4">
-              <span className="poster-card__cap">friday night</span>
-            </span>
-          </span>
-        </div>
-        <div className="hero-stamps" aria-hidden="true">
-          <span className="hero-stamp hero-stamp--sage">
-            <span className="hero-stamp__body floaty floaty--d3">imdb 8.5</span>
-          </span>
-          <span className="hero-stamp hero-stamp--red">
-            <span className="hero-stamp__body floaty floaty--d1">3 films found</span>
-          </span>
         </div>
         <div className="wrap">
           <Reveal>
@@ -102,13 +73,75 @@ export default function LandingPage() {
           </Reveal>
 
           <Reveal delay={150}>
-            <div className="hero-stage">
-              <div className="stage-floor" aria-hidden="true" />
-              <PhoneStatic variant="list" className="hero-stage__flank hero-stage__flank--left" />
-              <div className="hero-stage__center">
-                <PhoneDemo />
+            {/* the diorama: a single sentence, left to right --
+                doomscroll -> the AI catches it -> a shared list with friends */}
+            <div className="hero-diorama">
+              <span className="stage-floor" aria-hidden="true" />
+
+              {/* 1a: the doomscroll (STORY 1 source) */}
+              <div className="diorama-reels" aria-hidden="true">
+                <ReelCard handle="@moviebro" pd="pd-rose-amber" className="reel-card--back reel-card--back-b" />
+                <ReelCard handle="@cinemaclips" pd="pd-teal-forest" className="reel-card--back reel-card--back-a" />
+                <ReelCard handle="@filmtok" pd="pd-dusk-crimson" className="reel-card--front" />
+                <span className="diorama-heart floaty floaty--d2">♡</span>
               </div>
-              <PhoneStatic variant="detail" className="hero-stage__flank hero-stage__flank--right" />
+
+              {/* 1b: the catch -- the AI step made visible */}
+              <div className="diorama-flow" aria-hidden="true">
+                <svg
+                  className="diorama-flow__svg"
+                  viewBox="0 0 220 160"
+                  preserveAspectRatio="none"
+                  fill="none"
+                >
+                  <defs>
+                    <marker
+                      id="hero-flow-arrowhead"
+                      viewBox="0 0 10 10"
+                      refX="7"
+                      refY="5"
+                      markerWidth="6"
+                      markerHeight="6"
+                      orient="auto-start-reverse"
+                    >
+                      <path d="M0 0L10 5L0 10z" fill="var(--fg)" fillOpacity="0.35" />
+                    </marker>
+                  </defs>
+                  <path
+                    d="M4 128C64 46 148 40 214 80"
+                    stroke="var(--fg)"
+                    strokeOpacity="0.35"
+                    strokeWidth="2"
+                    strokeDasharray="5 7"
+                    strokeLinecap="round"
+                    markerEnd="url(#hero-flow-arrowhead)"
+                  />
+                </svg>
+                <span className="diorama-flow__mobile-line" />
+                <div className="scan-pill">
+                  <div className="demo-scan demo-on">
+                    <span>3 films found</span>
+                    <span className="bar" />
+                  </div>
+                </div>
+              </div>
+
+              {/* 1c: the shared list (STORY 2) */}
+              <div className="diorama-phone">
+                <div className="hero-stage__center">
+                  <PhoneDemo />
+                </div>
+                <div className="diorama-friends" aria-hidden="true">
+                  <span className="friend-chip friend-chip--ra">RA</span>
+                  <span className="friend-chip friend-chip--mk">MK</span>
+                  <span className="friend-chip friend-chip--jt">JT</span>
+                  <span className="friend-tick friend-tick--ra" />
+                  <span className="friend-tick friend-tick--mk" />
+                  <span className="friend-tick friend-tick--jt" />
+                  <span className="friend-stamp friend-stamp--mk">mk added heat</span>
+                  <span className="friend-stamp friend-stamp--jt">jt · worth it</span>
+                </div>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -178,7 +211,44 @@ export default function LandingPage() {
             </div>
           </Reveal>
           <Reveal delay={120}>
-            <FilmStrip />
+            {/* "one reel -> five rated films": a compact ReelCard + a dashed
+                arrow lead into the existing strip. Kept here (not inside
+                FilmStrip) so film-strip.tsx stays untouched -- the strip's
+                own claim-strip wrapper just becomes a flex sibling. */}
+            <div className="claim-row">
+              <div className="claim-lead" aria-hidden="true">
+                <ReelCard handle="@filmtok" pd="pd-dusk-crimson" compact />
+                <span className="claim-arrow">
+                  <svg
+                    className="claim-arrow__svg"
+                    viewBox="0 0 60 24"
+                    fill="none"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M2 12h44"
+                      stroke="var(--fg)"
+                      strokeOpacity="0.35"
+                      strokeWidth="2"
+                      strokeDasharray="5 6"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M40 5l12 7-12 7"
+                      stroke="var(--fg)"
+                      strokeOpacity="0.35"
+                      strokeWidth="2"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </span>
+              </div>
+              <div className="claim-fill">
+                <FilmStrip />
+              </div>
+            </div>
           </Reveal>
         </div>
       </section>

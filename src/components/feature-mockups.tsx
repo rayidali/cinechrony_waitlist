@@ -9,6 +9,11 @@
 export function MockupSharedList() {
   return (
     <div className="fm-card">
+      <div className="fm-friends" aria-hidden="true">
+        <span className="fm-friends__chip">RA</span>
+        <span className="fm-friends__chip">MK</span>
+        <span className="fm-friends__chip">JT</span>
+      </div>
       <div className="fm-head">
         <span className="t">friday night club</span>
         <span className="demo-avatars">
@@ -34,6 +39,7 @@ export function MockupSharedList() {
           <span className="added">added by RA</span>
         </span>
         <span className="rating rating--good">8.3</span>
+        <span className="fm-reaction">worth it</span>
       </div>
       <div className="fm-row">
         <span className="poster pd-rose-amber" />
