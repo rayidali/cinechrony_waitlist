@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
-import { Reveal } from "@/components/reveal";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -9,61 +8,68 @@ export const metadata: Metadata = {
   description: `Questions about Cinechrony? Email ${site.supportEmail} and a real person will get back to you, usually within a day. Or check the FAQ for quick answers.`,
 };
 
+// Prefer breaking at the "@" and before the TLD over letting the browser
+// pick an arbitrary mid-word point (overflow-wrap:anywhere was splitting
+// "cinechrony" itself, e.g. "cinechr / ony.com").
+const [emailLocal, emailDomain = ""] = site.supportEmail.split("@");
+const tldIndex = emailDomain.lastIndexOf(".");
+const emailDomainName = tldIndex >= 0 ? emailDomain.slice(0, tldIndex) : emailDomain;
+const emailTld = tldIndex >= 0 ? emailDomain.slice(tldIndex) : "";
+
 export default function SupportPage() {
   return (
     <>
     <main id="main">
       <section className="section">
         <div className="wrap wrap--narrow">
-          <Reveal>
-            <div className="section-head" style={{ marginBottom: 0 }}>
-              <span className="eyebrow">Support</span>
-              <h1 className="display-2">Need a hand?</h1>
-              <p className="lead">
-                A real person, a real inbox. Email us and you&apos;ll usually hear back within a day.
-              </p>
-            </div>
-          </Reveal>
+          {/* Support content is never gated behind a scroll-triggered reveal
+              -- the FAQ and contact card must render immediately. */}
+          <div className="section-head" style={{ marginBottom: 0 }}>
+            <span className="eyebrow">Support</span>
+            <h1 className="display-2">Need a hand?</h1>
+            <p className="lead">
+              A real person, a real inbox. Email us and you&apos;ll usually hear back within a day.
+            </p>
+          </div>
 
-          <Reveal delay={120}>
-            <div
-              className="card card--pad-lg"
-              style={{
-                marginTop: 40,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: 24,
-                flexWrap: "wrap",
-              }}
-            >
-              <div>
-                <div className="meta" style={{ marginBottom: 8 }}>
-                  Write to us
-                </div>
-                <a href={`mailto:${site.supportEmail}`} className="h2 break-anywhere">
-                  {site.supportEmail}
-                </a>
+          <div
+            className="card card--pad-lg"
+            style={{
+              marginTop: 40,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 24,
+              flexWrap: "wrap",
+            }}
+          >
+            <div>
+              <div className="meta" style={{ marginBottom: 8 }}>
+                Write to us
               </div>
-              <a className="btn btn--accent" href={`mailto:${site.supportEmail}`}>
-                Send an email
+              <a href={`mailto:${site.supportEmail}`} className="h2 break-anywhere support-email">
+                {emailLocal}@<wbr />
+                {emailDomainName}
+                <wbr />
+                {emailTld}
               </a>
             </div>
-          </Reveal>
+            <a className="btn btn--accent" href={`mailto:${site.supportEmail}`}>
+              Send an email
+            </a>
+          </div>
         </div>
       </section>
 
       <section className="section">
         <div className="wrap wrap--narrow">
-          <Reveal>
-            <div className="block-head" style={{ marginBottom: 24 }}>
-              <div className="rule-eyebrow">
-                <span className="eyebrow">Frequently asked</span>
-              </div>
-              <h2 className="h2">The short version.</h2>
+          <div className="block-head" style={{ marginBottom: 24 }}>
+            <div className="rule-eyebrow">
+              <span className="eyebrow">Frequently asked</span>
             </div>
-          </Reveal>
-          <Reveal delay={100}>
+            <h2 className="h2">The short version.</h2>
+          </div>
+          <div>
             <div className="faq">
               <details open>
                 <summary>What is Cinechrony?</summary>
@@ -113,7 +119,7 @@ export default function SupportPage() {
                 </p>
               </details>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
     </main>

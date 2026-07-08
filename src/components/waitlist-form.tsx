@@ -105,7 +105,7 @@ export function WaitlistForm() {
           className="field"
           id="wl-src"
           type="text"
-          placeholder="A friend, a reel, the group chat"
+          placeholder="A friend, a reel, group chat"
           value={source}
           onChange={(e) => setSource(e.target.value)}
         />

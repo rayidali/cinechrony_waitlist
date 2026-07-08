@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
-import { Reveal } from "@/components/reveal";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -16,23 +15,24 @@ export default function TermsPage() {
     <main id="main">
       <section className="section">
         <div className="wrap">
-          <Reveal>
-            <div style={{ maxWidth: 760, marginBottom: 56 }}>
-              <div className="eyebrow" style={{ marginBottom: 20 }}>
-                Legal
-              </div>
-              <h1 className="display-2">Terms of service</h1>
-              <p className="meta" style={{ marginTop: 16 }}>
-                Last updated {site.legalUpdated}
-              </p>
-              <p className="lead" style={{ marginTop: 20, maxWidth: "52ch" }}>
-                The short version: be decent, own what you post, and understand the service comes
-                as is while we&apos;re still building it.
-              </p>
+          {/* Legal copy is never gated behind a scroll-triggered reveal --
+              this content must render immediately for every visitor, crawler,
+              and screen reader, no exceptions. */}
+          <div style={{ maxWidth: 760, marginBottom: 56 }}>
+            <div className="eyebrow" style={{ marginBottom: 20 }}>
+              Legal
             </div>
-          </Reveal>
+            <h1 className="display-2">Terms of service</h1>
+            <p className="meta" style={{ marginTop: 16 }}>
+              Last updated {site.legalUpdated}
+            </p>
+            <p className="lead" style={{ marginTop: 20, maxWidth: "52ch" }}>
+              The short version: be decent, own what you post, and understand the service comes
+              as is while we&apos;re still building it.
+            </p>
+          </div>
 
-          <Reveal delay={100}>
+          <div>
             <div className="doc">
               <nav className="toc" aria-label="On this page">
                 <a href="#agreement">01 · The agreement</a>
@@ -138,7 +138,7 @@ export default function TermsPage() {
                 </p>
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
     </main>
