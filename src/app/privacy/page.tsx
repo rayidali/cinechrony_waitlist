@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/footer";
-import { Reveal } from "@/components/reveal";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -16,24 +15,25 @@ export default function PrivacyPage() {
     <main id="main">
       <section className="section">
         <div className="wrap">
-          <Reveal>
-            <div style={{ maxWidth: 760, marginBottom: 56 }}>
-              <div className="eyebrow" style={{ marginBottom: 20 }}>
-                Legal
-              </div>
-              <h1 className="display-2">Privacy policy</h1>
-              <p className="meta" style={{ marginTop: 16 }}>
-                Last updated {site.legalUpdated}
-              </p>
-              <p className="lead" style={{ marginTop: 20, maxWidth: "52ch" }}>
-                The plain version: we collect the little we need to run
-                Cinechrony, we don&apos;t sell it, and you can delete it any
-                time.
-              </p>
+          {/* Legal copy is never gated behind a scroll-triggered reveal --
+              this content must render immediately for every visitor, crawler,
+              and screen reader, no exceptions. */}
+          <div style={{ maxWidth: 760, marginBottom: 56 }}>
+            <div className="eyebrow" style={{ marginBottom: 20 }}>
+              Legal
             </div>
-          </Reveal>
+            <h1 className="display-2">Privacy policy</h1>
+            <p className="meta" style={{ marginTop: 16 }}>
+              Last updated {site.legalUpdated}
+            </p>
+            <p className="lead" style={{ marginTop: 20, maxWidth: "52ch" }}>
+              The plain version: we collect the little we need to run
+              Cinechrony, we don&apos;t sell it, and you can delete it any
+              time.
+            </p>
+          </div>
 
-          <Reveal delay={100}>
+          <div>
             <div className="doc">
               <nav className="toc" aria-label="On this page">
                 <a href="#collect">01 · What we collect</a>
@@ -186,7 +186,7 @@ export default function PrivacyPage() {
                 </p>
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
     </main>

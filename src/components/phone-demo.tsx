@@ -11,12 +11,15 @@ import { useEffect, useRef, useState } from "react";
  * so no-JS visitors and crawlers see the complete scene. After hydration the
  * loop adds .demo-live and cycles phases; a pause control below the phone
  * satisfies WCAG 2.2.2, and prefers-reduced-motion never starts the loop.
+ *
+ * Poster art draws from the shared --pd-* duotone token set (see
+ * globals.css) instead of inline gradients.
  */
 
 const FILMS = [
-  { name: "Whiplash", yr: "2014 · imdb 8.5", rating: "8.5", tone: "rating--good", hue: "oklch(0.42 0.09 50)" },
-  { name: "Heat", yr: "1995 · imdb 8.3", rating: "8.3", tone: "rating--good", hue: "oklch(0.38 0.06 250)" },
-  { name: "The Nice Guys", yr: "2016 · imdb 7.3", rating: "7.3", tone: "rating--mid", hue: "oklch(0.55 0.1 90)" },
+  { name: "Whiplash", yr: "2014 · imdb 8.5", rating: "8.5", tone: "rating--good", pd: "pd-amber-rose" },
+  { name: "Heat", yr: "1995 · imdb 8.3", rating: "8.3", tone: "rating--good", pd: "pd-teal-forest" },
+  { name: "The Nice Guys", yr: "2016 · imdb 7.3", rating: "7.3", tone: "rating--mid", pd: "pd-rose-amber" },
 ];
 
 // phase 0: blank · 1: clip appears · 2: scanning · 3-5: films land · 6: saved
@@ -86,7 +89,7 @@ export function PhoneDemo() {
 
           {FILMS.map((f, i) => (
             <div key={f.name} className={`demo-film${on(3 + i)}`}>
-              <span className="poster" style={{ background: `linear-gradient(160deg, ${f.hue}, oklch(0.2 0.02 60))` }} />
+              <span className={`poster ${f.pd}`} />
               <span className="txt">
                 <span className="name">{f.name}</span>
                 <span className="yr">{f.yr}</span>

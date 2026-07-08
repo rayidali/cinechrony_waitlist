@@ -70,7 +70,6 @@ export default function BetaPage() {
             <MediaSlot
               id="beta-phone"
               label="App screen · beta build"
-              ratio="320 / 640"
               style={{
                 maxWidth: 290,
                 margin: "56px auto 0",
@@ -80,7 +79,13 @@ export default function BetaPage() {
                 overflow: "visible",
               }}
             >
-              <PhoneStatic variant="list" tag="TestFlight beta" />
+              {/* demo-phone--auto: this mockup's 4-film list + "12 more" line
+                  doesn't fill a locked 320:640 phone silhouette -- forcing
+                  that ratio here left ~150px of dead air above "+ 12 more"
+                  (its margin-top:auto had nothing left to push against) and
+                  hundreds more below the card. Let the card size to its own
+                  content instead; the animated hero demo is untouched. */}
+              <PhoneStatic variant="list" tag="TestFlight beta" className="demo-phone--auto" />
             </MediaSlot>
           </Reveal>
         </div>
