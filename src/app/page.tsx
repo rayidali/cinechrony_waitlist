@@ -37,30 +37,41 @@ export default function LandingPage() {
   return (
     <>
     <main id="main">
-      {/* hero: lobby daylight (projector beams, glow orbs) behind a single
-          composed diorama -- the doomscroll, the AI catching it, the shared
-          list with friends -- read left to right as one sentence */}
+      {/* hero: a split layout -- headline left, the diorama right, so both
+          read together in the first viewport. The diorama itself is still
+          the single composed sentence from the narrative pass (doomscroll,
+          the AI catching it, the shared list with friends), just compacted
+          to fit a column. Depth is layered behind both columns: a projector
+          sun, two out-of-focus reel echoes, scattered bokeh dust, a print
+          texture patch behind the text, and a ground plane at the floor. */}
       <section className="section section--xl grain hero">
         <div className="hero-atmo" aria-hidden="true">
-          <span className="hero-beam hero-beam--amber" />
+          <span className="hero-sun" />
           <span className="hero-beam hero-beam--red" />
-          <span className="hero-orb hero-orb--amber floaty floaty--d1" />
-          <span className="hero-orb hero-orb--red floaty floaty--d2" />
+          <span className="hero-echo hero-echo--a pd-dusk-crimson" />
+          <span className="hero-echo hero-echo--b pd-teal-forest" />
+          <span className="hero-bokeh hero-bokeh--1 floaty floaty--d1" />
+          <span className="hero-bokeh hero-bokeh--2 floaty floaty--d2" />
+          <span className="hero-bokeh hero-bokeh--3 floaty floaty--d3" />
+          <span className="hero-bokeh hero-bokeh--4 floaty floaty--d4" />
+          <span className="hero-bokeh hero-bokeh--5 floaty floaty--d2" />
+          <span className="hero-dotfield" />
+          <span className="hero-ground" />
         </div>
         <div className="wrap">
-          <Reveal>
-            <div style={{ textAlign: "center", maxWidth: 760, margin: "0 auto" }}>
+          <div className="hero-grid">
+            <Reveal className="hero-copy">
               <div className="eyebrow hero-eyebrow">The social movie watchlist</div>
               <h1 className="display">
                 Doomscroll. Save.
                 <br />
                 Watch together.
               </h1>
-              <p className="lead" style={{ margin: "26px auto 0" }}>
+              <p className="lead">
                 Cinechrony turns the reels you scroll past into a rated watchlist you share with
                 friends.
               </p>
-              <div className="hero-cta-row" style={{ justifyContent: "center" }}>
+              <div className="hero-cta-row">
                 <a className="btn btn--accent btn--lg" href={site.appUrl} target="_blank" rel="noopener">
                   Try it here
                 </a>
@@ -69,81 +80,87 @@ export default function LandingPage() {
                 </a>
               </div>
               <p className="meta hero-note">Free web app. Nothing to download.</p>
-            </div>
-          </Reveal>
+            </Reveal>
 
-          <Reveal delay={150}>
-            {/* the diorama: a single sentence, left to right --
-                doomscroll -> the AI catches it -> a shared list with friends */}
-            <div className="hero-diorama">
-              <span className="stage-floor" aria-hidden="true" />
+            <Reveal delay={150} className="hero-visual">
+              {/* the diorama: a single sentence, left to right --
+                  doomscroll -> the AI catches it -> a shared list with friends */}
+              <div className="hero-diorama">
+                <span className="stage-floor" aria-hidden="true" />
 
-              {/* 1a: the doomscroll (STORY 1 source) */}
-              <div className="diorama-reels" aria-hidden="true">
-                <ReelCard handle="@moviebro" pd="pd-rose-amber" className="reel-card--back reel-card--back-b" />
-                <ReelCard handle="@cinemaclips" pd="pd-teal-forest" className="reel-card--back reel-card--back-a" />
-                <ReelCard handle="@filmtok" pd="pd-dusk-crimson" className="reel-card--front" />
-                <span className="diorama-heart floaty floaty--d2">♡</span>
-              </div>
+                {/* 1a: the doomscroll (STORY 1 source) */}
+                <div className="diorama-reels" aria-hidden="true">
+                  <ReelCard handle="@moviebro" pd="pd-rose-amber" className="reel-card--back reel-card--back-b" />
+                  <ReelCard handle="@cinemaclips" pd="pd-teal-forest" className="reel-card--back reel-card--back-a" />
+                  <ReelCard handle="@filmtok" pd="pd-dusk-crimson" className="reel-card--front" />
+                  <span className="diorama-heart floaty floaty--d2">♡</span>
+                </div>
 
-              {/* 1b: the catch -- the AI step made visible */}
-              <div className="diorama-flow" aria-hidden="true">
-                <svg
-                  className="diorama-flow__svg"
-                  viewBox="0 0 220 160"
-                  preserveAspectRatio="none"
-                  fill="none"
-                >
-                  <defs>
-                    <marker
-                      id="hero-flow-arrowhead"
-                      viewBox="0 0 10 10"
-                      refX="7"
-                      refY="5"
-                      markerWidth="6"
-                      markerHeight="6"
-                      orient="auto-start-reverse"
-                    >
-                      <path d="M0 0L10 5L0 10z" fill="var(--fg)" fillOpacity="0.35" />
-                    </marker>
-                  </defs>
-                  <path
-                    d="M4 128C64 46 148 40 214 80"
-                    stroke="var(--fg)"
-                    strokeOpacity="0.35"
-                    strokeWidth="2"
-                    strokeDasharray="5 7"
-                    strokeLinecap="round"
-                    markerEnd="url(#hero-flow-arrowhead)"
-                  />
-                </svg>
-                <span className="diorama-flow__mobile-line" />
-                <div className="scan-pill">
-                  <div className="demo-scan demo-on">
-                    <span>3 films found</span>
-                    <span className="bar" />
+                {/* 1b: the catch -- the AI step made visible */}
+                <div className="diorama-flow" aria-hidden="true">
+                  {/* endpoints run a few units past the 0-220 viewBox on
+                      purpose (the svg is `overflow: visible`, see its own
+                      rule) -- the box sits in a 6px flex gap on each side
+                      from its neighbors, so a path that stopped exactly at
+                      the viewBox edge would visibly fall short of the reel
+                      card / phone bezel it's meant to touch. */}
+                  <svg
+                    className="diorama-flow__svg"
+                    viewBox="0 0 220 160"
+                    preserveAspectRatio="none"
+                    fill="none"
+                  >
+                    <defs>
+                      <marker
+                        id="hero-flow-arrowhead"
+                        viewBox="0 0 10 10"
+                        refX="7"
+                        refY="5"
+                        markerWidth="6"
+                        markerHeight="6"
+                        orient="auto-start-reverse"
+                      >
+                        <path d="M0 0L10 5L0 10z" fill="var(--fg)" fillOpacity="0.35" />
+                      </marker>
+                    </defs>
+                    <path
+                      d="M-4 128C64 46 148 40 226 80"
+                      stroke="var(--fg)"
+                      strokeOpacity="0.35"
+                      strokeWidth="2"
+                      strokeDasharray="5 7"
+                      strokeLinecap="round"
+                      markerEnd="url(#hero-flow-arrowhead)"
+                    />
+                  </svg>
+                  <span className="diorama-flow__mobile-line" />
+                  <div className="scan-pill">
+                    <div className="demo-scan demo-on">
+                      <span>3 films found</span>
+                      <span className="bar" />
+                    </div>
+                  </div>
+                </div>
+
+                {/* 1c: the shared list (STORY 2) */}
+                <div className="diorama-phone">
+                  <div className="hero-stage__center">
+                    <PhoneDemo />
+                  </div>
+                  <div className="diorama-friends" aria-hidden="true">
+                    <span className="friend-chip friend-chip--ra">RA</span>
+                    <span className="friend-chip friend-chip--mk">MK</span>
+                    <span className="friend-chip friend-chip--jt">JT</span>
+                    <span className="friend-tick friend-tick--ra" />
+                    <span className="friend-tick friend-tick--mk" />
+                    <span className="friend-tick friend-tick--jt" />
+                    <span className="friend-stamp friend-stamp--mk">mk added heat</span>
+                    <span className="friend-stamp friend-stamp--jt">jt · worth it</span>
                   </div>
                 </div>
               </div>
-
-              {/* 1c: the shared list (STORY 2) */}
-              <div className="diorama-phone">
-                <div className="hero-stage__center">
-                  <PhoneDemo />
-                </div>
-                <div className="diorama-friends" aria-hidden="true">
-                  <span className="friend-chip friend-chip--ra">RA</span>
-                  <span className="friend-chip friend-chip--mk">MK</span>
-                  <span className="friend-chip friend-chip--jt">JT</span>
-                  <span className="friend-tick friend-tick--ra" />
-                  <span className="friend-tick friend-tick--mk" />
-                  <span className="friend-tick friend-tick--jt" />
-                  <span className="friend-stamp friend-stamp--mk">mk added heat</span>
-                  <span className="friend-stamp friend-stamp--jt">jt · worth it</span>
-                </div>
-              </div>
-            </div>
-          </Reveal>
+            </Reveal>
+          </div>
         </div>
       </section>
 

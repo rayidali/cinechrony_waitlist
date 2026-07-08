@@ -269,9 +269,16 @@ a {
      eyebrow/source-row text (which overrides --fg/--fg-soft to a fixed
      cream tone here, assuming a solid dark backdrop) lands on a mid-gray
      transitional pixel and fails contrast. 48px < 64px leaves a safe margin. */
+  /* the first stop matches the hero's OWN closing color exactly (see
+     `.hero-ground`'s color-mix(in oklab, var(--fg) 5%, transparent) over
+     --bg) rather than a bare --bg -- otherwise the two independently
+     painted gradients meet at two different colors and the join reads as a
+     one-pixel-row hard seam (worse in dark, where the step is near-black to
+     lit amber-brown). Matching the incoming color to the hero's outgoing
+     one makes the boundary read as one continuous gradient. */
   background: linear-gradient(
     180deg,
-    var(--bg) 0%,
+    color-mix(in oklab, var(--fg) 5%, var(--bg)) 0%,
     var(--cc-screening) 48px,
     var(--cc-screening) calc(100% - 48px),
     var(--bg) 100%
@@ -299,12 +306,25 @@ a {
      there), which reads as a short/flat cut on its own -- this additive
      haze (painted on top, not part of that cross-fade) softens the seam
      into something closer to the spec's ~180px melt without touching the
-     safety margin. */
+     safety margin.
+
+     Every layer here (the diagonal wash + the corner radial, not just the
+     top edge one) has SOME non-zero value at row 0, so tuning any single
+     gradient's own stops still leaves an additive step at the exact
+     hero/screening boundary, on top of the base gradient above (which now
+     already matches the hero's own closing color -- see `.hero-ground`).
+     The mask below fades the WHOLE pseudo-element -- all four layers
+     combined -- from nothing to full strength over the first 20px, so
+     row 0 is guaranteed to contribute ~nothing regardless of which layers
+     would otherwise paint there, closing the gap without having to reason
+     about each gradient's geometry individually. */
   background:
     radial-gradient(60% 55% at 50% 22%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 75%),
     linear-gradient(135deg, color-mix(in oklab, var(--cc-amber) 20%, transparent), transparent 50%),
     linear-gradient(180deg, color-mix(in oklab, var(--cc-amber) 16%, transparent) 0%, transparent 24%),
     linear-gradient(0deg, color-mix(in oklab, var(--cc-amber) 16%, transparent) 0%, transparent 24%);
+  mask-image: linear-gradient(180deg, transparent, black 20px);
+  -webkit-mask-image: linear-gradient(180deg, transparent, black 20px);
 }
 .scene--screening > .wrap {
   position: relative;
@@ -755,6 +775,10 @@ a {
 .hero-note {
   margin-top: 18px;
 }
+/* generic two-column split (used by /waitlist) -- left untouched; the home
+   hero uses its own `.hero-grid` below instead of this, since the home
+   hero's ratio/gap/scaling needs are specific to it and must not leak into
+   this shared utility. */
 .hero-split {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
@@ -762,13 +786,82 @@ a {
   align-items: center;
 }
 
-/* ---------- hero atmosphere: lobby daylight ---------- */
+/* ---------- hero: split layout ---------- */
+/* Headline left, diorama right, so both read together in the first
+   viewport at desktop widths. Mobile (<=860px) collapses back to the
+   original centered stack (see the media query below). */
+.hero-grid {
+  display: flex;
+  flex-direction: column;
+}
+.hero-copy {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.hero-copy .lead {
+  margin: 26px auto 0;
+}
+.hero-visual {
+  margin-top: 64px;
+}
+/* the gap between copy and diorama is owned entirely by `.hero-visual`
+   (above) so it can flip to 0 at the split breakpoint without touching the
+   diorama's own margin -- otherwise the two 64px margins (this wrapper's
+   and `.hero-diorama`'s own) could add up instead of collapsing, since
+   `.hero-visual` is a flex item of `.hero-grid` and margins don't collapse
+   across a flex formatting context. */
+.hero-visual .hero-diorama {
+  margin: 0;
+  max-width: 100%;
+}
+
+@media (min-width: 861px) {
+  .hero-grid {
+    display: grid;
+    /* the diorama column gets a 480px floor -- comfortably fits the
+       compacted reel stack + flow + phone (see the split-compaction rules
+       below) at 861px, where the bare 1.08fr share would otherwise size
+       the column to its content's min size and push the friend
+       chips/stamps past the viewport edge. The copy column absorbs the
+       difference (it can wrap to another line; the diorama can't shrink
+       past its own product-UI content without becoming illegible). */
+    grid-template-columns: minmax(0, 0.92fr) minmax(480px, 1.08fr);
+    gap: 40px;
+    align-items: center;
+  }
+  .hero-copy {
+    text-align: left;
+    max-width: none;
+    margin: 0;
+  }
+  .hero-copy .display {
+    font-size: clamp(2.7rem, 4.8vw, 4.6rem);
+  }
+  .hero-copy .lead {
+    margin: 26px 0 0;
+    max-width: 38ch;
+  }
+  .hero-visual {
+    margin-top: 0;
+  }
+}
+
+/* ---------- hero: layered depth (back to front) ---------- */
 /* the hero <section> itself needs the positioning context; overflow:hidden
    lets the diorama bleed past the wrap and clip cleanly at the section
    edge instead of causing horizontal scroll. */
 .hero {
   position: relative;
   overflow: hidden;
+  /* the split layout no longer needs `.section--xl`'s full 140px top/bottom
+     -- that padding plus the (now-shrunk, see the split-compaction rules
+     below) diorama's content height was pushing the section to ~112vh at
+     1280x800, ~140px past the ~92vh budget. Scoped to `.hero` only --
+     `.section--xl` is also used by the claim band, which keeps its own
+     140px. */
+  padding-top: 112px;
+  padding-bottom: 100px;
 }
 .hero > .wrap {
   position: relative;
@@ -780,6 +873,10 @@ a {
   z-index: 0;
   pointer-events: none;
 }
+
+/* plane 1: the projector sun -- one large warm radial behind the diorama
+   column, plus a soft red corner beam top-left for balance (the old
+   right-hand amber beam is absorbed into the sun below). */
 .hero-beam {
   position: absolute;
   inset: 0;
@@ -788,46 +885,183 @@ a {
 [data-theme="dark"] .hero-beam {
   mix-blend-mode: screen;
 }
-.hero-beam--amber {
-  background: linear-gradient(115deg, color-mix(in oklab, var(--cc-amber) 26%, transparent), transparent 55%);
-}
 .hero-beam--red {
   background: linear-gradient(245deg, color-mix(in oklab, var(--accent) 14%, transparent), transparent 55%);
 }
 /* dark mode's screen blend mode lifts the background more than light's
    multiply does -- at the spec'd opacities the centered hero subcopy
    (--fg-soft) measured a borderline ~4.3:1 over the brightened center.
-   Trim the dark beams slightly so the atmosphere stays without eating
+   Trim the dark beam slightly so the atmosphere stays without eating
    the text's contrast margin. */
-[data-theme="dark"] .hero-beam--amber {
-  background: linear-gradient(115deg, color-mix(in oklab, var(--cc-amber) 18%, transparent), transparent 55%);
-}
 [data-theme="dark"] .hero-beam--red {
   background: linear-gradient(245deg, color-mix(in oklab, var(--accent) 9%, transparent), transparent 55%);
 }
-.hero-orb {
+.hero-sun {
   position: absolute;
-  width: 480px;
-  height: 480px;
-  border-radius: 50%;
-  filter: blur(80px);
+  inset: 0;
+  background: radial-gradient(
+    46% 52% at 72% 62%,
+    color-mix(in oklab, var(--cc-amber) 34%, transparent),
+    transparent 70%
+  );
 }
-.hero-orb--amber {
-  top: -100px;
-  left: -80px;
-  background: color-mix(in oklab, var(--cc-amber) 30%, transparent);
-}
-.hero-orb--red {
-  top: 60px;
-  right: -140px;
-  background: color-mix(in oklab, var(--accent) 18%, transparent);
+[data-theme="dark"] .hero-sun {
+  background: radial-gradient(
+    46% 52% at 72% 62%,
+    color-mix(in oklab, var(--cc-amber) 26%, transparent),
+    transparent 70%
+  );
 }
 
-/* mobile: one orb only -- the amber orb still reads at the headline corner,
-   drop the red one lower-right so it never collides with the hero copy. */
+/* plane 2: out-of-focus reel echoes -- two huge blurred duotone silhouettes
+   reading as reels far out of focus, a depth cue that stays narrative
+   (the same --pd-* film-poster tokens used everywhere else), never plain
+   decoration. One sits upper-right behind the diorama, one lower-left in
+   the text column's whitespace (below the copy, never under it). */
+.hero-echo {
+  position: absolute;
+  border-radius: var(--radius-xl);
+  /* less blur + a touch more opacity than the first pass so the rounded-
+     rect silhouette itself stays legible (reads as an out-of-focus reel)
+     instead of smearing into a plain color cloud. */
+  filter: blur(20px);
+  opacity: 0.13;
+}
+[data-theme="dark"] .hero-echo {
+  /* dark's near-black field swallows the same opacity light gets away
+     with -- screen blending (instead of the default normal composite)
+     lifts the duotone so it registers without ever reading as neon. */
+  opacity: 0.2;
+  mix-blend-mode: screen;
+}
+.hero-echo--a {
+  width: 340px;
+  height: 560px;
+  top: -80px;
+  right: 4%;
+  transform: rotate(-14deg);
+}
+.hero-echo--b {
+  width: 260px;
+  height: 430px;
+  bottom: -140px;
+  left: 2%;
+  transform: rotate(10deg);
+}
+
+/* plane 3: bokeh dust -- five soft blurred circles scattered in the dead
+   zones around the copy and diorama, staggered on the existing float
+   system (already reduced-motion safe). */
+.hero-bokeh {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero-bokeh--1 {
+  top: 6%;
+  left: 5%;
+  width: 70px;
+  height: 70px;
+  background: color-mix(in oklab, var(--cc-amber) 20%, transparent);
+  filter: blur(14px);
+}
+.hero-bokeh--2 {
+  top: 38%;
+  left: 47%;
+  width: 32px;
+  height: 32px;
+  background: color-mix(in oklab, var(--accent) 22%, transparent);
+  filter: blur(6px);
+}
+.hero-bokeh--3 {
+  top: 4%;
+  right: 10%;
+  width: 90px;
+  height: 90px;
+  background: color-mix(in oklab, var(--cc-sage) 16%, transparent);
+  filter: blur(18px);
+}
+.hero-bokeh--4 {
+  bottom: 14%;
+  left: 42%;
+  width: 18px;
+  height: 18px;
+  background: color-mix(in oklab, var(--cc-amber) 22%, transparent);
+  filter: blur(4px);
+}
+.hero-bokeh--5 {
+  bottom: 6%;
+  left: 12%;
+  width: 46px;
+  height: 46px;
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+  filter: blur(10px);
+}
+
+/* plane 4: print texture patch -- a dot-grid field behind the text column
+   only, masked to a soft radial so it fades rather than hard-cuts. Capped
+   low enough that it never touches the text's contrast margin. */
+.hero-dotfield {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 56%;
+  height: 100%;
+  opacity: 0.06;
+  background-image: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--fg) 55%, transparent) 1px,
+    transparent 1.5px
+  );
+  background-size: 17px 17px;
+  mask-image: radial-gradient(60% 55% at 30% 45%, black, transparent 75%);
+  -webkit-mask-image: radial-gradient(60% 55% at 30% 45%, black, transparent 75%);
+}
+[data-theme="dark"] .hero-dotfield {
+  opacity: 0.08;
+}
+
+/* plane 5: ground plane -- a soft floor at the hero's bottom edge so the
+   diorama stands IN a space instead of floating on a page. Melts into the
+   screening room's own top gradient (both resolve toward --bg). */
+.hero-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 180px;
+  background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--fg) 5%, transparent));
+}
+
+/* mobile: keep a smaller, centered sun + a single bokeh circle + the ground
+   plane; drop the reel echoes, the dot patch, and the extra bokeh -- the
+   vertical story strip needs the dead space, not more atmosphere. */
 @media (max-width: 860px) {
-  .hero-orb--red {
+  .hero-echo,
+  .hero-dotfield,
+  .hero-bokeh--2,
+  .hero-bokeh--3,
+  .hero-bokeh--4,
+  .hero-bokeh--5 {
     display: none;
+  }
+  .hero-sun {
+    background: radial-gradient(
+      50% 38% at 50% 30%,
+      color-mix(in oklab, var(--cc-amber) 30%, transparent),
+      transparent 72%
+    );
+  }
+  [data-theme="dark"] .hero-sun {
+    background: radial-gradient(
+      50% 38% at 50% 30%,
+      color-mix(in oklab, var(--cc-amber) 22%, transparent),
+      transparent 72%
+    );
+  }
+  .hero-bokeh--1 {
+    top: 4%;
+    left: 8%;
   }
 }
 
@@ -1325,6 +1559,133 @@ a {
   background: var(--cc-sage);
   color: var(--cc-ink);
   transform: rotate(3deg);
+}
+
+/* split-layout compaction (desktop >860px only): the diorama now shares a
+   row with the headline instead of centering under it, so every piece
+   scales down to fit the narrower `.hero-visual` column -- reel cards to
+   ~86% at the wide end, the phone to a ~290px ceiling, a shorter flow box.
+   Scoped under `.hero-visual` (never touches the standalone centered
+   diorama, if one is ever reused elsewhere) and gated to min-width so it
+   can never outrank the mobile stack below on specificity.
+
+   Every size below is `clamp(floor, Ncqw, ceiling)`, queried against
+   `.hero-visual`'s OWN resolved width (container queries), not the
+   viewport and not a percentage of a flex item's own auto-sized content.
+   Two things that look equivalent broke first:
+     - percentages resolve against a flex item whose size is itself
+       derived from its (percentage-sized) content -- a circular reference
+       that either floors the column at its content's full min-content
+       size (pushing the friend chips/stamps past the viewport at
+       861-1024px) or, once that floor is lifted, lets the content
+       overflow the column instead;
+     - `vw` is a definite length so it dodges that circularity, but it
+       tracks the VIEWPORT, not the diorama column, which is only a
+       ~44-54% fr-share of the wrap -- at 1024/1200px viewport the vw-sized
+       content overshot the actual (smaller) column and overflowed it on
+       the right, clipping the friend layer again.
+   `cqw` is keyed to the container's actual resolved width, so it can't
+   drift from either the column's floor (480px, set on `.hero-grid` above)
+   or its ceiling (the 1.08fr share tops out at ~570px once `.wrap` caps at
+   1160px).
+
+   CORRECTNESS NOTE (depth pass): a clamp()'s floor only "wins" at the
+   container's floor width if the Ncqw term ALREADY resolves below that
+   floor there -- otherwise the real resolved value is the (larger) cqw
+   term, not the floor. The previous version's reels rule (100px, 22cqw,
+   140px) got this backwards: 22cqw at the 480px floor is 105.6px, not
+   100px, and the three items' REAL floor-width total plus the two 6px
+   gaps came to ~493.6px against a 480px container -- an overflow the
+   floor-sum comment here never caught (it also never added the gaps).
+   Every percentage below is now chosen so `pct * 480 <= its own floor`,
+   so the clamp genuinely pins to the stated floor with no silent excess,
+   and the three floors + 2 gaps total ~446px against the 480px
+   container -- 34px of headroom, reserved below as explicit right-side
+   clearance for the friend-chip/stamp bleed (`right: -18px`, unmodified)
+   rather than split as centering slack, which is what let the chips hang
+   off the right edge at the narrow end. Re-verified at 861/1024/1200/1440
+   after this change -- see the hero split measurement notes. */
+@media (min-width: 861px) {
+  .hero-visual {
+    container-type: inline-size;
+  }
+  .hero-visual .hero-diorama {
+    gap: 6px;
+    /* flex-start (not the base rule's center) + a fixed right-hand
+       clearance -- the friend chips/stamps bleed up to 18px past the
+       phone box's own right edge; reserving 20px here guarantees that
+       bleed, so it never depends on however much slack a shrink-to-fit
+       centered row happens to leave on each side. */
+    justify-content: flex-start;
+    padding-right: 20px;
+  }
+  .hero-visual .diorama-reels {
+    flex: 0 0 clamp(92px, 19cqw, 118px);
+    max-width: clamp(92px, 19cqw, 118px);
+    min-height: 150px;
+  }
+  .hero-visual .reel-card--front {
+    width: clamp(80px, 16cqw, 102px);
+  }
+  .hero-visual .reel-card--back {
+    width: clamp(71px, 14cqw, 90px);
+  }
+  /* widened from the previous pass (was 126-152px) so the pill below no
+     longer spans edge-to-edge of this box -- see the pill note. */
+  .hero-visual .diorama-flow {
+    flex: 0 0 clamp(138px, 28cqw, 158px);
+    min-height: 104px;
+  }
+  /* shrunk (padding only, the text/bar keep their own size below) so the
+     pill is meaningfully narrower than `.diorama-flow`'s box above --
+     at every width this now leaves ~10-15px of clearance on both sides,
+     where the dashed SVG curve + its arrowhead are visible instead of
+     being painted over edge-to-edge by the pill (the pill and the box
+     used to resolve to the identical width, hiding the connector
+     entirely except a sliver poking out at the pill's corner). */
+  .hero-visual .scan-pill {
+    padding: 6px 6px;
+  }
+  /* the pill's text ("3 films found") must never wrap -- at the narrow
+     end its own min-content width nearly equals the pill's floor above,
+     so the tiniest further squeeze wrapped it to two lines. min-width is
+     sized to the text's measured natural width (88px) + its flex gap +
+     a sliver for the bar, not an arbitrary round number. Unchanged from
+     the previous pass -- the pill got narrower via its padding above,
+     not by squeezing this text/bar. */
+  .hero-visual .scan-pill .demo-scan {
+    min-width: clamp(104px, 20cqw, 130px);
+    white-space: nowrap;
+  }
+  .hero-visual .diorama-phone {
+    /* the box is always exactly the phone's own clamp() plus the fixed
+       38px friend-layer gap (see the demo-phone rule below), so the two
+       stay in lockstep at every width instead of drifting apart. Floor
+       cut from 250 to 204 (and the ceiling from 290 to 236) to make room,
+       in the budget above, for the wider flow box the flow-line fix
+       needs; the phone graphic shrinks (demo-phone ~166-198px instead of
+       ~212-252px) but its internal text already truncates with an
+       ellipsis (`.demo-film .txt .name`), so nothing wraps or clips. */
+    flex: 0 0 clamp(204px, 42cqw, 236px);
+    max-width: 236px;
+  }
+  /* the phone's own wrapper needs an explicit 100% here -- it has no width
+     of its own (shrink-to-fit, since `.diorama-phone` centers it on the
+     cross axis), so the demo-phone's calc() below would otherwise resolve
+     its "100%" against an indefinite (auto) container and silently fall
+     back to the phone's intrinsic content width instead of the box. */
+  .hero-visual .hero-stage__center {
+    width: 100%;
+  }
+  /* fixed 38px gap via calc (not a percentage) -- the same gap the
+     friend-tick math below is tuned to (see its own comment), so the tick
+     keeps touching the phone's true edge instead of floating in a gap that
+     shrinks to zero once this box's flex-basis renders under its max-width
+     ceiling. */
+  .hero-visual .diorama-phone .demo-phone {
+    width: calc(100% - 38px);
+    max-width: 198px;
+  }
 }
 
 @media (max-width: 860px) {
