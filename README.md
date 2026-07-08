@@ -4,7 +4,7 @@ The marketing website for [Cinechrony](https://www.cinechrony.com), the social m
 
 Built with Next.js (App Router) and the cinechrony editorial cinema design system: newsprint cream, cinema black, film red, Bricolage Grotesque display type, Manrope body, Space Mono data labels. Light and dark themes.
 
-The 2026-07 polish pass rebuilt the visual layer to indie-startup quality (benchmark: getbluejay.ai): oversized display type, scene-gradient section flow with a film-grain texture, a three-phone product stage in the hero, rich CSS app mockups in every media slot until real captures land (see [ASSETS.md](./ASSETS.md)), one CTA language, and a ghost-wordmark footer. The top nav carries the full product path: How it works, Features, Install, iOS beta, Waitlist, Support.
+The 2026-07 polish passes rebuilt the visual layer to indie-startup quality (benchmark: getbluejay.ai), in four rounds: oversized display type + rich CSS app mockups in every media slot (see [ASSETS.md](./ASSETS.md)); cinematic color scenes (warm hero, dark screening room, amber claim band, colored product stages, outlined-type marquee); a narrative hero diorama that reads doomscroll to shared list (reel-card stack, dashed flow with the scan pill, the phone with a friends layer); and a split hero (copy left, diorama right in the first viewport) over six depth layers (projector sun, blurred reel echoes, bokeh, dot-grid texture, ground plane, grain). A full phone pass followed: zero horizontal overflow at 360/390/430, 40px+ tap targets, and legal/support content no longer gated behind scroll-reveal. The top nav carries the full product path: How it works, Features, Install, iOS beta, Waitlist, Support.
 
 ## Routes
 
