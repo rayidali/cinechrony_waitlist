@@ -4,14 +4,14 @@
  * The reference is Corner's floating-object hero, where the objects are
  * photoreal 3D renders on a photographic sky. Those would fight this page:
  * a glossy raytraced croissant pasted on flat cream paper reads as a
- * sticker someone forgot to delete. So these are drawn instead — cut-outs
+ * sticker someone forgot to delete. So these are drawn instead: cut-outs
  * with enough shading to sit in space, a hairline ink edge so they read as
  * printed, and the page's own grain pass over the top, which is what
  * actually welds them to the paper.
  *
  * Every one of them is either a cinema object, a broadcast one, or a piece
  * of the same late-night furniture the app is for. Nothing generically
- * "fun" — a croissant would be Corner's joke, not ours.
+ * "fun": a croissant would be Corner's joke, not ours.
  *
  * All of it is decoration: aria-hidden, pointer-events none, and gone
  * entirely at reduced motion widths where it would crowd the content.
@@ -307,7 +307,7 @@ export function Sticker({
   className?: string;
   size?: number;
   rotate?: number;
-  /** seconds — staggers the drift so nothing bobs in unison */
+  /** seconds: staggers the drift so nothing bobs in unison */
   delay?: number;
   duration?: number;
 }) {

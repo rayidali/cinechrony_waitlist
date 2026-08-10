@@ -84,14 +84,14 @@ export default function SupportPage() {
               <details>
                 <summary>can i get it on my iphone?</summary>
                 <p>
-                  Yes, today, on TestFlight — <Link href="/beta">here is how</Link>. You need
+                  Yes, today, on TestFlight. <Link href="/beta">Here is how</Link>. You need
                   Apple&rsquo;s free TestFlight app first, which is the bit that catches people out.
                 </p>
               </details>
               <details>
                 <summary>how does the scanning work?</summary>
                 <p>
-                  It watches the whole clip — audio and on-screen text as well as footage — then
+                  It watches the whole clip, audio and on-screen text as well as footage, then
                   matches each film to a real record. When it is not sure, it says so rather than
                   guessing.
                 </p>

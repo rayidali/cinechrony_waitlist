@@ -8,7 +8,7 @@ Two steps make a cutout, and this is the second:
     python3 scripts/make-cutouts.py cutouts.tsv      # make it a sticker
 
 WHY A WHITE EDGE. A figure with the background deleted and nothing else
-done to it reads as a mistake — a photograph that failed to load its own
+done to it reads as a mistake: a photograph that failed to load its own
 sky. The white edge is what makes it deliberate: it is the trim a die-cut
 sticker leaves, and the eye has known that shape since Panini albums. It
 also solves a real problem for free, which is that Vision's matte carries a
@@ -20,7 +20,7 @@ die cut does not follow individual hairs; it simplifies. Blurring first is
 what produces that simplification, and it is the difference between a
 sticker and a photograph with a white halo.
 
-Everything still goes through the ONE film curve in grade-photos.py — a
+Everything still goes through the ONE film curve in grade-photos.py: a
 cutout that skipped it would be the one photograph on the site lit
 differently, which is exactly what the curve exists to prevent.
 

@@ -37,7 +37,7 @@ export const site = {
  * placeholder carrying the slot id; drop the file in /public/media, set
  * src, done. ASSETS.md documents what to capture for each slot.
  *
- * The five app-* slots are REAL — they are the same captures that went to
+ * The five app-* slots are REAL. They are the same captures that went to
  * App Store Connect, so the site shows the shipped product rather than a
  * drawing of it. What is still open is photography and the demo film.
  */
@@ -63,7 +63,7 @@ export const media = {
      row headlined "one list, everyone adds" sat above a picture with no
      films in it; and the old app-film was captioned "clip attached" and
      contained no clip, because NO film on the demo account had a
-     socialLink — the block had never rendered on that account and could
+     socialLink: the block had never rendered on that account and could
      not have. Both fixed at the source (scripts/dress-demo-for-site.tmp.ts)
      rather than by re-cropping a shot of the wrong thing. */
   "app-list": {
@@ -86,7 +86,7 @@ export const media = {
      A 16:9 black rectangle captioned AWAITING CAPTURE is a placeholder
      advertising its own absence, and it sat on the one screen that has to
      feel finished. If the film gets shot, the slot and the film frame come
-     back together — both are one commit away in the history. */
+     back together. Both are one commit away in the history. */
 
   /* ---- photography ----------------------------------------------------
      Six squares in the hero calendar's film cells, six portraits in the
@@ -124,21 +124,14 @@ export const media = {
   "crew-9": { src: "/media/crew-9.webp", kind: "image", alt: "Two friends posing for a flash photo indoors" },
   "crew-10": { src: "/media/crew-10.webp", kind: "image", alt: "Two friends at night, one shooting back at the camera" },
 
-  /* ---- the band scenes -------------------------------------------------
-     Scenery screenprinted into four bands in ONE INK. The files are
-     GREYSCALE and composite with `multiply`, so they can only lay down
-     more of the band's own colour — the palette is mathematically safe
-     from them, which is the whole reason a photograph is allowed to be
-     the background of a page this colour-disciplined.
-
-     Baked by scripts/band-scenes.py. The floor each one is clamped to is
-     a contrast decision, not a taste one: multiply only ever darkens, so
-     a light paper band with dark type is the one direction where this can
-     hurt, and those two are held at 0.88 while the dark bands take 0.72. */
-  "scene-flowers": { src: "/media/scene-flowers.webp", kind: "image", alt: "" },
-  "scene-meadow": { src: "/media/scene-meadow.webp", kind: "image", alt: "" },
-  "scene-night": { src: "/media/scene-night.webp", kind: "image", alt: "" },
-  "scene-hills": { src: "/media/scene-hills.webp", kind: "image", alt: "" },
+  /* The band scenes are NOT registered here, and that is deliberate. They
+     are painted landscapes that fill a whole band, they carry no meaning
+     (empty alt, aria-hidden), and each one needs a second file for dark
+     mode. A CSS background handles all three: `[data-theme="dark"]` swaps
+     the file so a manual theme toggle is obeyed, and only the one file the
+     reader can actually see is ever downloaded. An <img> pair would fetch
+     both. They live in globals.css under THE BAND SCENES, and
+     scripts/riso-scenes.py draws them. */
 
   /* ---- the cutouts -----------------------------------------------------
      People lifted out of their photographs and pasted ON the layout: they
@@ -152,7 +145,7 @@ export const media = {
      Vision's subject segmentation, make-cutouts.py grades it through the
      same film curve as every other photograph here and gives it the white
      die-cut trim. Alt text is empty on all of them and the layer is
-     aria-hidden — they are decoration, and a screen reader reading out six
+     aria-hidden. They are decoration, and a screen reader reading out six
      descriptions of strangers before the headline would be worse than
      silence. */
   "cut-camcorder": {

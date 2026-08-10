@@ -4,7 +4,7 @@ import { site } from "@/lib/site";
 
 /**
  * The colophon. Small mono headings, lowercase links, and the wordmark
- * knocked out in outline at the bottom of the sheet — the one place the
+ * knocked out in outline at the bottom of the sheet: the one place the
  * site is allowed to be purely graphic, because there is nothing left to
  * read by the time you reach it.
  */
@@ -93,7 +93,7 @@ export function Footer({
       </div>
       {/* the end title, then the credits */}
       <div className="footer-end" aria-hidden="true">
-        <span className="label">— the end —</span>
+        <span className="label">· the end ·</span>
       </div>
       <div className="footer-ghost ghost" aria-hidden="true">
         cinechrony

@@ -4,8 +4,7 @@ import { media, type MediaId } from "@/lib/site";
  * A person, cut out and pasted on the page.
  *
  * The drawn stickers next door are objects at the margins. These are the
- * opposite move: photographs of people, standing IN FRONT of the layout —
- * sitting on the calendar's own rules, leaning past the trim, throwing a
+ * opposite move: photographs of people, standing IN FRONT of the layout, * sitting on the calendar's own rules, leaning past the trim, throwing a
  * shadow onto the paper. That is the difference between a site with
  * pictures on it and a collage, and it is the one thing a rectangular
  * photograph in its own frame can never do, however well it is graded.
@@ -19,30 +18,24 @@ import { media, type MediaId } from "@/lib/site";
  * Decoration throughout: aria-hidden, empty alt, pointer-events none.
  */
 /**
- * A photograph screenprinted into a band.
+ * A painted landscape filling a whole band.
  *
- * The bands were flat colour, then duotone gradients, and still read as
- * "a plain background" — fairly, because a gradient is still just the
- * colour. This puts real scenery in them, in ONE INK: the file is
- * greyscale and it composites with `multiply`, which scales every channel
- * equally, so the band's hue and chroma survive exactly and the photograph
- * can only lay down more of the band's own ink. It is a one-colour
- * screenprint, and it is why this cannot fight the palette however hard it
- * is pushed. A full-colour photograph here would be a second palette
- * arriving unannounced.
+ * The file is a CSS background rather than an <img>, and that is not a
+ * style preference. Each of the paper scenes needs a second version for
+ * dark mode, and only a background can be swapped by `[data-theme]`, so
+ * the theme toggle is obeyed and exactly one of the pair is ever
+ * downloaded. Two <img>s would fetch both and then hide one.
  *
- * `scripts/band-scenes.py` bakes them, and the floor it clamps to is a
- * contrast decision — see the note there and in globals.css.
+ * It is also why there is no `media` entry and no src here: an empty span
+ * is the whole component, and everything true about these sits in
+ * globals.css next to the URLs. scripts/riso-scenes.py draws them, and the
+ * lightness window each one is built inside is a contrast decision it
+ * checks at build time.
  */
-export function BandScene({ id }: { id: MediaId }) {
-  const shot = media[id];
-  if (!shot.src) return null;
-  return (
-    <span className="scene" aria-hidden="true">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={shot.src} alt="" loading="lazy" decoding="async" />
-    </span>
-  );
+export type SceneId = "flowers" | "meadow" | "night" | "hills";
+
+export function BandScene({ id }: { id: SceneId }) {
+  return <span className={`scene scene--${id}`} aria-hidden="true" />;
 }
 
 export function Cutout({
@@ -51,7 +44,7 @@ export function Cutout({
   /** rendered height in px; the width follows the silhouette */
   h,
   rotate = 0,
-  /** true for the ones above the fold — the rest can wait */
+  /** true for the ones above the fold: the rest can wait */
   eager = false,
 }: {
   id: MediaId;

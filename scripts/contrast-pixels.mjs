@@ -64,7 +64,7 @@ for (const scheme of ['light', 'dark']) {
       document.querySelectorAll('.reveal').forEach((e) => e.classList.add('is-visible')),
     );
     // a lazy image in a section nobody scrolled to never loads, and an
-    // unloaded scene screenshots as no scene at all — which would pass
+    // unloaded scene screenshots as no scene at all, which would pass
     // this gate by measuring a band that does not ship
     await page.evaluate(() => {
       document.querySelectorAll('img').forEach((i) => {
@@ -77,8 +77,21 @@ for (const scheme of ['light', 'dark']) {
     await page.waitForFunction(() => [...document.images].every((i) => i.complete), {
       timeout: 30000,
     });
+    // The band scenes are CSS backgrounds, not <img>, so the loop above
+    // cannot reach them and there is nothing to poll for `complete` on.
+    // Walking the whole page forces every band to paint; a scene that had
+    // not decoded yet would screenshot as its flat fallback colour, and
+    // this gate would then pass a band that does not ship.
+    await page.evaluate(async () => {
+      const step = window.innerHeight;
+      for (let y = 0; y < document.body.scrollHeight; y += step) {
+        window.scrollTo(0, y);
+        await new Promise((r) => requestAnimationFrame(() => setTimeout(r, 30)));
+      }
+      window.scrollTo(0, 0);
+    });
     // FREEZE EVERYTHING FIRST. The whole method is a diff of two captures,
-    // so anything that moves between them reads as a glyph — and the
+    // so anything that moves between them reads as a glyph, and the
     // stickers drift on an infinite loop. A cream popcorn box that shifted
     // three pixels was reported as the CTA's own text sitting on a 2.86:1
     // grey, which is a finding about nothing, arrived at from real pixels.
@@ -94,7 +107,7 @@ for (const scheme of ['light', 'dark']) {
       const out = [];
       for (const el of document.querySelectorAll('body *')) {
         if (el.closest('[aria-hidden="true"]')) continue;
-        // Text inside role="img" is not text — the element carries one
+        // Text inside role="img" is not text: the element carries one
         // aria-label and everything under it is paint. The calendar is the
         // case here: its greyed out-of-month numerals are DELIBERATELY at
         // 1.2:1, which is a drawing decision, not a legibility failure.
@@ -125,7 +138,7 @@ for (const scheme of ['light', 'dark']) {
     });
 
     // resolve each foreground to a concrete rgb (they may be translucent,
-    // in which case they composite onto whatever is behind — measured below)
+    // in which case they composite onto whatever is behind: measured below)
     const fgs = await page.evaluate((list) => {
       const cv = document.createElement('canvas');
       cv.width = cv.height = 1;
@@ -159,7 +172,7 @@ for (const scheme of ['light', 'dark']) {
         for (let x = Math.max(0, r.x); x < Math.min(r.x + r.w, bare.width); x++) {
           const o = (bare.width * y + x) << 2;
           // a glyph pixel: it changed when the text was made transparent,
-          // and it changed TOWARD this run's own colour — which is what
+          // and it changed TOWARD this run's own colour, which is what
           // keeps a parent from being judged on its child's differently
           // coloured text sitting inside the same box
           const dr = inked.data[o] - bare.data[o];
@@ -192,7 +205,7 @@ for (const scheme of ['light', 'dark']) {
 await b.close();
 
 if (!fails.length) {
-  console.log(`PIXEL CONTRAST: pass — ${checked} text runs against their darkest real ground`);
+  console.log(`PIXEL CONTRAST: pass, ${checked} text runs against their darkest real ground`);
   process.exit(0);
 }
 console.log(`PIXEL CONTRAST: ${fails.length} failing run(s) of ${checked}`);

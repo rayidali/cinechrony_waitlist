@@ -40,7 +40,7 @@ export default function WaitlistPage() {
             <div className="hero-split" style={{ marginTop: 44, alignItems: "start" }}>
               <Reveal>
                 <p className="body">
-                  The beta is already open — <Link href="/beta">grab it on TestFlight</Link>. This
+                  The beta is already open. <Link href="/beta">Grab it on TestFlight</Link>. This
                   list is for the App Store.
                 </p>
                 <div className="promises">

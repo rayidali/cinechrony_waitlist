@@ -44,7 +44,7 @@ export function Frame({
   offset?: boolean;
   className?: string;
   style?: CSSProperties;
-  /** drawn over the plate — the play mark on the demo film, for instance */
+  /** drawn over the plate: the play mark on the demo film, for instance */
   children?: ReactNode;
 }) {
   // widened deliberately: `satisfies` keeps each slot's `kind` as a literal,

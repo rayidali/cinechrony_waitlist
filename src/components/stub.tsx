@@ -1,5 +1,5 @@
 /**
- * The ticket stub — this site's nostalgic-object motif.
+ * The ticket stub. This site's nostalgic-object motif.
  *
  * The reference boards reach for a skeuomorphic desktop folder as the piece
  * of warm, physical junk that stops a layout feeling like software. For a

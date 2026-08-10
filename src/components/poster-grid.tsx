@@ -1,7 +1,7 @@
 import { media, type MediaId } from "@/lib/site";
 
 /**
- * The hero grid — the site's signature, and the one piece of art direction
+ * The hero grid: the site's signature, and the one piece of art direction
  * everything else hangs off.
  *
  * It is a real month: seven columns, date numerals, faint numerals for the
@@ -12,7 +12,7 @@ import { media, type MediaId } from "@/lib/site";
  *
  * COMPLETE WITHOUT PHOTOGRAPHY, BETTER WITH IT. Every photo cell declares a
  * `fill` alongside its `img`. Until a file is registered in `media`, the
- * cell renders as a solid poster ink — a composition choice, not a hole.
+ * cell renders as a solid poster ink: a composition choice, not a hole.
  * Drop six squares into /public/media and the same grid turns photographic
  * with no layout change.
  */
@@ -20,13 +20,13 @@ import { media, type MediaId } from "@/lib/site";
 type Fill =
   | "ink" | "red" | "blue" | "dusk" | "sage" | "amber" | "tint"
   | "teal" | "forest" | "marigold" | "blush"
-  /* the two grainy gradient cells — the boards' aura, at cell scale */
+  /* the two grainy gradient cells: the boards' aura, at cell scale */
   | "aura" | "aura2";
 
 type Cell = {
   /** the date numeral */
   d: number;
-  /** a day from the month either side — printed faint, like the app does */
+  /** a day from the month either side: printed faint, like the app does */
   mute?: boolean;
   /** flat poster ink; also the fallback when `img` has no file yet */
   fill?: Fill;
@@ -43,7 +43,7 @@ type Cell = {
    and the ink cells are spaced to act as anchors rather than clumps.
    INK CARRIES THE WEIGHT, everything else is seasoning. An earlier cut used
    every poster ink at equal frequency and the grid read as a swatch card;
-   the fix was not fewer colours but a hierarchy — ink anchors, mint is the
+   the fix was not fewer colours but a hierarchy: ink anchors, mint is the
    app's own "grabbed" tint, and teal, marigold, amber, red and blue each
    appear once or twice. Two cells carry the grainy aura gradient, which is
    how the boards' colour language gets into the grid without any of it

@@ -1,6 +1,6 @@
 /**
  * The marquee, flattened. v2's version was outlined display type on a
- * gradient band; this one is a cinema marquee — mono, small, rule-bounded,
+ * gradient band; this one is a cinema marquee: mono, small, rule-bounded,
  * a film-red bead between titles. It runs edge to edge because a band that
  * respects the page gutter is not a band.
  *

@@ -2,8 +2,8 @@
 //
 //   swift scripts/cutout.swift in.jpg out.png [--pad 24]
 //
-// Uses Vision's foreground-instance segmentation — the same subject-lift
-// that Photos does on long-press — so a cutout is a real alpha matte cut
+// Uses Vision's foreground-instance segmentation: the same subject-lift
+// that Photos does on long-press, so a cutout is a real alpha matte cut
 // around hair and fingers, not a photo behind a shaped mask. Nothing to
 // install: it is in the OS.
 //
@@ -14,7 +14,7 @@
 // and it is the reason the wide strip that used to sit under the calendar
 // never worked no matter how it was graded.
 //
-// Exits 3 with NO_SUBJECT when Vision finds nobody — a silent empty PNG is
+// Exits 3 with NO_SUBJECT when Vision finds nobody: a silent empty PNG is
 // how you end up shipping a hole in the layout.
 import CoreImage
 import Foundation

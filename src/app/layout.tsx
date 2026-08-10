@@ -7,7 +7,7 @@ import "./globals.css";
 
 // FOUR faces, and the fourth is the reason the page stopped looking flat.
 // Bricolage carries display and UI, Space Mono every label, Newsreader the
-// remaining prose — and Fraunces is the vintage voice: a variable old-style
+// remaining prose, and Fraunces is the vintage voice: a variable old-style
 // serif with SOFT and WONK axes, drawn specifically to sound like 1900s-70s
 // display type. Dialled soft and wonky it does the retro work that no amount
 // of colour could, because the thing that reads as "designed in 2026 by a

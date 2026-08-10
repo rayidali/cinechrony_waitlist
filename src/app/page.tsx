@@ -15,7 +15,7 @@ import { media, site } from "@/lib/site";
  *
  * v3 explained itself: seven paragraphs, a three-paragraph founder essay, a
  * body of copy under every headline. The references it was built against do
- * none of that — Corner and Rodeo say four or five words and then show you
+ * none of that: Corner and Rodeo say four or five words and then show you
  * something. Words are the thing a visitor skips, and every paragraph here
  * was arguing for a product that was sitting right next to it in a
  * screenshot, already making the same case better.
@@ -25,7 +25,7 @@ import { media, site } from "@/lib/site";
  * the argument the essay was trying to make in prose.
  *
  * Two rules survive from v3. Colour is a field with a hard edge, never a
- * glow that bleeds. And the product is shown, never drawn — every
+ * glow that bleeds. And the product is shown, never drawn. Every
  * screenshot is a real capture of the shipped app.
  */
 
@@ -37,7 +37,7 @@ import { media, site } from "@/lib/site";
    three that came out were the ones doing no work the others weren't: a
    couple at sunset (a couple, not a crew), a gig (music, not film), and a
    second flash-lit pair beside the one already here. crew-4, crew-5 and
-   crew-9 stay in `media` and on disk, benched rather than deleted — they
+   crew-9 stay in `media` and on disk, benched rather than deleted. They
    are already graded, so putting a row back is an edit to this array. */
 const CREW = [
   { id: "crew-7", n: "9a" },
@@ -59,7 +59,7 @@ export default function LandingPage() {
         {/* ---------------- hero: the diary, at poster scale ---------------- */}
         {/* cut-band: on one column the camcorder leans past the right trim,
             and a figure hanging off the SIDE would otherwise widen the page
-            by its own overhang — 32px of horizontal scroll on a phone, which
+            by its own overhang, 32px of horizontal scroll on a phone, which
             reads as a broken layout rather than as a bleed */}
         <section className="band band--paper hero cut-band">
           <Stickers scene="hero" />
@@ -159,12 +159,12 @@ export default function LandingPage() {
 
         {/* ---------------- reel 02 · the grab ---------------- */}
         <section className="band band--ochre section cut-band" id="how">
-          <BandScene id="scene-flowers" />
+          <BandScene id="flowers" />
           <Stickers scene="grab" />
           {/* Sitting on the seam. The stickers next door are clipped by the
               band edge so they read as pasted onto ONE sheet; these are
               deliberately not, because a photograph taped across two sheets
-              is the older and better collage move — and it is the only
+              is the older and better collage move, and it is the only
               thing on the page that treats the bands as physical. */}
           <Cutout id="cut-legs" className="cut--legs" h={158} rotate={3} />
           <Cutout id="cut-camera" className="cut--camera" h={230} rotate={-8} />
@@ -220,7 +220,7 @@ export default function LandingPage() {
             {/* Everything that sat under the three beats is gone: the
                 "keep it now, file it whenever" aside (beat 03 says it in
                 three words), the empty demo plate, and now the scan
-                capture too — the owner is shooting something better for
+                capture too: the owner is shooting something better for
                 this spot. What is left is a headline, four sources and
                 three beats, and it reads faster without any of it.
                 `app-grab` stays registered in `media` and ASSETS.md names
@@ -251,7 +251,7 @@ export default function LandingPage() {
 
         {/* ---------------- reel 03 · what it does ---------------- */}
         <section className="band band--rose section" id="features">
-          <BandScene id="scene-meadow" />
+          <BandScene id="meadow" />
           <div className="wrap">
             <Reveal>
               <div className="marker">
@@ -324,7 +324,7 @@ export default function LandingPage() {
                   />
                   {/* the VHS on-screen display came off: it was pale cyan
                       pinned to the plate's top-left, which on the re-shot
-                      capture is white app chrome — invisible. And the
+                      capture is white app chrome: invisible. And the
                       capture now contains a real play button on a real
                       clip, so a fake one over the top of it was competing
                       with the thing it was pretending to be. */}
@@ -336,7 +336,7 @@ export default function LandingPage() {
 
         {/* ---------------- movie night ---------------- */}
         <section className="band band--blue section cut-band">
-          <BandScene id="scene-night" />
+          <BandScene id="night" />
           <Stickers scene="night" />
           <Cutout id="cut-bench" className="cut--bench" h={206} rotate={-1} />
           <div className="wrap">
@@ -369,7 +369,7 @@ export default function LandingPage() {
 
         {/* ---------------- the year ---------------- */}
         <section className="band band--forest section">
-          <BandScene id="scene-hills" />
+          <BandScene id="hills" />
           <div className="wrap">
             <div className="year">
               <Reveal className="year__copy">

@@ -11,8 +11,8 @@ import puppeteer from 'puppeteer-core';
  * WHY THIS EXISTS. The dark-mode failure (dark text on a dark green field)
  * survived three rounds of screenshots because a full-page capture scaled to
  * thumbnail size hides it completely. This reads the COMPUTED colour of every
- * piece of text, finds the field it actually sits on — including sampling
- * every stop of a gradient, and taking the worst one — and reports the ratio.
+ * piece of text, finds the field it actually sits on: including sampling
+ * every stop of a gradient, and taking the worst one, and reports the ratio.
  */
 const PAGES = ['/', '/beta', '/waitlist', '/support', '/install', '/privacy', '/terms'];
 const BASE = process.env.BASE || 'http://localhost:3000';
@@ -128,7 +128,7 @@ for (const scheme of ['light', 'dark']) {
               // linear-gradient painted with no background-color under it
               // leaves backgroundColor transparent, so the old loop kept
               // climbing to <body> and reported the cream PAGE as the field
-              // for cream type sitting on an opaque green band — twenty
+              // for cream type sitting on an opaque green band: twenty
               // failures, every one of them imaginary. If the gradient is
               // opaque it covers whatever is behind it, and behind it is
               // not a field any more.
@@ -174,7 +174,7 @@ for (const scheme of ['light', 'dark']) {
 }
 
 if (!worst.length) {
-  console.log('CONTRAST: pass — every text run clears WCAG AA against the worst stop of its field');
+  console.log('CONTRAST: pass. Every text run clears WCAG AA against the worst stop of its field');
   await b.close();
   process.exit(0);
 } else {

@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 /* ==========================================================================
-   cinechrony — printed poster (v3)
+   cinechrony: printed poster (v3)
 
    The rule that decides everything here: COLOR IS A FLAT FIELD, NEVER A GLOW.
-   v2 built atmosphere out of ambient washes — bokeh, projector suns, radial
+   v2 built atmosphere out of ambient washes: bokeh, projector suns, radial
    step-glows, gradient "scenes" melting into each other. That is the exact
    thing that reads as generated rather than designed: soft light everywhere
    and no structure anywhere. v3 inverts it. Hard edges, solid ink fields,
@@ -12,8 +12,7 @@
    the heavy lifting.
 
    Faces are the app's own: Bricolage Grotesque display (always lowercase),
-   Newsreader for prose, Space Mono for labels and data. Manrope is gone —
-   the app never had it, and three faces beat four.
+   Newsreader for prose, Space Mono for labels and data. Manrope is gone: the app never had it, and three faces beat four.
    ========================================================================== */
 
 :root {
@@ -25,7 +24,7 @@
   --ink-soft:    oklch(0.46 0.012 60);
   --ink-faint:   oklch(0.62 0.012 60);
 
-  /* rules are the armature — two weights, both visible on purpose */
+  /* rules are the armature: two weights, both visible on purpose */
   --rule:        oklch(0.22 0.012 60 / 0.16);
   --rule-strong: oklch(0.22 0.012 60 / 0.42);
 
@@ -51,7 +50,7 @@
      the rust of a faded one-sheet, the olive of a 70s paperback, the plum
      of a cinema curtain, and three TINTED PAPERS. The papers are the ones
      that mattered. "the background is a plain colour" was said three times
-     and each answer added objects on top of the same cream — the fix was
+     and each answer added objects on top of the same cream: the fix was
      never another sticker, it was more than one stock. */
   --rust:   oklch(0.47 0.135 42);
   --olive:  oklch(0.455 0.075 118);
@@ -60,7 +59,7 @@
   --p-rose:  oklch(0.916 0.032 30);
   --p-mint:  oklch(0.928 0.032 158);
 
-  /* INKS FOR COLOURED FIELDS — these must NOT flip with the theme, because
+  /* INKS FOR COLOURED FIELDS. These must NOT flip with the theme, because
      the field underneath them does not flip either. `--bone` was being used
      for this and `--bone` IS redefined in dark (it is the raised surface,
      0.235), so every saturated band quietly served dark text on a dark
@@ -76,7 +75,7 @@
   --fg-soft:   var(--ink-soft);
   --surface:   var(--bone);
   /* Not var(--red), which is where it started. Cream on the brand red
-     measures 4.0:1 on rendered pixels — the primary CTA of five routes,
+     measures 4.0:1 on rendered pixels: the primary CTA of five routes,
      under AA, and invisible to the CSS gate because the page-wide grain
      overlay lightens the button by a few points. Two clicks darker fixes
      it and is not a colour anyone can tell apart side by side. `--red`
@@ -90,8 +89,8 @@
   /* ---- type ----
      `--f-retro` is Fraunces, and it is the fourth face. It carries the
      poster line, the em word inside every headline, the pull quote and the
-     drop cap — i.e. every place the page raises its voice. SOFT rounds the
-     terminals and WONK swaps in the slanted, off-kilter alternates; both
+     drop cap, which is every place the page raises its voice. SOFT rounds
+     the terminals and WONK swaps in the slanted, off-kilter alternates; both
      are what make it read as set in 1974 rather than rendered in 2026. */
   --f-display: var(--font-bricolage), system-ui, -apple-system, sans-serif;
   --f-retro:   var(--font-fraunces), Georgia, "Times New Roman", serif;
@@ -110,7 +109,7 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --dur: 200ms;
 
-  /* GRAIN — three sizes, because real film grain is not one frequency.
+  /* GRAIN: three sizes, because real film grain is not one frequency.
      `fine` is the emulsion, `clump` is the pushed-stock blotch that makes a
      scan look like a scan, `coarse` is what sits on ink fields.
 
@@ -119,12 +118,12 @@
      dirt rather than grain, which is why the first pass was invisible at
      0.055 and still invisible at 0.14. Run through feColorMatrix saturate 0
      the noise centres on mid-grey, so an `overlay` blend lightens and darkens
-     in equal measure — which is exactly what silver halide does. */
+     in equal measure, which is exactly what silver halide does. */
   --grain-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   --grain-clump: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.24' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   --grain-coarse: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
 
-  /* HALFTONE — a 4px dot screen, which is what an actual printed colour
+  /* HALFTONE: a 4px dot screen, which is what an actual printed colour
      field is made of. Grain says "shot on film"; halftone says "printed on
      a press", and those are two different claims. Together they are the
      whole reason a flat oklch value stops reading as a CSS background. */
@@ -133,8 +132,8 @@
 
   /* Muted ink for a TINTED sheet. The plain one is sized against cream,
      where a soft grey has a whole sheet of headroom; drop the same grey on
-     ochre or rose — both of which now carry a screenprinted photograph on
-     top of a sun-fade on top of a halftone — and every label lands between
+     ochre or rose. Both of which now carry a screenprinted photograph on
+     top of a sun-fade on top of a halftone, and every label lands between
      3.4 and 4.5 against a 4.5 requirement. Measured on rendered pixels by
      scripts/contrast-pixels.mjs, which is the only gate that can see a
      field made of four stacked layers. Same reasoning as the
@@ -166,7 +165,7 @@
 
   /* the vintage set at night. The three tinted PAPERS have to stay tinted
      rather than collapsing back to one dark grey, or the whole point of
-     adding them is lost the moment the sun goes down — they just tint a
+     adding them is lost the moment the sun goes down. They just tint a
      dark stock instead of a light one. */
   --rust:   oklch(0.42 0.125 42);
   --olive:  oklch(0.36 0.065 118);
@@ -179,7 +178,7 @@
   --fg: var(--ink);
   /* --accent used to BE var(--red), so it followed this block's lighter red
      for free. Pinning it in :root to fix the light-mode button silently
-     handed dark mode a dark red under dark ink — 3.1:1, worse than the bug
+     handed dark mode a dark red under dark ink, 3.1:1, worse than the bug
      being fixed. Re-linked here on purpose: dark carries DARK type on the
      accent, so it wants the light red, and the two themes want opposite
      corrections from the same token. */
@@ -212,7 +211,7 @@ button { font: inherit; color: inherit; }
 ::selection { background: var(--amber); color: var(--ink); }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-/* THE PAGE-WIDE FILM PASS — two fixed layers, so it never scroll-shears.
+/* THE PAGE-WIDE FILM PASS: two fixed layers, so it never scroll-shears.
    The emulsion layer is the one you feel; the clump layer is the one that
    makes it read as a scan rather than as CSS noise. Both are deliberately
    held below the level where body copy starts to fray: the references are
@@ -269,11 +268,11 @@ body::before {
 .section--xl { padding: 132px 0; }
 
 /* ==========================================================================
-   BANDS — hard-edged fields, and as of v4 not one of them is a flat colour.
+   BANDS: hard-edged fields, and as of v4 not one of them is a flat colour.
 
    "The background is a plain colour" was fair and it was said three times.
-   Each earlier answer put more OBJECTS on the cream — stickers, bulbs,
-   seats — and never touched the cream itself. The fix is three-layered and
+   Each earlier answer put more OBJECTS on the cream: stickers, bulbs,
+   seats, and never touched the cream itself. The fix is three-layered and
    it applies to every band on the site:
 
      1. the STOCK is tinted per band (six papers now, not one),
@@ -300,7 +299,7 @@ body::before {
 .band--plum  { background: var(--plum); color: var(--on-color); }
 
 /* SATURATED BANDS ARE DUOTONE NOW, not flat. Each one runs from its own
-   ink into a neighbouring hue on a long diagonal — rust into oxblood,
+   ink into a neighbouring hue on a long diagonal: rust into oxblood,
    forest into deep teal, blue into dusk. It is the seventies poster move:
    two inks on one pull, the second showing through where the first thins
    out. Still contained, still guillotined by the band edge, so it is a
@@ -310,7 +309,7 @@ body::before {
 /* background-COLOR and background-IMAGE separately, never the `background`
    shorthand. The shorthand resets background-color to transparent, and a
    band with no colour under its gradient is a band that reports the cream
-   page as its field — which is how the first cut of this produced twenty
+   page as its field, which is how the first cut of this produced twenty
    contrast failures that were all imaginary. The colour is also a real
    fallback: it is what paints if the gradient ever fails to parse. */
 .band--rust {
@@ -338,7 +337,7 @@ body::before {
   background-image: linear-gradient(154deg, oklch(0.38 0.155 250) 0%, var(--blue) 48%, oklch(0.32 0.13 290) 100%);
 }
 
-/* layer 2 — the aged tint. Two very wide stops, one warm from the top
+/* layer 2: the aged tint. Two very wide stops, one warm from the top
    left and one cool from the bottom right, at an opacity you notice only
    by removing it. This is what stops a 1400px-tall cream band from being
    the same pixel 1.4 million times. */
@@ -373,7 +372,7 @@ body::before {
     radial-gradient(90% 60% at 50% 52%, oklch(0.6 0.1 190 / 0.09), transparent 70%);
 }
 
-/* layer 3 — the dot screen. `currentColor` means it inherits the band's own
+/* layer 3: the dot screen. `currentColor` means it inherits the band's own
    ink, so it works on a light stock and a dark one with no second rule. */
 .band--paper::after,
 .band--deep::after,
@@ -395,7 +394,7 @@ body::before {
 [data-theme="dark"] .band--rose::after,
 [data-theme="dark"] .band--mint::after { opacity: 0.04; }
 
-/* SUNBURST — a repeating conic, the single most 1970s shape there is.
+/* SUNBURST: a repeating conic, the single most 1970s shape there is.
    Opt-in per band, and never under body copy: it sits behind a centred
    display line and nothing else. */
 .rays {
@@ -417,7 +416,7 @@ body::before {
 }
 
 /* ==========================================================================
-   AURA — the grainy multi-hue gradient from the boards.
+   AURA: the grainy multi-hue gradient from the boards.
    Four overlapping radial stops on a deep base, heavily grained. It is a
    gradient, which the rest of this system bans, and the reason it works is
    that it is always CONTAINED: it fills a band edge to edge or it fills a
@@ -434,7 +433,7 @@ body::before {
     oklch(0.15 0.025 40);
 }
 
-/* an aura in a circle — the "do something uncomfortable" object */
+/* an aura in a circle: the "do something uncomfortable" object */
 .orb {
   position: relative;
   border-radius: 50%;
@@ -528,7 +527,7 @@ body::before {
    label between 3.0 and 4.4 against a 4.5 requirement. Hierarchy on a
    coloured field has to come from size and letterspacing, not opacity. */
 /* A TINTED SHEET IS NOT CREAM EITHER. These four are paper, so they keep a
-   softer ink rather than going all the way to currentColor — but the plain
+   softer ink rather than going all the way to currentColor, but the plain
    `--ink-soft` was sized against the cream page and does not survive a tint
    with a screenprint over it. */
 .band--ochre, .band--rose, .band--mint, .band--deep {
@@ -552,7 +551,7 @@ body::before {
 .hr { height: 1px; background: var(--rule-strong); border: 0; margin: 0; }
 
 /* ---------- type ---------- */
-/* Display is ALWAYS lowercase — the app's own rule, and the cheapest,
+/* Display is ALWAYS lowercase: the app's own rule, and the cheapest,
    loudest signal that a human set this type. */
 .d1, .d2, .d3, .h2, .h3, .display, .display-2 {
   font-family: var(--f-display);
@@ -568,11 +567,10 @@ body::before {
 .h2 { font-size: clamp(1.6rem, 2.9vw, 2.35rem);  line-height: 1.02; font-weight: 700; }
 .h3 { font-size: 1.2rem; line-height: 1.15; font-weight: 700; letter-spacing: -0.03em; }
 
-/* THE SECOND DISPLAY VOICE — now Fraunces, wonk on. It is the move every
+/* THE SECOND DISPLAY VOICE: now Fraunces, wonk on. It is the move every
    reference board makes (almostfriday, Get Outside, Astro Attic): a
    grotesque line with one word carrying the feeling in a contrasting
-   italic serif. It was Newsreader italic, which is a NEWSPAPER italic —
-   correct, quiet, and completely without period. Fraunces with WONK 1 has
+   italic serif. It was Newsreader italic, which is a NEWSPAPER italic: correct, quiet, and completely without period. Fraunces with WONK 1 has
    the slanted alternates and soft terminals of hand-cut display type, so
    the same trick now dates the page instead of just varying it. */
 .d1 em, .d2 em, .d3 em, .h2 em, .display em, .display-2 em {
@@ -630,7 +628,7 @@ body::before {
   max-width: 58ch;
 }
 
-/* the mono label — every eyebrow, caption, stat and stamp in the site */
+/* the mono label. Every eyebrow, caption, stat and stamp in the site */
 .label, .eyebrow, .meta {
   font-family: var(--f-mono);
   font-size: 0.6875rem;
@@ -743,7 +741,7 @@ body::before {
 .hero-split { display: grid; gap: clamp(32px, 5vw, 64px); }
 @media (min-width: 860px) { .hero-split { grid-template-columns: 1fr 1fr; } }
 
-/* small square chips — data, not decoration */
+/* small square chips: data, not decoration */
 .pill {
   display: inline-flex;
   align-items: center;
@@ -770,7 +768,7 @@ body::before {
 .rating--bad  { background: oklch(0.75 0.13 27); color: oklch(0.99 0 0); }
 
 /* ==========================================================================
-   THE GRID — the site's signature.
+   THE GRID: the site's signature.
    It is the app's own diary screen at poster scale: a real month, date
    numerals, film cells, and the film-red dot that means a movie night.
    Rodeo's hero grid is a calendar because Rodeo is about your calendar;
@@ -818,7 +816,7 @@ body::before {
 /* INK IS THE ONE CELL THAT FLIPS, because its job is to contrast with the
    page: leave it dark at night and the grid loses its whole armature. Every
    coloured cell is ARTWORK and holds one value in both themes, which is the
-   rule the app already applies to its own poster stops — and it is also
+   rule the app already applies to its own poster stops, and it is also
    what fixes the film title that could not reach 4.5 against a red that
    lifted to 0.64 at night purely because the same token doubles as an
    accent for small text. */
@@ -873,7 +871,7 @@ body::before {
    So a photo cell is printed dark on purpose: the cell's own field is ink,
    the picture is dimmed onto it, and a radial scrim sits under the numeral
    with a stronger linear one under the title. At 110px the photographs
-   read better this way anyway — dimmed they are texture, undimmed they
+   read better this way anyway: dimmed they are texture, undimmed they
    were six competing thumbnails.
 
    NOTE FOR THE GATE: contrast.mjs is CSS-only and cannot see an <img>. It
@@ -897,7 +895,7 @@ body::before {
   color: var(--on-color);
   text-shadow: 0 1px 12px oklch(0 0 0 / 0.55);
 }
-/* the movie-night dot — the one mark that means something in the future */
+/* the movie-night dot: the one mark that means something in the future */
 .pcell__dot {
   position: absolute;
   z-index: 2;
@@ -1004,49 +1002,107 @@ body::before {
 .hero-note { margin-top: 20px; }
 
 /* ==========================================================================
-   THE BAND SCENES — a photograph screenprinted into the stock.
-   "The background is a plain colour" was said five times and answered with
-   objects, then with duotone gradients, and it kept being true, because a
-   gradient of a colour is still that colour. This is scenery: a sunflower
-   field, a wildflower meadow, a night sky, rolling hills.
+   THE BAND SCENES: the band IS the picture.
+   "The background is a plain colour" was said four times and answered with
+   objects, then duotone gradients, then a photograph screenprinted in ONE
+   INK. All three were still, correctly, a plain colour. The screenprint
+   most of all: greyscale multiplied into a band can only ever lay down
+   more of that band's own ink, so the very property that made it safe for
+   the palette is what made it invisible. It read as an outline behind a
+   colour, which is exactly what it was.
 
-   ONE INK. The files are greyscale and composite with `multiply`, which
-   scales every channel by the same factor — so hue and chroma are
-   untouched and the photograph can only put down more of the band's own
-   colour. A full-colour still here would be a second palette arriving
-   unannounced; this cannot introduce one however hard it is pushed. It is
-   also what a one-colour screenprint physically is, which is the look.
+   So these are painted instead of found: gradient skies, flat clouds built
+   from unions of circles, hard horizons, a sun that is a plain disc,
+   stippled flower fields, print grain and a 1px channel misregistration
+   over the whole pull. Drawn means every colour is CHOSEN, which is the
+   only way scenery enters a strict palette without becoming a second one,
+   and it means the quiet part of a picture can be put where the words go.
+   scripts/riso-scenes.py is the press.
 
-   CONTRAST, AND WHY THE FLOOR IS WHERE IT IS. Multiply only darkens.
-   Light paper under dark type therefore LOSES contrast, and it is the only
-   direction that can hurt — the dark bands carry light type and gain. So
-   the two paper scenes are clamped to a 0.88 floor and the dark ones to
-   ~0.72. `contrast.mjs` is CSS-only and cannot see an <img>, so it scores
-   these bands against the un-multiplied colour; the floor is what keeps
-   that proxy honest. Measured off rendered pixels rather than argued:
-   the darkest field under body copy on the ochre band is 4.6:1 worse than
-   flat and still clears AA with margin. Re-measure if a floor moves.
+   THEY ARE FULL OPACITY, ON PURPOSE. Anything less mixes the scene with
+   the band colour underneath and makes the contrast a function of two
+   layers instead of one. At opacity 1 the numbers baked into the file are
+   the numbers on the screen. The band colour stays as the load-time and
+   fallback field, which is all it was ever load-bearing for.
+
+   TWO REGISTERS, BECAUSE THE PAPER BANDS INVERT. Blue and forest are dark
+   in both themes, so one dark picture serves both. Ochre and rose are
+   cream by day and near-black by night, and a pale sky behind dark mode's
+   light type would be a worse bug than the flat colour this replaces, so
+   those two are drawn twice and the second pull is the same landscape
+   after sunset. The page has a time of day.
+
+   CONTRAST IS DECIDED IN THE RAMP. Ink is oklch 0.165, so a ground at
+   oklch L 0.635 is exactly 4.5:1: the paper scenes are built entirely
+   above 0.66. `--on-color` is oklch 0.97, so a ground at L 0.52 is exactly
+   4.5:1: the dark scenes are built entirely below 0.50. riso-scenes.py
+   refuses to write a file that leaves its window, and re-measures the
+   rendered pixels afterwards because grain moves them. Worst measured
+   ground across the six is 5.43:1 at the 99.98th percentile.
    ========================================================================== */
+/* THE LANDSCAPE SITS AT THE FOOT AND THE SKY CARRIES ON ABOVE IT, which
+   is a fix and an improvement at the same time. `cover` over a whole band
+   sounds right until a band is 1900px tall: the picture is then blown up
+   1.65x, and a field of stippled flowers at 1.65x is a field of confetti.
+   Capping the picture and continuing its sky as flat colour keeps every
+   scene at roughly its drawn scale whatever the band does, and it happens
+   to be how the reference posters are built: a lot of sky, a horizon low
+   down, the detail along the bottom edge.
+
+   The flat colour is the mean of each file's top six rows, so the join is
+   invisible. Re-sample it if a sky is repainted. */
 .scene {
   position: absolute;
   inset: 0;
   z-index: 0;
-  overflow: hidden;
   pointer-events: none;
-  mix-blend-mode: multiply;
+  background-color: var(--sky);
+  /* depth at the top of a continuing sky. It can only ever show in the
+     flat region, because the picture is a CHILD and paints over its own
+     parent's background, so on a band short enough to be all picture
+     this costs nothing and is not even drawn. */
+  background-image: linear-gradient(180deg, rgb(0 0 0 / 0.1), transparent 300px);
 }
-.scene img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: min(100%, 820px);
+  background-image: var(--scene);
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* anchored BOTTOM: a short band should lose sky, never the ground. A
+     landscape with its ground cropped off is not a landscape. */
+  background-position: center bottom;
 }
 /* `.band > *` sets z-index 1 on every direct child, which would put the
    scenery on top of the words. Same fix as .rays and .stickers. */
 .band > .scene { z-index: 0; }
 
+.scene--flowers { --scene: url("/media/scene-flowers.webp"); --sky: #bbe4fc; }
+.scene--meadow  { --scene: url("/media/scene-meadow.webp");  --sky: #88cbf9; }
+.scene--night   { --scene: url("/media/scene-night.webp");   --sky: #1d1046; }
+.scene--hills   { --scene: url("/media/scene-hills.webp");   --sky: #15255f; }
+[data-theme="dark"] .scene--flowers {
+  --scene: url("/media/scene-flowers-dark.webp");
+  --sky: #1e1547;
+}
+[data-theme="dark"] .scene--meadow {
+  --scene: url("/media/scene-meadow-dark.webp");
+  --sky: #08092c;
+}
+
+/* A SCENED BAND IS A SATURATED BAND, whatever colour its stock is. The
+   muted ink on the paper bands was sized against flat tinted stock; over a
+   picture it is dimming type that is already working against a busy field.
+   The rule for the saturated bands has said so since they went duotone, "on a saturated field there is no dimming at all", and a band with a
+   sunflower meadow in it qualifies. `:has` rather than a modifier class so
+   that adding a scene tomorrow brings its own ink with it; the two can
+   never drift apart because there is only one fact. */
+.band:has(> .scene) { --fg-soft: currentColor; }
+
 /* ==========================================================================
-   THE CUTOUTS — people pasted on top of the layout.
+   THE CUTOUTS: people pasted on top of the layout.
    A wide photograph in its own frame sat under this calendar first, and it
    was a picture NEXT TO a design no matter how it was cropped or graded.
    These are the same photography in the opposite relationship: the
@@ -1056,7 +1112,7 @@ body::before {
    The white trim is baked into the file (scripts/make-cutouts.py), not
    drawn here: a die-cut edge follows the alpha, and CSS can only fake that
    with a stack of drop-shadows. The cast shadow IS a drop-shadow, because
-   it has to follow the silhouette too — a box-shadow would draw a
+   it has to follow the silhouette too: a box-shadow would draw a
    rectangle around a person.
    ========================================================================== */
 .cut {
@@ -1070,7 +1126,7 @@ body::before {
 }
 /* One scale for the whole set per breakpoint, rather than a height per
    cutout per width. A figure sized against a 1440 calendar is a figure
-   covering half an 1100 one — these have to shrink WITH the grid they are
+   covering half an 1100 one. These have to shrink WITH the grid they are
    pasted on, and the alternative is six numbers that drift apart. */
 .cut img {
   display: block;
@@ -1081,7 +1137,7 @@ body::before {
 @media (max-width: 899px)  { .cut { --cut-scale: 0.66; } }
 /* A cutout hanging off the SIDE would widen the page; one hanging over the
    SEAM is the whole point. `overflow-x: clip` with `overflow-y: visible` is
-   the one pair CSS lets disagree — `hidden` on either axis forces the other
+   the one pair CSS lets disagree, `hidden` on either axis forces the other
    to scroll, which would guillotine the straddle. */
 .cut-band {
   overflow-x: clip;
@@ -1094,7 +1150,7 @@ body::before {
 .hero-grid-col { position: relative; }
 /* THE OVERHANG IS THE GUTTER, AND NOT ONE PIXEL MORE.
    It was -19% of the grid column, which is a percentage of a box that
-   GROWS with the viewport — so the figure marched further into the copy
+   GROWS with the viewport, so the figure marched further into the copy
    column exactly as the headline was getting bigger. Measured, it
    overlapped the headline's box at every width tested: 63px at 1280, 93px
    at 1440, 108px at 2560. It looked fine at 1440 only because the bag's
@@ -1103,10 +1159,10 @@ body::before {
 
    `left` is now exactly minus the column gap, so the figure's left edge
    lands ON the copy column's right edge and can never cross it at any
-   width. It still breaks the calendar's left rule — the gutter is paper,
-   not grid — which is the part that was actually doing the work. */
+   width. It still breaks the calendar's left rule: the gutter is paper,
+   not grid, which is the part that was actually doing the work. */
 /* +14px because the figure is ROTATED, and a rotated box is wider than its
-   layout box — at -3deg the bottom-left corner reaches ~9px past `left`,
+   layout box: at -3deg the bottom-left corner reaches ~9px past `left`,
    which is enough to put the bounding box back over the headline's. The
    invariant worth keeping is "the boxes do not overlap", not "the glyphs
    happen to miss", which is the assumption that failed the first time. */
@@ -1119,7 +1175,7 @@ body::before {
   top: -30px;
 }
 
-/* the grab band, which has no product shot in it by design — the owner is
+/* the grab band, which has no product shot in it by design: the owner is
    making one. Until it lands these two carry the section on a diagonal
    (seam top-left, camera mid-right), and neither pretends to be a
    screenshot. */
@@ -1166,7 +1222,7 @@ body::before {
   .hero-layout {
     grid-template-columns: minmax(340px, 0.82fr) 1.18fr;
     /* START, not centre. The calendar column is far taller than the copy,
-       and a centred layout answered that by pushing the copy down — which
+       and a centred layout answered that by pushing the copy down, which
        put the primary CTA at the very bottom of a 900px screen. The copy
        column is the one that has to stay above the fold. */
     align-items: start;
@@ -1291,7 +1347,7 @@ body::before {
 .shot img { width: 100%; height: auto; }
 
 /* ==========================================================================
-   THE STICKERS — floating objects, Corner's energy on our own stock.
+   THE STICKERS: floating objects, Corner's energy on our own stock.
    The layer is `overflow: hidden` on purpose: objects placed past the edge
    get trimmed by the band, which is what makes them read as pasted onto a
    sheet rather than arranged inside a box. It sits BEHIND the content
@@ -1466,7 +1522,7 @@ body::before {
 .beat .num { color: var(--accent-text); }
 .beat .body { font-size: 1rem; color: var(--fg-soft); }
 
-/* the poster band: one field, one line, nothing else on it — except that
+/* the poster band: one field, one line, nothing else on it, except that
    the field is now a photograph with the red printed over it. A duotone,
    basically: the still goes through `luminosity` so it keeps its shapes
    and loses its colour, and the band's own red is what you actually see.
@@ -1483,7 +1539,7 @@ body::before {
   width: 100%;
   height: 100%;
   /* MULTIPLY, not luminosity. Luminosity hands the red field the
-     photograph's lightness, so a bright patch of it LIFTS the red — and
+     photograph's lightness, so a bright patch of it LIFTS the red, and
      the poster line, the biggest sentence on the page, sat at 2.34:1
      against a 3.0 requirement wherever that happened. Multiply can only
      ever darken, which for cream type is the safe direction and is the
@@ -1494,7 +1550,7 @@ body::before {
 [data-theme="dark"] .poster-band__still { opacity: 0.4; }
 
 /* ==========================================================================
-   THE CREW WALL — six photographs where 180 words of essay used to be.
+   THE CREW WALL: six photographs where 180 words of essay used to be.
 
    The story section argued, in three paragraphs, that films are social and
    that losing them hurts. Corner and Rodeo would never write that down;
@@ -1523,7 +1579,7 @@ body::before {
 /* TWO TIERS, NOT A UNIFORM ROW. Equal frames five-across is a sheet of
    thumbnails: nothing in it is big enough for the eye to land on, so the
    whole band reads as texture and the glance goes past it. A real contact
-   sheet is not uniform either — you print the frames you like bigger. So a
+   sheet is not uniform either. You print the frames you like bigger. So a
    twelve-column grid runs 4·4·4 / 3·3·3·3: three ~440px prints at 1440,
    which is a photograph you actually look at, over the strip they were cut
    from. It was three tiers and ten frames until 10.08; a third row made it
@@ -1540,7 +1596,7 @@ body::before {
   .crew-shot:nth-child(n + 4) { grid-column: span 3; }
   /* Every plate stays 4:5. Turning the big ones landscape would have been
      the better contact sheet, but these sources are portrait-composed and
-     a 5:4 crop of a 4:5 frame throws away 64% of the height — which is to
+     a 5:4 crop of a 4:5 frame throws away 64% of the height, which is to
      say it decapitates people. Width alone carries the hierarchy. */
 }
 .crew-shot { scroll-snap-align: center; display: block; }
@@ -1573,7 +1629,7 @@ body::before {
   color: var(--fg-soft);
   padding-top: 7px;
 }
-/* a contact sheet is never perfectly aligned — every other frame drops a
+/* a contact sheet is never perfectly aligned. Every other frame drops a
    few pixels, which is the difference between a strip of film and a table */
 @media (min-width: 720px) {
   .crew-shot:nth-child(even) { transform: translateY(clamp(10px, 1.6vw, 26px)); }
@@ -1588,7 +1644,7 @@ body::before {
 .chips { display: flex; gap: 9px; flex-wrap: wrap; }
 
 /* every phone capture is presented at plate scale, not blown up to the
-   column width — a 300px plate reads as a printed photograph, a 500px one
+   column width: a 300px plate reads as a printed photograph, a 500px one
    reads as a device mockup */
 .row__media .frame { width: 320px; max-width: 100%; }
 @media (min-width: 860px) {
@@ -1636,7 +1692,7 @@ body::before {
 .year__shot .frame { width: 320px; max-width: 100%; }
 @media (max-width: 859px) { .year__shot { justify-content: center; } }
 
-/* the signature under the crew wall — the one place a person speaks, and
+/* the signature under the crew wall: the one place a person speaks, and
    now the only surviving trace of a three-paragraph founder essay */
 .story__sign {
   font-family: var(--f-mono);
@@ -1907,7 +1963,11 @@ body::before {
   font-size: 1.1rem;
   color: var(--fg-soft);
 }
-.faq details[open] summary::after { content: "–"; }
+/* a MINUS SIGN, not an en dash. It was U+2013: punctuation wearing an
+   operator's clothes, long and thin beside the "+" it alternates with.
+   It is also the one dash on the site no prose sweep can find, because
+   CSS `content` is not a text node and does not appear in innerText. */
+.faq details[open] summary::after { content: "\2212"; }
 .faq p {
   font-family: var(--f-serif);
   font-size: 1rem;
@@ -1954,12 +2014,11 @@ body::before {
 .break-anywhere { overflow-wrap: anywhere; }
 
 /* ==========================================================================
-   MOTION — built touch-first, then enhanced for a mouse.
+   MOTION: built touch-first, then enhanced for a mouse.
 
    The rule: nothing the page NEEDS is behind :hover. A phone has no hover,
    and a phone that fakes one leaves the effect stuck on after a tap, which
-   is worse than not having it at all. So everything below splits three ways
-   — entrances that play identically on every device, hover polish sealed
+   is worse than not having it at all. So everything below splits three ways: entrances that play identically on every device, hover polish sealed
    inside `(hover: hover) and (pointer: fine)`, and `:active` states so a
    thumb still gets an answer. Only transform and opacity animate, so none of
    it touches layout and none of it lands on the main thread.
@@ -1973,7 +2032,7 @@ body::before {
 .pgrid .pcell {
   /* BACKWARDS, not BOTH. `both` holds the final keyframe on the element
      forever, and an animated value outranks a normal declaration in the
-     cascade — so `to { transform: none }` silently beat `:hover { scale }`
+     cascade, so `to { transform: none }` silently beat `:hover { scale }`
      and the cell hover did nothing at all. `backwards` still covers the
      staggered delay before the cell appears, then releases the element. */
   animation: cellIn 520ms var(--ease) backwards;
@@ -2046,7 +2105,7 @@ body::before {
    Everything here is borrowed from a real object in a real picture house or
    a real television set: marquee bulbs, sprocket holes, the cue mark that
    tells a projectionist to change reels, a row of seat backs, a VHS on-screen
-   display. None of it is a texture for its own sake — each one is a thing
+   display. None of it is a texture for its own sake. Each one is a thing
    the product's own subject would actually have.
    ========================================================================== */
 
@@ -2114,8 +2173,8 @@ body::before {
 }
 @media (max-width: 900px) { .now-showing { display: none; } }
 
-/* The film-frame layer — sprocket rails, the projectionist's cue mark, the
-   broadcast scanlines and the technical slate — lived on the demo plate and
+/* The film-frame layer: sprocket rails, the projectionist's cue mark, the
+   broadcast scanlines and the technical slate: lived on the demo plate and
    nowhere else. The demo plate is gone (it was a black rectangle captioned
    AWAITING CAPTURE, which is a placeholder advertising its own absence),
    so all of it came out with it rather than sitting here unreferenced. It
