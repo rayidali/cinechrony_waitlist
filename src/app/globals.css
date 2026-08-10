@@ -29,13 +29,22 @@
   --rule:        oklch(0.22 0.012 60 / 0.16);
   --rule-strong: oklch(0.22 0.012 60 / 0.42);
 
-  /* ---- poster inks: flat fields only. Never a gradient, never a blur. ---- */
-  --red:    oklch(0.55 0.17 35);    /* the app's film red */
-  --blue:   oklch(0.45 0.19 258);   /* the folder blue */
-  --sage:   oklch(0.52 0.11 150);
-  --amber:  oklch(0.80 0.14 78);
-  --dusk:   oklch(0.38 0.11 292);
+  /* ---- poster inks ----
+     Flat fields, hard edges. Gradients ARE allowed now, but only CONTAINED
+     in a shape (see .aura and .orb below): the boards are full of grainy
+     auras inside a circle or a plate, and not one of them bleeds into the
+     page. That containment is the whole difference between this and the
+     ambient wash v2 died of. */
+  --red:      oklch(0.55 0.17 35);    /* the app's film red */
+  --blue:     oklch(0.45 0.19 258);   /* the folder blue */
+  --sage:     oklch(0.52 0.11 150);
+  --forest:   oklch(0.42 0.085 155);  /* the SOLITUDE green */
+  --teal:     oklch(0.48 0.09 205);
+  --amber:    oklch(0.80 0.14 78);
+  --marigold: oklch(0.72 0.16 62);
+  --dusk:     oklch(0.38 0.11 292);
   --sage-tint: oklch(0.87 0.055 152);
+  --blush:    oklch(0.85 0.07 25);
 
   /* ---- semantic ---- */
   --bg:        var(--paper);
@@ -94,7 +103,11 @@
   --sage:   oklch(0.6 0.11 150);
   --amber:  oklch(0.8 0.14 78);
   --dusk:   oklch(0.46 0.12 292);
+  --forest:   oklch(0.33 0.075 155);
+  --teal:     oklch(0.4 0.085 205);
+  --marigold: oklch(0.62 0.15 62);
   --sage-tint: oklch(0.4 0.07 152);
+  --blush:    oklch(0.42 0.07 25);
 
   --bg: var(--paper);
   --fg: var(--ink);
@@ -138,6 +151,7 @@ body::after {
   background-image: var(--grain-fine);
   opacity: 0.38;
   mix-blend-mode: overlay;
+  transform: translateZ(0);
 }
 body::before {
   content: "";
@@ -148,6 +162,7 @@ body::before {
   background-image: var(--grain-clump);
   opacity: 0.2;
   mix-blend-mode: soft-light;
+  transform: translateZ(0);
 }
 /* the lens: one soft corner falloff over the entire page */
 .vignette {
@@ -186,6 +201,56 @@ body::before {
 .band--red   { background: var(--red); color: var(--bone); }
 .band--blue  { background: var(--blue); color: var(--bone); }
 .band--amber { background: var(--amber); color: oklch(0.2 0.03 70); }
+.band--forest { background: var(--forest); color: var(--bone); }
+.band--marigold { background: var(--marigold); color: oklch(0.19 0.04 55); }
+
+/* ==========================================================================
+   AURA — the grainy multi-hue gradient from the boards.
+   Four overlapping radial stops on a deep base, heavily grained. It is a
+   gradient, which the rest of this system bans, and the reason it works is
+   that it is always CONTAINED: it fills a band edge to edge or it fills a
+   circle, and it never fades out into the paper. A soft edge is what made
+   v2 read as generated; a hard edge round a soft interior reads as print.
+   ========================================================================== */
+.band--aura {
+  color: var(--bone);
+  background:
+    radial-gradient(68% 62% at 16% 20%, oklch(0.56 0.18 34 / 0.95), transparent 68%),
+    radial-gradient(62% 58% at 84% 16%, oklch(0.44 0.16 288 / 0.92), transparent 66%),
+    radial-gradient(78% 70% at 74% 84%, oklch(0.47 0.13 205 / 0.88), transparent 70%),
+    radial-gradient(58% 54% at 26% 88%, oklch(0.5 0.13 148 / 0.85), transparent 68%),
+    oklch(0.15 0.025 40);
+}
+
+/* an aura in a circle — the "do something uncomfortable" object */
+.orb {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background:
+    radial-gradient(58% 58% at 30% 26%, oklch(0.63 0.19 38), transparent 66%),
+    radial-gradient(54% 54% at 76% 26%, oklch(0.48 0.17 272), transparent 64%),
+    radial-gradient(60% 60% at 72% 76%, oklch(0.56 0.13 158), transparent 66%),
+    radial-gradient(56% 56% at 24% 78%, oklch(0.76 0.15 72), transparent 64%),
+    oklch(0.6 0.17 30);
+}
+.orb--cool {
+  background:
+    radial-gradient(58% 58% at 28% 24%, oklch(0.6 0.16 245), transparent 66%),
+    radial-gradient(56% 56% at 78% 30%, oklch(0.66 0.13 200), transparent 64%),
+    radial-gradient(60% 60% at 70% 78%, oklch(0.58 0.14 300), transparent 66%),
+    radial-gradient(52% 52% at 26% 80%, oklch(0.72 0.12 172), transparent 64%),
+    oklch(0.52 0.15 260);
+}
+.orb::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-fine), var(--grain-clump);
+  opacity: 0.55;
+  mix-blend-mode: overlay;
+}
 
 /* In dark the ink band must not simply invert. `--ink` is cream at night,
    so `background: var(--ink)` turns the ticker and the closing band into
@@ -204,7 +269,10 @@ body::before {
 .band--ink::before,
 .band--red::before,
 .band--blue::before,
-.band--amber::before {
+.band--amber::before,
+.band--forest::before,
+.band--marigold::before,
+.band--aura::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -218,7 +286,8 @@ body::before {
    paper bands: a vignette on cream reads as a dirty screen, not as stock. */
 .band--ink::after,
 .band--red::after,
-.band--blue::after {
+.band--blue::after,
+.band--forest::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -229,12 +298,16 @@ body::before {
 .band > * { position: relative; z-index: 1; }
 
 /* inverted fields need their own soft-ink + rule values */
-.band--ink, .band--red, .band--blue {
+.band--ink, .band--red, .band--blue, .band--forest, .band--aura {
   --fg-soft: color-mix(in oklab, currentColor 68%, transparent);
   --rule: color-mix(in oklab, currentColor 22%, transparent);
   --rule-strong: color-mix(in oklab, currentColor 45%, transparent);
 }
-.band--amber { --fg-soft: color-mix(in oklab, currentColor 72%, transparent); }
+.band--amber, .band--marigold {
+  --fg-soft: color-mix(in oklab, currentColor 72%, transparent);
+  --rule: color-mix(in oklab, currentColor 26%, transparent);
+  --rule-strong: color-mix(in oklab, currentColor 48%, transparent);
+}
 
 .hr { height: 1px; background: var(--rule-strong); border: 0; margin: 0; }
 
@@ -466,11 +539,35 @@ body::before {
 .pcell--sage { background: var(--sage); }
 .pcell--amber { background: var(--amber); }
 .pcell--tint { background: var(--sage-tint); }
+.pcell--teal { background: var(--teal); }
+.pcell--forest { background: var(--forest); }
+.pcell--marigold { background: var(--marigold); }
+.pcell--blush { background: var(--blush); }
+.pcell--aura {
+  background:
+    radial-gradient(62% 62% at 28% 24%, oklch(0.64 0.19 38), transparent 68%),
+    radial-gradient(58% 58% at 78% 28%, oklch(0.5 0.17 274), transparent 66%),
+    radial-gradient(62% 62% at 70% 78%, oklch(0.58 0.13 158), transparent 68%),
+    oklch(0.62 0.17 32);
+}
+.pcell--aura2 {
+  background:
+    radial-gradient(60% 60% at 26% 26%, oklch(0.62 0.16 245), transparent 66%),
+    radial-gradient(58% 58% at 78% 30%, oklch(0.68 0.13 198), transparent 66%),
+    radial-gradient(58% 58% at 66% 80%, oklch(0.58 0.14 302), transparent 66%),
+    oklch(0.54 0.15 262);
+}
 .pcell--ink .pcell__n,
 .pcell--red .pcell__n,
 .pcell--blue .pcell__n,
 .pcell--dusk .pcell__n,
-.pcell--sage .pcell__n { color: var(--bone); }
+.pcell--sage .pcell__n,
+.pcell--teal .pcell__n,
+.pcell--forest .pcell__n,
+.pcell--aura .pcell__n,
+.pcell--aura2 .pcell__n { color: var(--bone); }
+.pcell--marigold .pcell__n,
+.pcell--blush .pcell__n { color: var(--ink); }
 .pcell--amber .pcell__n, .pcell--tint .pcell__n { color: var(--ink); }
 
 .pcell img {
@@ -512,12 +609,15 @@ body::before {
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--bone);
-  opacity: 0.85;
+  opacity: 0.72;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.pcell--amber .pcell__t, .pcell--tint .pcell__t { color: var(--ink); }
+.pcell--amber .pcell__t,
+.pcell--marigold .pcell__t,
+.pcell--blush .pcell__t,
+.pcell--tint .pcell__t { color: var(--ink); }
 /* a 55px cell cannot hold "past lives"; an ellipsised stub of a title is
    worse than no title, so below tablet the cells go back to pure colour */
 @media (max-width: 820px) { .pcell__t { display: none; } }
@@ -998,6 +1098,15 @@ body::before {
   padding-left: 22px;
   border-left: 3px solid var(--red);
 }
+/* the orb sits under the story headline, in the dead space a two-column
+   editorial spread always leaves at the bottom of the shorter column */
+.story__orb {
+  width: clamp(150px, 20vw, 236px);
+  margin-top: 40px;
+  transform: rotate(-4deg);
+}
+@media (max-width: 899px) { .story__orb { margin: 30px auto 0; } }
+
 .story__sign {
   font-family: var(--f-mono);
   font-size: 0.6875rem;
@@ -1311,6 +1420,87 @@ body::before {
 
 .support-email { word-break: break-word; }
 .break-anywhere { overflow-wrap: anywhere; }
+
+/* ==========================================================================
+   MOTION — built touch-first, then enhanced for a mouse.
+
+   The rule: nothing the page NEEDS is behind :hover. A phone has no hover,
+   and a phone that fakes one leaves the effect stuck on after a tap, which
+   is worse than not having it at all. So everything below splits three ways
+   — entrances that play identically on every device, hover polish sealed
+   inside `(hover: hover) and (pointer: fine)`, and `:active` states so a
+   thumb still gets an answer. Only transform and opacity animate, so none of
+   it touches layout and none of it lands on the main thread.
+   ========================================================================== */
+
+/* the calendar deals itself in, cell by cell, the same on desktop and phone */
+@keyframes cellIn {
+  from { opacity: 0; transform: scale(0.86); }
+  to { opacity: 1; transform: none; }
+}
+.pgrid .pcell {
+  /* BACKWARDS, not BOTH. `both` holds the final keyframe on the element
+     forever, and an animated value outranks a normal declaration in the
+     cascade — so `to { transform: none }` silently beat `:hover { scale }`
+     and the cell hover did nothing at all. `backwards` still covers the
+     staggered delay before the cell appears, then releases the element. */
+  animation: cellIn 520ms var(--ease) backwards;
+  animation-delay: calc(var(--i, 0) * 16ms);
+  transition: transform 260ms var(--ease), filter 260ms var(--ease);
+}
+
+/* touch feedback: a thumb gets the same "it moved" a cursor does */
+.btn:active,
+.pill:active { transform: translate(1px, 1px) scale(0.985); }
+.frame:active .frame__plate { transform: translate(1px, 1px); }
+
+@media (hover: hover) and (pointer: fine) {
+  /* a cell lifts out of the grid and warms up; the film title is hidden at
+     rest so the plate stays quiet, and fades up with it */
+  .pcell:hover { transform: scale(1.11); z-index: 4; filter: saturate(1.15) brightness(1.06); }
+  .pcell__t { transition: opacity 220ms var(--ease); }
+  .pcell:hover .pcell__t { opacity: 1; }
+
+  /* plates take the printed offset on approach, the gesture buttons already use */
+  .frame__plate { transition: transform 300ms var(--ease), box-shadow 300ms var(--ease); }
+  .frame:hover .frame__plate { transform: translate(-4px, -4px); box-shadow: 7px 7px 0 currentColor; }
+
+  /* nav and footer links wipe an underline rather than just changing colour */
+  .nav-links a:not(.btn),
+  .footer ul a { position: relative; }
+  .nav-links a:not(.btn)::after,
+  .footer ul a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -3px;
+    height: 1.5px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 260ms var(--ease);
+  }
+  .nav-links a:not(.btn):hover::after,
+  .footer ul a:hover::after { transform: scaleX(1); }
+
+  .beat { transition: background 260ms var(--ease); }
+  .beat:hover { background: var(--surface); }
+  .beat .num { transition: transform 300ms var(--ease); }
+  .beat:hover .num { transform: translateY(-3px); }
+
+  .stub { transition: transform 300ms var(--ease), box-shadow 300ms var(--ease); }
+  .stub:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 currentColor; }
+
+  .source { transition: background 220ms var(--ease), color 220ms var(--ease); }
+  .source:hover { background: var(--fg); color: var(--bg); }
+
+  /* let the marquee rest while you read it */
+  .ticker:hover .ticker__track { animation-play-state: paused; }
+
+  .faq summary { transition: color 200ms var(--ease); }
+  .faq summary:hover { color: var(--accent-text); }
+}
 
 /* ---------- utility ---------- */
 .skip-link {

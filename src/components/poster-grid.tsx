@@ -17,7 +17,11 @@ import { media, type MediaId } from "@/lib/site";
  * with no layout change.
  */
 
-type Fill = "ink" | "red" | "blue" | "dusk" | "sage" | "amber" | "tint";
+type Fill =
+  | "ink" | "red" | "blue" | "dusk" | "sage" | "amber" | "tint"
+  | "teal" | "forest" | "marigold" | "blush"
+  /* the two grainy gradient cells — the boards' aura, at cell scale */
+  | "aura" | "aura2";
 
 type Cell = {
   /** the date numeral */
@@ -37,26 +41,29 @@ type Cell = {
 /* Composed by hand, not scattered: the filled cells drift diagonally from
    the top right down to the bottom left so the eye crosses the whole plate,
    and the ink cells are spaced to act as anchors rather than clumps.
-   FIVE VALUES, NOT SEVEN. The first cut used every poster ink at once and
-   the grid turned into a swatch card; ink carries the weight, mint is the
-   app's own "grabbed" tint, and red, blue and amber are each allowed to
-   appear a couple of times. Photography, when it lands, is the variety. */
+   INK CARRIES THE WEIGHT, everything else is seasoning. An earlier cut used
+   every poster ink at equal frequency and the grid read as a swatch card;
+   the fix was not fewer colours but a hierarchy — ink anchors, mint is the
+   app's own "grabbed" tint, and teal, marigold, amber, red and blue each
+   appear once or twice. Two cells carry the grainy aura gradient, which is
+   how the boards' colour language gets into the grid without any of it
+   bleeding. Photography, when it lands, replaces six of these. */
 const MONTH: Cell[] = [
   // leading days from the previous month
   { d: 28, mute: true }, { d: 29, mute: true }, { d: 30, mute: true },
   { d: 1 }, { d: 2, img: "grid-1", fill: "ink", title: "past lives" }, { d: 3 }, { d: 4, fill: "ink" },
 
   { d: 5, fill: "ink" }, { d: 6, dot: true }, { d: 7 }, { d: 8, img: "grid-2", fill: "red", title: "heat" },
-  { d: 9 }, { d: 10, fill: "tint" }, { d: 11 },
+  { d: 9 }, { d: 10, fill: "tint" }, { d: 11, fill: "teal" },
 
-  { d: 12 }, { d: 13, img: "grid-3", fill: "ink" }, { d: 14 }, { d: 15 },
+  { d: 12 }, { d: 13, img: "grid-3", fill: "aura" }, { d: 14 }, { d: 15, fill: "marigold" },
   { d: 16, fill: "ink" }, { d: 17, fill: "tint" }, { d: 18, fill: "amber", title: "arrival" },
 
   { d: 19, fill: "blue" }, { d: 20 }, { d: 21, img: "grid-4", fill: "ink", title: "whiplash" },
   { d: 22 }, { d: 23, dot: true }, { d: 24, fill: "ink" }, { d: 25 },
 
   { d: 26, fill: "tint" }, { d: 27, fill: "ink" }, { d: 28 }, { d: 29, img: "grid-5", fill: "red" },
-  { d: 30 }, { d: 31, img: "grid-6", fill: "blue", title: "parasite" }, { d: 1, mute: true },
+  { d: 30, fill: "aura2" }, { d: 31, img: "grid-6", fill: "blue", title: "parasite" }, { d: 1, mute: true },
 ];
 
 const DAYS = ["m", "t", "w", "t", "f", "s", "s"];
@@ -86,6 +93,9 @@ export function PosterGrid() {
               ]
                 .filter(Boolean)
                 .join(" ")}
+              // the stagger index: the grid deals itself in rather than
+              // appearing all at once, and it costs one custom property
+              style={{ "--i": i } as React.CSSProperties}
             >
               {file && c.img ? (
                 // eslint-disable-next-line @next/next/no-img-element

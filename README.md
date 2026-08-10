@@ -40,6 +40,19 @@ inverts it:
 - **The product is shown, never drawn.** Every screenshot is a real capture
   of the shipped app, the same set that went to App Store Connect.
 
+- **Gradients are allowed, bleed is not.** The grainy aura — four
+  overlapping radial stops on a deep base, heavily grained — fills the
+  closing band, two calendar cells and the story orb. Every one of them
+  stops at a hard edge. A soft interior inside a hard shape reads as print;
+  the same gradient fading out into the paper is the ambient wash v2 died
+  of, and that distinction is the only reason both can live here.
+- **Motion is touch-first.** Nothing the page needs sits behind `:hover` —
+  a phone has no hover, and one that fakes it leaves the state stuck on
+  after a tap. Entrances (the calendar deals itself in, cell by cell) play
+  identically everywhere; hover polish is sealed inside
+  `(hover: hover) and (pointer: fine)`; `:active` gives a thumb an answer.
+  Transform and opacity only, so nothing touches layout.
+
 **Faces are the app's three, and only those three:** Bricolage Grotesque
 for display and UI, Newsreader for prose, Space Mono for labels. Manrope is
 gone; it was here in v2 and nowhere in the product.

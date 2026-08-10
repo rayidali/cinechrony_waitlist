@@ -296,7 +296,7 @@ export default function LandingPage() {
         </section>
 
         {/* ---------------- the year ---------------- */}
-        <section className="band band--deep section">
+        <section className="band band--forest section">
           <div className="wrap">
             <div className="year">
               <Reveal className="year__copy">
@@ -333,6 +333,7 @@ export default function LandingPage() {
             <div className="story">
               <Reveal>
                 <h2 className="d2">films live on social now. the place you keep them didn&rsquo;t.</h2>
+                <div className="story__orb orb" aria-hidden="true" />
               </Reveal>
               <Reveal delay={120}>
                 <p className="story__p">
@@ -356,7 +357,7 @@ export default function LandingPage() {
         </section>
 
         {/* ---------------- the close ---------------- */}
-        <section className="band band--ink section--xl" id="try">
+        <section className="band band--aura section--xl" id="try">
           <Stickers scene="close" />
           <div className="wrap center">
             <Reveal>
