@@ -3,7 +3,7 @@
 **One open slot, and it is deliberately open.** The "reel 02 · the grab"
 section has no image under its three beats — the scan capture came out on
 10.08 because you are shooting something better for it. Everything else is
-filled: five real captures of the shipped app and twenty-seven graded
+filled: five real captures of the shipped app and twenty-eight graded
 photographs, no placeholder frames anywhere.
 
 To wire anything up: drop the file in `public/media/`, then set its `src`
@@ -51,8 +51,12 @@ submission needs. One recording settles both.
 
 ## 3. The photographs — filled, and worth replacing eventually
 
-Twenty-seven frames are live: eleven in the hero calendar's film cells, ten
-in the crew wall on the rust band, one behind the red poster band, and
+Twenty-eight frames are live: eleven in the hero calendar's film cells,
+seven in the crew wall on the rust band (it was ten across three rows until
+10.08; three rows read as a mood board, and crew-4, crew-5 and crew-9 are
+benched in `media` rather than deleted), one behind the red poster band,
+**four screenprinted into whole bands** — a sunflower field, a wildflower
+meadow, a night sky and rolling hills, each in that band's single ink — and
 **five cutouts** — people lifted out of their backgrounds and pasted on top
 of the layout (a figure with a camcorder over the hero calendar, a hand
 with a popcorn box, a hand with a disposable camera, four pairs of legs
@@ -67,7 +71,7 @@ sign, a rooftop screening, a garden projector, a red cinema, popcorn.
 **Two honest caveats, both yours to weigh:**
 
 1. **They are the right photographs of the wrong people.** The site now
-   says "this is the crew" using ten groups of strangers in the wall and
+   says "this is the crew" using seven groups of strangers in the wall and
    five more cut out and pasted over the layout. For a product whose whole
    pitch is *your friends*, your own camera roll beats this on the only
    axis that matters. If you have twenty candid frames from real nights,
@@ -122,8 +126,13 @@ poster still 2000×1120 wide, cutouts whatever shape the person is.
 | `app-film` | live — a film open, showing "the clip that did it" |
 | `app-year` | live — the year grid |
 | `grid-1` … `grid-11` | live — the hero calendar's film cells |
-| `crew-1` … `crew-10` | live — the crew wall |
+| `crew-1` `crew-2` `crew-3` `crew-6` `crew-7` `crew-8` `crew-10` | live — the crew wall, two rows |
 | `poster-still` | live — duotone under the friday line |
+| `scene-flowers` | live — screenprinted into the grab band |
+| `scene-meadow` | live — screenprinted into what-it-does |
+| `scene-night` | live — screenprinted into movie night |
+| `scene-hills` | live — screenprinted into the year |
+| `crew-4` `crew-5` `crew-9` | BENCHED — graded and on disk, off the page |
 | `cut-camcorder` | live — over the hero calendar, breaking its left rule |
 | `cut-popcorn` | live — top right of the hero calendar |
 | `cut-legs` | live — sitting on the crew/grab seam |

@@ -124,6 +124,22 @@ export const media = {
   "crew-9": { src: "/media/crew-9.webp", kind: "image", alt: "Two friends posing for a flash photo indoors" },
   "crew-10": { src: "/media/crew-10.webp", kind: "image", alt: "Two friends at night, one shooting back at the camera" },
 
+  /* ---- the band scenes -------------------------------------------------
+     Scenery screenprinted into four bands in ONE INK. The files are
+     GREYSCALE and composite with `multiply`, so they can only lay down
+     more of the band's own colour — the palette is mathematically safe
+     from them, which is the whole reason a photograph is allowed to be
+     the background of a page this colour-disciplined.
+
+     Baked by scripts/band-scenes.py. The floor each one is clamped to is
+     a contrast decision, not a taste one: multiply only ever darkens, so
+     a light paper band with dark type is the one direction where this can
+     hurt, and those two are held at 0.88 while the dark bands take 0.72. */
+  "scene-flowers": { src: "/media/scene-flowers.webp", kind: "image", alt: "" },
+  "scene-meadow": { src: "/media/scene-meadow.webp", kind: "image", alt: "" },
+  "scene-night": { src: "/media/scene-night.webp", kind: "image", alt: "" },
+  "scene-hills": { src: "/media/scene-hills.webp", kind: "image", alt: "" },
+
   /* ---- the cutouts -----------------------------------------------------
      People lifted out of their photographs and pasted ON the layout: they
      sit on the calendar's rules, lean past the trim, and cast a shadow on

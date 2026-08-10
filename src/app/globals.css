@@ -75,9 +75,16 @@
   --fg:        var(--ink);
   --fg-soft:   var(--ink-soft);
   --surface:   var(--bone);
-  --accent:    var(--red);
+  /* Not var(--red), which is where it started. Cream on the brand red
+     measures 4.0:1 on rendered pixels — the primary CTA of five routes,
+     under AA, and invisible to the CSS gate because the page-wide grain
+     overlay lightens the button by a few points. Two clicks darker fixes
+     it and is not a colour anyone can tell apart side by side. `--red`
+     itself is untouched: it is the calendar dot, the focus ring and the
+     app's own accent, none of which carry text. */
+  --accent:    oklch(0.52 0.175 35);
   --accent-fg: var(--bone);
-  --accent-text: oklch(0.5 0.17 35);
+  --accent-text: oklch(0.44 0.17 33);
   --focus:     var(--red);
 
   /* ---- type ----
@@ -123,6 +130,16 @@
      whole reason a flat oklch value stops reading as a CSS background. */
   --halftone: radial-gradient(circle at 50% 50%, currentColor 0 0.9px, transparent 1.1px);
   --halftone-size: 4px 4px;
+
+  /* Muted ink for a TINTED sheet. The plain one is sized against cream,
+     where a soft grey has a whole sheet of headroom; drop the same grey on
+     ochre or rose — both of which now carry a screenprinted photograph on
+     top of a sun-fade on top of a halftone — and every label lands between
+     3.4 and 4.5 against a 4.5 requirement. Measured on rendered pixels by
+     scripts/contrast-pixels.mjs, which is the only gate that can see a
+     field made of four stacked layers. Same reasoning as the
+     `--fg-soft: currentColor` rule the saturated bands already carry. */
+  --ink-soft-strong: oklch(0.38 0.014 60);
 }
 
 /* dark: the projection room. Same flat discipline, inverted stock. */
@@ -160,8 +177,18 @@
 
   --bg: var(--paper);
   --fg: var(--ink);
+  /* --accent used to BE var(--red), so it followed this block's lighter red
+     for free. Pinning it in :root to fix the light-mode button silently
+     handed dark mode a dark red under dark ink — 3.1:1, worse than the bug
+     being fixed. Re-linked here on purpose: dark carries DARK type on the
+     accent, so it wants the light red, and the two themes want opposite
+     corrections from the same token. */
+  --accent: var(--red);
   --accent-fg: oklch(0.16 0.012 60);
-  --accent-text: var(--red);
+  /* not var(--red): the red that works as a FIELD is too dark to be TYPE on
+     one. "est. 2026 · iphone + web" measured 2.92:1 on the night hero. */
+  --accent-text: oklch(0.75 0.155 35);
+  --ink-soft-strong: oklch(0.87 0.014 60);
   --offset: 4px 4px 0 var(--ink);
   --offset-sm: 3px 3px 0 var(--ink);
 }
@@ -289,7 +316,7 @@ body::before {
 .band--rust {
   color: var(--on-color);
   background-color: var(--rust);
-  background-image: linear-gradient(158deg, oklch(0.5 0.145 48) 0%, var(--rust) 46%, oklch(0.38 0.13 24) 100%);
+  background-image: linear-gradient(158deg, oklch(0.44 0.14 46) 0%, var(--rust) 46%, oklch(0.38 0.13 24) 100%);
 }
 .band--forest {
   color: var(--on-color);
@@ -299,7 +326,7 @@ body::before {
 .band--blue {
   color: var(--on-color);
   background-color: var(--blue);
-  background-image: linear-gradient(154deg, oklch(0.47 0.175 250) 0%, var(--blue) 48%, oklch(0.37 0.145 290) 100%);
+  background-image: linear-gradient(154deg, oklch(0.42 0.17 250) 0%, var(--blue) 48%, oklch(0.37 0.145 290) 100%);
 }
 [data-theme="dark"] .band--rust {
   background-image: linear-gradient(158deg, oklch(0.44 0.13 48) 0%, var(--rust) 46%, oklch(0.33 0.115 24) 100%);
@@ -308,7 +335,7 @@ body::before {
   background-image: linear-gradient(162deg, oklch(0.37 0.075 148) 0%, var(--forest) 52%, oklch(0.29 0.065 196) 100%);
 }
 [data-theme="dark"] .band--blue {
-  background-image: linear-gradient(154deg, oklch(0.42 0.16 250) 0%, var(--blue) 48%, oklch(0.32 0.13 290) 100%);
+  background-image: linear-gradient(154deg, oklch(0.38 0.155 250) 0%, var(--blue) 48%, oklch(0.32 0.13 290) 100%);
 }
 
 /* layer 2 — the aged tint. Two very wide stops, one warm from the top
@@ -381,7 +408,10 @@ body::before {
     currentColor 0deg 4deg,
     transparent 4deg 14deg
   );
-  opacity: 0.11;
+  /* 0.11 put enough cream into the rust to drop the label sitting on it to
+     3.82:1. A sunburst is a backdrop, and a backdrop that costs the text
+     above it half a point of contrast is charging too much. */
+  opacity: 0.07;
   mask-image: radial-gradient(60% 60% at 50% 42%, transparent 12%, #000 68%, transparent 97%);
   -webkit-mask-image: radial-gradient(60% 60% at 50% 42%, transparent 12%, #000 68%, transparent 97%);
 }
@@ -497,6 +527,13 @@ body::before {
    sheet of headroom; on red, blue and forest the same figure put every mono
    label between 3.0 and 4.4 against a 4.5 requirement. Hierarchy on a
    coloured field has to come from size and letterspacing, not opacity. */
+/* A TINTED SHEET IS NOT CREAM EITHER. These four are paper, so they keep a
+   softer ink rather than going all the way to currentColor — but the plain
+   `--ink-soft` was sized against the cream page and does not survive a tint
+   with a screenprint over it. */
+.band--ochre, .band--rose, .band--mint, .band--deep {
+  --fg-soft: var(--ink-soft-strong);
+}
 .band--ink, .band--red, .band--blue, .band--forest,
 .band--rust, .band--olive, .band--plum, .band--aura {
   /* and at 88% it still missed, so on a saturated field there is no
@@ -949,7 +986,10 @@ body::before {
 }
 .hero-layout {
   display: grid;
-  gap: clamp(40px, 5vw, 64px);
+  /* named, because the camcorder cutout's overhang is exactly this number
+     and a gap edited in one place would silently walk it into the headline */
+  --hero-gap: clamp(40px, 5vw, 64px);
+  gap: var(--hero-gap);
   align-items: center;
 }
 .hero-copy .d1 { margin-bottom: 26px; }
@@ -962,6 +1002,48 @@ body::before {
   margin: 0;
 }
 .hero-note { margin-top: 20px; }
+
+/* ==========================================================================
+   THE BAND SCENES — a photograph screenprinted into the stock.
+   "The background is a plain colour" was said five times and answered with
+   objects, then with duotone gradients, and it kept being true, because a
+   gradient of a colour is still that colour. This is scenery: a sunflower
+   field, a wildflower meadow, a night sky, rolling hills.
+
+   ONE INK. The files are greyscale and composite with `multiply`, which
+   scales every channel by the same factor — so hue and chroma are
+   untouched and the photograph can only put down more of the band's own
+   colour. A full-colour still here would be a second palette arriving
+   unannounced; this cannot introduce one however hard it is pushed. It is
+   also what a one-colour screenprint physically is, which is the look.
+
+   CONTRAST, AND WHY THE FLOOR IS WHERE IT IS. Multiply only darkens.
+   Light paper under dark type therefore LOSES contrast, and it is the only
+   direction that can hurt — the dark bands carry light type and gain. So
+   the two paper scenes are clamped to a 0.88 floor and the dark ones to
+   ~0.72. `contrast.mjs` is CSS-only and cannot see an <img>, so it scores
+   these bands against the un-multiplied colour; the floor is what keeps
+   that proxy honest. Measured off rendered pixels rather than argued:
+   the darkest field under body copy on the ochre band is 4.6:1 worse than
+   flat and still clears AA with margin. Re-measure if a floor moves.
+   ========================================================================== */
+.scene {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+.scene img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* `.band > *` sets z-index 1 on every direct child, which would put the
+   scenery on top of the words. Same fix as .rays and .stickers. */
+.band > .scene { z-index: 0; }
 
 /* ==========================================================================
    THE CUTOUTS — people pasted on top of the layout.
@@ -1010,21 +1092,31 @@ body::before {
    object. Both anchored to the calendar rather than to the band, so they
    keep their relationship to it at every width. */
 .hero-grid-col { position: relative; }
-/* Far enough left to BREAK the calendar's left rule rather than stand
-   inside the grid. A figure fully within the frame is a photograph in a
-   cell; one straddling the edge is pasted on top of it, and that is the
-   entire read. The gutter it leans into is empty at this height — the copy
-   column has its sub-headline and CTA lower and much further left. */
+/* THE OVERHANG IS THE GUTTER, AND NOT ONE PIXEL MORE.
+   It was -19% of the grid column, which is a percentage of a box that
+   GROWS with the viewport — so the figure marched further into the copy
+   column exactly as the headline was getting bigger. Measured, it
+   overlapped the headline's box at every width tested: 63px at 1280, 93px
+   at 1440, 108px at 2560. It looked fine at 1440 only because the bag's
+   silhouette is narrow where that line's glyphs happened to end. That is
+   luck, not layout, and at 2000px the luck ran out and ate a word.
+
+   `left` is now exactly minus the column gap, so the figure's left edge
+   lands ON the copy column's right edge and can never cross it at any
+   width. It still breaks the calendar's left rule — the gutter is paper,
+   not grid — which is the part that was actually doing the work. */
+/* +14px because the figure is ROTATED, and a rotated box is wider than its
+   layout box — at -3deg the bottom-left corner reaches ~9px past `left`,
+   which is enough to put the bounding box back over the headline's. The
+   invariant worth keeping is "the boxes do not overlap", not "the glyphs
+   happen to miss", which is the assumption that failed the first time. */
 .cut--camcorder {
-  left: -8%;
+  left: calc(-1 * var(--hero-gap, 64px) + 14px);
   bottom: 78px;
 }
 .cut--popcorn {
   right: 6%;
   top: -30px;
-}
-@media (min-width: 1200px) {
-  .cut--camcorder { left: -19%; }
 }
 
 /* the grab band, which has no product shot in it by design — the owner is
@@ -1390,10 +1482,16 @@ body::before {
   object-fit: cover;
   width: 100%;
   height: 100%;
-  mix-blend-mode: luminosity;
-  opacity: 0.42;
+  /* MULTIPLY, not luminosity. Luminosity hands the red field the
+     photograph's lightness, so a bright patch of it LIFTS the red — and
+     the poster line, the biggest sentence on the page, sat at 2.34:1
+     against a 3.0 requirement wherever that happened. Multiply can only
+     ever darken, which for cream type is the safe direction and is the
+     same one-ink rule the band scenes follow. */
+  mix-blend-mode: multiply;
+  opacity: 0.5;
 }
-[data-theme="dark"] .poster-band__still { opacity: 0.34; }
+[data-theme="dark"] .poster-band__still { opacity: 0.4; }
 
 /* ==========================================================================
    THE CREW WALL — six photographs where 180 words of essay used to be.
@@ -1422,13 +1520,14 @@ body::before {
   scrollbar-width: none;
 }
 .crew-strip::-webkit-scrollbar { display: none; }
-/* THREE TIERS, NOT A UNIFORM ROW. Ten equal frames five-across is a sheet
-   of thumbnails: nothing in it is big enough for the eye to land on, so the
+/* TWO TIERS, NOT A UNIFORM ROW. Equal frames five-across is a sheet of
+   thumbnails: nothing in it is big enough for the eye to land on, so the
    whole band reads as texture and the glance goes past it. A real contact
    sheet is not uniform either — you print the frames you like bigger. So a
-   twelve-column grid runs 4·4·4 / 3·3·3·3 / 4·4·4: the outer tiers are
-   ~440px prints at 1440, which is a photograph you actually look at, and
-   the middle tier is the strip they were cut from. */
+   twelve-column grid runs 4·4·4 / 3·3·3·3: three ~440px prints at 1440,
+   which is a photograph you actually look at, over the strip they were cut
+   from. It was three tiers and ten frames until 10.08; a third row made it
+   a mood board again, and the row that went was the one saying least. */
 @media (min-width: 720px) {
   .crew-strip {
     grid-auto-flow: initial;
@@ -1437,9 +1536,8 @@ body::before {
     gap: clamp(16px, 1.8vw, 30px) clamp(10px, 1.2vw, 18px);
     padding: 0 28px;
   }
-  .crew-shot:nth-child(-n + 3),
-  .crew-shot:nth-child(n + 8) { grid-column: span 4; }
-  .crew-shot:nth-child(n + 4):nth-child(-n + 7) { grid-column: span 3; }
+  .crew-shot:nth-child(-n + 3) { grid-column: span 4; }
+  .crew-shot:nth-child(n + 4) { grid-column: span 3; }
   /* Every plate stays 4:5. Turning the big ones landscape would have been
      the better contact sheet, but these sources are portrait-composed and
      a 5:4 crop of a 4:5 frame throws away 64% of the height — which is to

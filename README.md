@@ -22,11 +22,12 @@ better. So:
   paragraphs and kept a headline and two chips. The three grab beats kept
   three words each. The founder essay — three paragraphs about films being
   social — is deleted outright.
-- **Photographs replaced it.** Twenty-seven now: eleven in the hero
-  calendar's film cells, ten in the crew wall on the rust band, one duotone
-  under the friday line, and five with no background at all — see the
-  cutouts below. The crew wall makes the essay's argument in about a
-  second, headlined with the one line worth keeping from it.
+- **Photographs replaced it.** Twenty-eight now: eleven in the hero
+  calendar's film cells, seven in the crew wall on the rust band, one
+  duotone under the friday line, four screenprinted into whole bands, and
+  five with no background at all — see the cutouts below. The crew wall
+  makes the essay's argument in about a second, headlined with the one line
+  worth keeping from it.
 - **Five of them are cut out and pasted on top.** A wide print of a full
   cinema sat under the hero calendar first and it was, correctly, hated: a
   rectangle of photograph beside a design stays a picture NEXT TO the
@@ -42,6 +43,18 @@ better. So:
   else done to it reads as an image that failed to load, and the white edge
   is what makes it deliberate. It also hides Vision's one-pixel fringe of
   old background, which is the kind of fix you take.
+- **Four bands have a photograph screenprinted into them.** "The background
+  is a plain colour" survived flat fields, objects on the fields, and
+  duotone gradients — fairly, because a gradient of a colour is still that
+  colour. So there is scenery in it now: a sunflower field on the grab
+  band, a wildflower meadow behind what-it-does, a night sky under movie
+  night, rolling hills under the year. **One ink.** The files are greyscale
+  and composite with `multiply`, which scales every channel equally, so hue
+  and chroma are untouched and the photograph can only lay down more of the
+  band's own colour. A full-colour still would be a second palette arriving
+  unannounced; this cannot introduce one however hard it is pushed, which
+  is the only reason a page this colour-disciplined can have photographic
+  backgrounds at all. `scripts/band-scenes.py` bakes them.
 - **Every band has its own stock, and none of them is flat.** "The
   background is a plain colour" was said four times and answered twice by
   adding *objects* to the same cream. It is answered in the substrate now:
@@ -130,11 +143,11 @@ inverts it:
   `(hover: hover) and (pointer: fine)`; `:active` gives a thumb an answer.
   Transform and opacity only, so nothing touches layout.
 
-- **The photographs are one roll.** Twenty-seven free-licence frames, all
+- **The photographs are one roll.** Twenty-eight free-licence frames, all
   run through a single curve in `scripts/grade-photos.py` — blacks lifted
   to 0.055, highlights rolled to 0.965, a smoothstep S, warm highlights and
-  cool shadows, saturation 0.90. That one pass is what stops twenty-seven
-  photographs by twenty-seven photographers reading as a stock library.
+  cool shadows, saturation 0.90. That one pass is what stops twenty-eight
+  photographs by twenty-eight photographers reading as a stock library.
   Never drop a photograph in ungraded; you will see it before you can name
   it. The cutouts go through the same curve by importing it rather than
   copying it — a second copy of those six lines is how the two quietly
@@ -155,10 +168,23 @@ inverts it:
   walking the moment it meets a gradient with a fully opaque stop.
 - **A photo cell is a dark cell.** Calendar cells carrying a photograph get
   an ink field, the picture dimmed onto it, and a radial scrim under the
-  numeral. `contrast.mjs` is CSS-only and cannot see an `<img>`, so it
-  passes those cells against the ink floor rather than the real composite —
-  the scrim is what makes that floor meaningful, and it is the one place on
-  the site where the audit is a proxy and the check is by eye.
+  numeral.
+- **The contrast gate is now two gates, because the first one is blind to
+  pictures.** `contrast.mjs` reads computed CSS and is exact for a flat
+  field or a gradient; it cannot see an `<img>`, and five surfaces are now
+  photographs. `contrast-pixels.mjs` screenshots each route twice — once
+  normally, once with every glyph transparent — diffs them to find the
+  pixels the glyphs actually cover, and measures the ground under exactly
+  those. It found **46 failures the CSS gate passes**, none of them
+  introduced by the photographs: the primary CTA at 4.0:1 on five routes
+  (the page-wide grain overlay lightens the button), the biggest pull quote
+  on the site at 2.34:1, and a muted-ink token sized against cream being
+  used on tinted stock. Those are fixed and the count is **11**, all
+  between 3.79 and 4.48 and mostly dark mode. Two traps it walked into
+  first, both now closed in the script: sampling a text run's whole BOX
+  finds the darkest pixel of a photograph nowhere near the glyphs, and the
+  stickers drift on an infinite loop, so anything moving between the two
+  captures reads as a glyph. Freeze animation before you diff frames.
 
 **Faces are the app's three plus one:** Bricolage Grotesque for display and
 UI, Space Mono for labels, Newsreader for the prose that is left (mostly
@@ -192,7 +218,8 @@ npm install
 npm run dev              # http://localhost:3000
 npm run build            # production build
 npm run lint
-npm run check:contrast   # WCAG audit, needs a server running
+npm run check:contrast          # WCAG audit from computed CSS
+npm run check:contrast-pixels   # WCAG audit from rendered pixels
 ```
 
 `check:contrast` reads the computed colour of every text run on every route

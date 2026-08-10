@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "check:contrast": "node scripts/contrast.mjs"
+    "check:contrast": "node scripts/contrast.mjs",
+    "check:contrast-pixels": "node scripts/contrast-pixels.mjs"
   },
   "dependencies": {
     "next": "16.1.1",
@@ -22,6 +23,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "pngjs": "^7.0.0",
     "puppeteer-core": "^25.5.0",
     "tailwindcss": "^4",
     "typescript": "5.9.3"

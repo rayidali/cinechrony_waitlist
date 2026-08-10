@@ -18,6 +18,33 @@ import { media, type MediaId } from "@/lib/site";
  *
  * Decoration throughout: aria-hidden, empty alt, pointer-events none.
  */
+/**
+ * A photograph screenprinted into a band.
+ *
+ * The bands were flat colour, then duotone gradients, and still read as
+ * "a plain background" — fairly, because a gradient is still just the
+ * colour. This puts real scenery in them, in ONE INK: the file is
+ * greyscale and it composites with `multiply`, which scales every channel
+ * equally, so the band's hue and chroma survive exactly and the photograph
+ * can only lay down more of the band's own ink. It is a one-colour
+ * screenprint, and it is why this cannot fight the palette however hard it
+ * is pushed. A full-colour photograph here would be a second palette
+ * arriving unannounced.
+ *
+ * `scripts/band-scenes.py` bakes them, and the floor it clamps to is a
+ * contrast decision — see the note there and in globals.css.
+ */
+export function BandScene({ id }: { id: MediaId }) {
+  const shot = media[id];
+  if (!shot.src) return null;
+  return (
+    <span className="scene" aria-hidden="true">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={shot.src} alt="" loading="lazy" decoding="async" />
+    </span>
+  );
+}
+
 export function Cutout({
   id,
   className = "",

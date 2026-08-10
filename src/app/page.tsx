@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Cutout } from "@/components/cutouts";
+import { BandScene, Cutout } from "@/components/cutouts";
 import { Footer } from "@/components/footer";
 import { Frame } from "@/components/frame";
 import { PosterGrid } from "@/components/poster-grid";
@@ -29,21 +29,24 @@ import { media, site } from "@/lib/site";
  * screenshot is a real capture of the shipped app.
  */
 
-/* the crew wall. Frame numbers run like a contact sheet, odd numbers with
-   an A, because that is how a strip of 35mm is actually numbered. Ten
-   frames across two rows: rooftop screenings, a garden projector, a red
-   cinema, and the people in front of all of it. */
+/* The crew wall. Frame numbers run like a contact sheet, odd numbers with
+   an A, because that is how a strip of 35mm is actually numbered.
+
+   SEVEN frames across two rows, down from ten across three. Three rows was
+   a mood board; two is a statement with a big row and a small one. The
+   three that came out were the ones doing no work the others weren't: a
+   couple at sunset (a couple, not a crew), a gig (music, not film), and a
+   second flash-lit pair beside the one already here. crew-4, crew-5 and
+   crew-9 stay in `media` and on disk, benched rather than deleted — they
+   are already graded, so putting a row back is an edit to this array. */
 const CREW = [
-  { id: "crew-1", n: "9a" },
-  { id: "crew-7", n: "10" },
-  { id: "crew-3", n: "10a" },
-  { id: "crew-8", n: "11" },
-  { id: "crew-5", n: "11a" },
-  { id: "crew-2", n: "12" },
-  { id: "crew-9", n: "12a" },
-  { id: "crew-4", n: "13" },
-  { id: "crew-10", n: "13a" },
-  { id: "crew-6", n: "14" },
+  { id: "crew-7", n: "9a" },
+  { id: "crew-3", n: "10" },
+  { id: "crew-8", n: "10a" },
+  { id: "crew-1", n: "11" },
+  { id: "crew-2", n: "11a" },
+  { id: "crew-10", n: "12" },
+  { id: "crew-6", n: "12a" },
 ] as const;
 
 export default function LandingPage() {
@@ -156,6 +159,7 @@ export default function LandingPage() {
 
         {/* ---------------- reel 02 · the grab ---------------- */}
         <section className="band band--ochre section cut-band" id="how">
+          <BandScene id="scene-flowers" />
           <Stickers scene="grab" />
           {/* Sitting on the seam. The stickers next door are clipped by the
               band edge so they read as pasted onto ONE sheet; these are
@@ -247,6 +251,7 @@ export default function LandingPage() {
 
         {/* ---------------- reel 03 · what it does ---------------- */}
         <section className="band band--rose section" id="features">
+          <BandScene id="scene-meadow" />
           <div className="wrap">
             <Reveal>
               <div className="marker">
@@ -331,6 +336,7 @@ export default function LandingPage() {
 
         {/* ---------------- movie night ---------------- */}
         <section className="band band--blue section cut-band">
+          <BandScene id="scene-night" />
           <Stickers scene="night" />
           <Cutout id="cut-bench" className="cut--bench" h={206} rotate={-1} />
           <div className="wrap">
@@ -363,6 +369,7 @@ export default function LandingPage() {
 
         {/* ---------------- the year ---------------- */}
         <section className="band band--forest section">
+          <BandScene id="scene-hills" />
           <div className="wrap">
             <div className="year">
               <Reveal className="year__copy">
