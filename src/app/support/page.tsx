@@ -29,10 +29,11 @@ export default function SupportPage() {
               <span className="label">support</span>
             </div>
             <div className="grab-head">
-              <h1 className="d2">need a hand?</h1>
-              <p className="body">
-                A real person, a real inbox, usually the same day. If something is broken, tell us
-                what you were doing when it broke and we will go and look.
+              <h1 className="d2">
+                need a <em>hand?</em>
+              </h1>
+              <p className="retro" style={{ maxWidth: "18ch" }}>
+                a real person. usually the same day.
               </p>
             </div>
 
@@ -55,62 +56,58 @@ export default function SupportPage() {
           </div>
         </section>
 
-        <section className="band band--deep section">
+        {/* The FAQ is the one place on the site copy was NOT cut hard. An
+            answer that stops short of answering is worse than no FAQ, and
+            this is also what an App Store reviewer reads. Trimmed, not
+            gutted: every one of these still resolves the question. */}
+        <section className="band band--mint section">
           <div className="wrap wrap--narrow">
             <div className="marker">
               <span className="label">frequently asked</span>
             </div>
             <h2 className="d3" style={{ marginBottom: 34 }}>
-              the short version.
+              the <em>short</em> version.
             </h2>
 
             <div className="faq">
               <details open>
                 <summary>what is cinechrony?</summary>
                 <p>
-                  A place to keep the films you find while scrolling. Share a reel or a TikTok and
-                  it pulls out every film in the clip with its IMDb rating, keeps it without making
-                  you file it anywhere, and puts it on a list you can share with friends.
+                  A place to keep the films you find while scrolling. Share a clip, it pulls out
+                  every film in it with the ratings, and puts them on a list you share with friends.
                 </p>
               </details>
               <details>
                 <summary>is it free?</summary>
-                <p>
-                  Yes. The web app is free right now, the iOS beta is free the whole time it is a
-                  beta, and the App Store version will be free to download.
-                </p>
+                <p>Yes. Web now, the iOS beta throughout, and free to download on the App Store.</p>
               </details>
               <details>
                 <summary>can i get it on my iphone?</summary>
                 <p>
-                  Yes, today. The beta is open on TestFlight:{" "}
-                  <Link href="/beta">here is how to join</Link>. It takes about two minutes and you
-                  need Apple&rsquo;s free TestFlight app first, which is the bit that catches most
-                  people out. The App Store release comes after the beta.
+                  Yes, today, on TestFlight — <Link href="/beta">here is how</Link>. You need
+                  Apple&rsquo;s free TestFlight app first, which is the bit that catches people out.
                 </p>
               </details>
               <details>
                 <summary>how does the scanning work?</summary>
                 <p>
-                  You share a clip. It watches the whole thing, the audio and the on-screen text as
-                  well as the footage, then matches each film to a real record so the year and the
-                  rating come with it. When it is not sure, it says so instead of guessing. The
-                  original clip stays attached to every film it found.
+                  It watches the whole clip — audio and on-screen text as well as footage — then
+                  matches each film to a real record. When it is not sure, it says so rather than
+                  guessing.
                 </p>
               </details>
               <details>
                 <summary>do my friends need the app?</summary>
                 <p>
-                  For a shared list, yes. For a movie night, no: a guest can RSVP from the link
-                  without an account, and they get a calendar invite rather than a signup form.
+                  For a shared list, yes. For a movie night, no: guests RSVP from the link and get a
+                  calendar invite rather than a signup form.
                 </p>
               </details>
               <details>
                 <summary>how do i delete my account or my data?</summary>
                 <p>
-                  From Settings in the app. Deletion is immediate and cannot be undone. If you would
-                  rather email, write to us from the address on the account and we will handle it.
-                  The <Link href="/privacy">privacy policy</Link> has the detail.
+                  Settings in the app. It is immediate and cannot be undone, and the{" "}
+                  <Link href="/privacy">privacy policy</Link> has the detail.
                 </p>
               </details>
             </div>

@@ -5,9 +5,49 @@ find films while scrolling; this is where they stop disappearing.
 
 Next.js (App Router), no UI framework, one hand-written stylesheet.
 
-## The design system — printed poster (v3, 2026-08)
+## The design system — printed poster (v4, 2026-08)
 
-**One rule decides everything: colour is a flat field, never a glow.**
+**Two rules decide everything: say less than feels safe, and let colour be
+a field with a hard edge rather than a glow.**
+
+### v4 — the cut (2026-08-10)
+
+The page said about 700 words. Corner and Rodeo, the two references this
+redesign is measured against, say four or five and then show you
+something. Every paragraph here was arguing in prose for a product that
+was sitting next to it in a screenshot already making the same case
+better. So:
+
+- **The landing page is under 120 words.** Feature rows lost their
+  paragraphs and kept a headline and two chips. The three grab beats kept
+  three words each. The founder essay — three paragraphs about films being
+  social — is deleted outright.
+- **Six photographs replaced it.** The crew wall on the rust band makes
+  the essay's argument in about a second. Its headline is the one line
+  worth keeping from the essay, promoted out of a pull quote.
+- **Every band has its own stock.** "The background is a plain colour" was
+  said three times and answered twice by adding *objects* to the same
+  cream. v4 finally answers it in the substrate: six papers (cream, ochre,
+  rose, mint, deep, and their dark-mode twins), a wide two-stop aged tint
+  inside every one, and a 4px halftone dot screen over that. Grain says
+  "shot on film"; halftone says "printed on a press"; they are different
+  claims and the page now makes both.
+- **A fourth face.** Fraunces, variable, `SOFT 60 / WONK 1` — an old-style
+  display serif with the slanted alternates and soft terminals of hand-cut
+  type. It carries the poster line, the `<em>` in every headline, and the
+  short retro lines that replaced paragraphs. Newsreader was correct and
+  quiet and had no period; Fraunces dates the page on purpose.
+- **A sunburst.** `repeating-conic-gradient`, masked to a disc, behind the
+  crew headline. The single most 1970s shape there is, and the only one
+  that earns a place under a display line.
+
+**One rule stayed and one bent.** Bands still stop dead at their edges —
+nothing melts into the next. But bands are no longer *flat*: the tint and
+the dot screen live INSIDE the hard edge, which is what a printed field
+actually looks like. A soft interior in a hard shape reads as print; the
+same gradient fading out into the page is the ambient wash v2 died of.
+
+### The v3 foundation, unchanged
 
 v2 built atmosphere out of ambient light — bokeh, a projector sun, radial
 step-glows, gradient "scenes" melting into each other, tilted mockups
@@ -67,9 +107,23 @@ inverts it:
   `(hover: hover) and (pointer: fine)`; `:active` gives a thumb an answer.
   Transform and opacity only, so nothing touches layout.
 
-**Faces are the app's three, and only those three:** Bricolage Grotesque
-for display and UI, Newsreader for prose, Space Mono for labels. Manrope is
-gone; it was here in v2 and nowhere in the product.
+- **The photographs are one roll.** Thirteen free-licence frames, all run
+  through a single curve in `scripts/grade-photos.py` — blacks lifted to
+  0.055, highlights rolled to 0.965, a smoothstep S, warm highlights and
+  cool shadows, saturation 0.90. That one pass is what stops thirteen
+  photographs by thirteen photographers reading as a stock library. Never
+  drop a photograph in ungraded; you will see it before you can name it.
+- **A photo cell is a dark cell.** Calendar cells carrying a photograph get
+  an ink field, the picture dimmed onto it, and a radial scrim under the
+  numeral. `contrast.mjs` is CSS-only and cannot see an `<img>`, so it
+  passes those cells against the ink floor rather than the real composite —
+  the scrim is what makes that floor meaningful, and it is the one place on
+  the site where the audit is a proxy and the check is by eye.
+
+**Faces are the app's three plus one:** Bricolage Grotesque for display and
+UI, Space Mono for labels, Newsreader for the prose that is left (mostly
+the legal documents and the FAQ), and Fraunces as the vintage display
+voice. Manrope is gone; it was here in v2 and nowhere in the product.
 
 **The hero is the signature.** It is a real month — seven columns, date
 numerals, film cells, and the film-red dot that means a movie night. Not a

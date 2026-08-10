@@ -46,8 +46,8 @@ export function Footer({
                 cinechrony
               </span>
             </Link>
-            <p className="body" style={{ maxWidth: "30ch", marginTop: 14, color: "var(--fg-soft)" }}>
-              You find films while scrolling. This is where they stop disappearing.
+            <p className="retro" style={{ maxWidth: "13ch", marginTop: 16, fontSize: "1.55rem" }}>
+              keep the films you <em>find.</em>
             </p>
           </div>
           <div>
@@ -60,7 +60,7 @@ export function Footer({
                 <Link href="/#features">what it does</Link>
               </li>
               <li>
-                <Link href="/#story">why we built it</Link>
+                <Link href="/#story">the point</Link>
               </li>
               <li>
                 <Link href="/beta">ios beta</Link>

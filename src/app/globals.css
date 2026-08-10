@@ -46,6 +46,20 @@
   --sage-tint: oklch(0.87 0.055 152);
   --blush:    oklch(0.85 0.07 25);
 
+  /* ---- the vintage set (v4) ----
+     Six values pulled off the mood board rather than off a colour wheel:
+     the rust of a faded one-sheet, the olive of a 70s paperback, the plum
+     of a cinema curtain, and three TINTED PAPERS. The papers are the ones
+     that mattered. "the background is a plain colour" was said three times
+     and each answer added objects on top of the same cream — the fix was
+     never another sticker, it was more than one stock. */
+  --rust:   oklch(0.47 0.135 42);
+  --olive:  oklch(0.455 0.075 118);
+  --plum:   oklch(0.355 0.105 330);
+  --p-ochre: oklch(0.925 0.042 84);
+  --p-rose:  oklch(0.916 0.032 30);
+  --p-mint:  oklch(0.928 0.032 158);
+
   /* INKS FOR COLOURED FIELDS — these must NOT flip with the theme, because
      the field underneath them does not flip either. `--bone` was being used
      for this and `--bone` IS redefined in dark (it is the raised surface,
@@ -66,10 +80,17 @@
   --accent-text: oklch(0.5 0.17 35);
   --focus:     var(--red);
 
-  /* ---- type ---- */
+  /* ---- type ----
+     `--f-retro` is Fraunces, and it is the fourth face. It carries the
+     poster line, the em word inside every headline, the pull quote and the
+     drop cap — i.e. every place the page raises its voice. SOFT rounds the
+     terminals and WONK swaps in the slanted, off-kilter alternates; both
+     are what make it read as set in 1974 rather than rendered in 2026. */
   --f-display: var(--font-bricolage), system-ui, -apple-system, sans-serif;
+  --f-retro:   var(--font-fraunces), Georgia, "Times New Roman", serif;
   --f-serif:   var(--font-newsreader), Georgia, "Times New Roman", serif;
   --f-mono:    var(--font-space-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --wonk: "SOFT" 60, "WONK" 1;
 
   --track-label: 0.2em;
 
@@ -95,6 +116,13 @@
   --grain-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   --grain-clump: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.24' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   --grain-coarse: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
+
+  /* HALFTONE — a 4px dot screen, which is what an actual printed colour
+     field is made of. Grain says "shot on film"; halftone says "printed on
+     a press", and those are two different claims. Together they are the
+     whole reason a flat oklch value stops reading as a CSS background. */
+  --halftone: radial-gradient(circle at 50% 50%, currentColor 0 0.9px, transparent 1.1px);
+  --halftone-size: 4px 4px;
 }
 
 /* dark: the projection room. Same flat discipline, inverted stock. */
@@ -118,6 +146,17 @@
   --marigold: oklch(0.62 0.15 62);
   --sage-tint: oklch(0.4 0.07 152);
   --blush:    oklch(0.42 0.07 25);
+
+  /* the vintage set at night. The three tinted PAPERS have to stay tinted
+     rather than collapsing back to one dark grey, or the whole point of
+     adding them is lost the moment the sun goes down — they just tint a
+     dark stock instead of a light one. */
+  --rust:   oklch(0.42 0.125 42);
+  --olive:  oklch(0.36 0.065 118);
+  --plum:   oklch(0.31 0.095 330);
+  --p-ochre: oklch(0.212 0.028 84);
+  --p-rose:  oklch(0.206 0.024 20);
+  --p-mint:  oklch(0.206 0.022 165);
 
   --bg: var(--paper);
   --fg: var(--ink);
@@ -202,17 +241,109 @@ body::before {
 .section--tight { padding: 64px 0; }
 .section--xl { padding: 132px 0; }
 
-/* Bands are hard-edged color fields. No melt, no gradient, no bleed. */
+/* ==========================================================================
+   BANDS — hard-edged fields, and as of v4 not one of them is a flat colour.
+
+   "The background is a plain colour" was fair and it was said three times.
+   Each earlier answer put more OBJECTS on the cream — stickers, bulbs,
+   seats — and never touched the cream itself. The fix is three-layered and
+   it applies to every band on the site:
+
+     1. the STOCK is tinted per band (six papers now, not one),
+     2. a wide two-stop tint sits inside the band, hard-clipped by its edge,
+     3. a halftone dot screen sits over that.
+
+   None of it violates the bleed rule, because all of it stops dead at the
+   band boundary. A gradient that fades out into the page is the ambient
+   wash v2 died of; a gradient that fills a plate and gets guillotined is
+   what a printed field actually looks like.
+   ========================================================================== */
 .band { position: relative; }
 .band + .band { border-top: 1px solid var(--rule-strong); }
 .band--paper { background: var(--bg); }
 .band--deep  { background: var(--paper-deep); }
+.band--ochre { background: var(--p-ochre); }
+.band--rose  { background: var(--p-rose); }
+.band--mint  { background: var(--p-mint); }
 .band--ink   { background: var(--ink); color: var(--paper); }
 .band--red   { background: var(--red); color: var(--on-color); }
 .band--blue  { background: var(--blue); color: var(--on-color); }
 .band--amber { background: var(--amber); color: var(--on-color-dark); }
 .band--forest { background: var(--forest); color: var(--on-color); }
 .band--marigold { background: var(--marigold); color: var(--on-color-dark); }
+.band--rust  { background: var(--rust); color: var(--on-color); }
+.band--olive { background: var(--olive); color: var(--on-color); }
+.band--plum  { background: var(--plum); color: var(--on-color); }
+
+/* layer 2 — the aged tint. Two very wide stops, one warm from the top
+   left and one cool from the bottom right, at an opacity you notice only
+   by removing it. This is what stops a 1400px-tall cream band from being
+   the same pixel 1.4 million times. */
+.band--paper::before,
+.band--deep::before,
+.band--ochre::before,
+.band--rose::before,
+.band--mint::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 78% at 8% 0%, oklch(0.76 0.12 68 / 0.2), transparent 64%),
+    radial-gradient(110% 80% at 96% 100%, oklch(0.6 0.11 348 / 0.16), transparent 62%),
+    radial-gradient(90% 60% at 50% 52%, oklch(0.72 0.09 168 / 0.07), transparent 70%);
+}
+[data-theme="dark"] .band--paper::before,
+[data-theme="dark"] .band--deep::before,
+[data-theme="dark"] .band--ochre::before,
+[data-theme="dark"] .band--rose::before,
+[data-theme="dark"] .band--mint::before {
+  background:
+    radial-gradient(120% 78% at 8% 0%, oklch(0.68 0.13 62 / 0.16), transparent 64%),
+    radial-gradient(110% 80% at 96% 100%, oklch(0.55 0.14 300 / 0.17), transparent 62%),
+    radial-gradient(90% 60% at 50% 52%, oklch(0.6 0.1 190 / 0.08), transparent 70%);
+}
+
+/* layer 3 — the dot screen. `currentColor` means it inherits the band's own
+   ink, so it works on a light stock and a dark one with no second rule. */
+.band--paper::after,
+.band--deep::after,
+.band--ochre::after,
+.band--rose::after,
+.band--mint::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--halftone);
+  background-size: var(--halftone-size);
+  opacity: 0.055;
+}
+[data-theme="dark"] .band--paper::after,
+[data-theme="dark"] .band--deep::after,
+[data-theme="dark"] .band--ochre::after,
+[data-theme="dark"] .band--rose::after,
+[data-theme="dark"] .band--mint::after { opacity: 0.04; }
+
+/* SUNBURST — a repeating conic, the single most 1970s shape there is.
+   Opt-in per band, and never under body copy: it sits behind a centred
+   display line and nothing else. */
+.rays {
+  position: absolute;
+  inset: -30% -10%;
+  z-index: 0;
+  pointer-events: none;
+  background: repeating-conic-gradient(
+    from 8deg at 50% 50%,
+    currentColor 0deg 4deg,
+    transparent 4deg 14deg
+  );
+  opacity: 0.11;
+  mask-image: radial-gradient(60% 60% at 50% 42%, transparent 12%, #000 68%, transparent 97%);
+  -webkit-mask-image: radial-gradient(60% 60% at 50% 42%, transparent 12%, #000 68%, transparent 97%);
+}
 
 /* ==========================================================================
    AURA — the grainy multi-hue gradient from the boards.
@@ -282,6 +413,9 @@ body::before {
 .band--amber::before,
 .band--forest::before,
 .band--marigold::before,
+.band--rust::before,
+.band--olive::before,
+.band--plum::before,
 .band--aura::before {
   content: "";
   position: absolute;
@@ -297,7 +431,10 @@ body::before {
 .band--ink::after,
 .band--red::after,
 .band--blue::after,
-.band--forest::after {
+.band--forest::after,
+.band--rust::after,
+.band--olive::after,
+.band--plum::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -306,13 +443,21 @@ body::before {
   background: radial-gradient(135% 105% at 50% 42%, transparent 48%, oklch(0 0 0 / 0.32));
 }
 .band > * { position: relative; z-index: 1; }
+/* the three decorative direct children have to be named explicitly: they
+   carry `z-index: 0` in their own rules, but those rules are declared
+   EARLIER at equal specificity, so `.band > *` was quietly winning and
+   putting the sunburst and the poster still on top of the copy */
+.band > .stickers,
+.band > .rays,
+.band > .poster-band__still { z-index: 0; }
 
 /* Inverted fields need their own soft-ink and rule values. 68% was lifted
    straight from the paper bands, where the muted grey has a whole cream
    sheet of headroom; on red, blue and forest the same figure put every mono
    label between 3.0 and 4.4 against a 4.5 requirement. Hierarchy on a
    coloured field has to come from size and letterspacing, not opacity. */
-.band--ink, .band--red, .band--blue, .band--forest, .band--aura {
+.band--ink, .band--red, .band--blue, .band--forest,
+.band--rust, .band--olive, .band--plum, .band--aura {
   /* and at 88% it still missed, so on a saturated field there is no
      dimming at all: 0.69rem uppercase on 0.2em tracking already reads
      as secondary by form, which is the only hierarchy available here */
@@ -345,31 +490,50 @@ body::before {
 .h2 { font-size: clamp(1.6rem, 2.9vw, 2.35rem);  line-height: 1.02; font-weight: 700; }
 .h3 { font-size: 1.2rem; line-height: 1.15; font-weight: 700; letter-spacing: -0.03em; }
 
-/* THE SECOND DISPLAY VOICE. Not a fourth font — the same Newsreader, set
-   italic inside a Bricolage headline. It is the move every reference board
-   makes (almostfriday, Get Outside, Astro Attic): a grotesque line with one
-   word carrying the feeling in a contrasting italic serif. Mark the word
-   with <em> and it switches. */
+/* THE SECOND DISPLAY VOICE — now Fraunces, wonk on. It is the move every
+   reference board makes (almostfriday, Get Outside, Astro Attic): a
+   grotesque line with one word carrying the feeling in a contrasting
+   italic serif. It was Newsreader italic, which is a NEWSPAPER italic —
+   correct, quiet, and completely without period. Fraunces with WONK 1 has
+   the slanted alternates and soft terminals of hand-cut display type, so
+   the same trick now dates the page instead of just varying it. */
 .d1 em, .d2 em, .d3 em, .h2 em, .display em, .display-2 em {
-  font-family: var(--f-serif);
+  font-family: var(--f-retro);
+  font-variation-settings: var(--wonk);
   font-style: italic;
-  font-weight: 400;
-  letter-spacing: -0.015em;
+  font-weight: 500;
+  letter-spacing: -0.02em;
   text-transform: none;
-  padding-right: 0.04em;
+  padding-right: 0.05em;
 }
 
-/* the poster line: Newsreader, big, the one place a serif shouts */
+/* the poster line: Fraunces, big, the one place a serif shouts */
 .poster-line {
-  font-family: var(--f-serif);
-  font-weight: 500;
+  font-family: var(--f-retro);
+  font-variation-settings: var(--wonk);
+  font-weight: 600;
   font-size: clamp(2.4rem, 7.2vw, 6.2rem);
   line-height: 1.0;
   letter-spacing: -0.03em;
   margin: 0;
   text-wrap: balance;
 }
-.poster-line em { font-style: italic; font-weight: 400; }
+.poster-line em { font-style: italic; font-weight: 500; }
+
+/* a display line set ENTIRELY in the retro face, for the bands that want
+   to sound like a title card rather than like the product */
+.retro {
+  font-family: var(--f-retro);
+  font-variation-settings: var(--wonk);
+  font-weight: 600;
+  text-transform: lowercase;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  margin: 0;
+  text-wrap: balance;
+  font-size: clamp(2.2rem, 5.6vw, 4.4rem);
+}
+.retro em { font-style: italic; font-weight: 500; }
 
 /* prose is Newsreader, matching the app's serif-for-prose rule */
 .lead {
@@ -457,7 +621,8 @@ body::before {
 .btn--sm { padding: 9px 17px; font-size: 0.85rem; min-height: 38px; }
 .btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
 /* on an ink/red/blue field the hard offset must be the field's own light ink */
-.band--ink .btn:hover, .band--red .btn:hover, .band--blue .btn:hover {
+.band--ink .btn:hover, .band--red .btn:hover, .band--blue .btn:hover,
+.band--rust .btn:hover, .band--olive .btn:hover, .band--plum .btn:hover {
   box-shadow: 3px 3px 0 currentColor;
 }
 /* the film-red pill lands on the red quadrant of the aura and vanishes;
@@ -621,17 +786,38 @@ body::before {
 .pcell--tint .pcell__n,
 .pcell--blush .pcell__n { color: var(--on-color-dark); }
 
-.pcell img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* photography gets pushed toward the paper: warm, contrasty, printed */
-  filter: saturate(1.06) contrast(1.06);
+.pcell img { width: 100%; height: 100%; object-fit: cover; }
+/* A PHOTO CELL IS A DARK CELL. Until the photographs landed, every filled
+   cell was a flat ink whose contrast was decidable; a photograph is an
+   arbitrary field, and grid-2 (a bright white living room) put a cream
+   numeral on near-white with nothing but a text-shadow holding it up.
+
+   So a photo cell is printed dark on purpose: the cell's own field is ink,
+   the picture is dimmed onto it, and a radial scrim sits under the numeral
+   with a stronger linear one under the title. At 110px the photographs
+   read better this way anyway — dimmed they are texture, undimmed they
+   were six competing thumbnails.
+
+   NOTE FOR THE GATE: contrast.mjs is CSS-only and cannot see an <img>. It
+   passes this cell because the cell's background-color is ink, which is
+   the FLOOR of the composite rather than the composite itself. The scrim
+   below is what makes that floor meaningful, and it is the one place on
+   the site where the audit is a proxy and the check is by eye. */
+.pcell--img { background: oklch(0.15 0.015 60); }
+.pcell--img img { filter: saturate(1.05) contrast(1.04) brightness(0.72); }
+.pcell--img::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(48% 48% at 50% 50%, oklch(0.1 0.02 60 / 0.6), transparent 74%),
+    linear-gradient(to top, oklch(0.1 0.02 60 / 0.8) 0%, transparent 46%);
 }
-/* a numeral sitting on a filled cell reads as a knocked-out date */
 .pcell--img .pcell__n {
   color: var(--on-color);
-  text-shadow: 0 1px 12px oklch(0 0 0 / 0.5);
+  text-shadow: 0 1px 12px oklch(0 0 0 / 0.55);
 }
 /* the movie-night dot — the one mark that means something in the future */
 .pcell__dot {
@@ -1073,9 +1259,104 @@ body::before {
 /* once a real film is registered the plate fills; the mark hides itself */
 .demo-film .frame__plate:has(video) .demo-film__play { display: none; }
 
-/* the poster band: one field, one line, nothing else on it */
-.poster-band { text-align: center; }
+/* the poster band: one field, one line, nothing else on it — except that
+   the field is now a photograph with the red printed over it. A duotone,
+   basically: the still goes through `luminosity` so it keeps its shapes
+   and loses its colour, and the band's own red is what you actually see.
+   That is a real printing process rather than an effect, and it is why the
+   photograph can sit under 6rem of type without fighting it. */
+.poster-band { text-align: center; overflow: hidden; }
 .poster-band .poster-line { max-width: 16ch; margin-inline: auto; }
+.poster-band__still {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: luminosity;
+  opacity: 0.42;
+}
+[data-theme="dark"] .poster-band__still { opacity: 0.34; }
+
+/* ==========================================================================
+   THE CREW WALL — six photographs where 180 words of essay used to be.
+
+   The story section argued, in three paragraphs, that films are social and
+   that losing them hurts. Corner and Rodeo would never write that down;
+   they would show six people in a room and let you finish the sentence.
+   So the paragraphs are gone and this is what replaced them.
+
+   It is built as a CONTACT SHEET, not a gallery: frames butted together
+   with a shared rule, frame numbers set in mono underneath, and the strip
+   running past both trims so it reads as a length of film someone cut up.
+   ========================================================================== */
+.crew-strip {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(36px, 4.5vw, 60px);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 62%;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 0 20px 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.crew-strip::-webkit-scrollbar { display: none; }
+@media (min-width: 720px) {
+  .crew-strip {
+    grid-auto-flow: initial;
+    grid-template-columns: repeat(6, 1fr);
+    overflow: visible;
+    gap: clamp(10px, 1.2vw, 18px);
+    padding: 0 28px;
+  }
+}
+.crew-shot { scroll-snap-align: center; display: block; }
+.crew-shot figure { margin: 0; }
+.crew-shot__plate {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border: 1.5px solid currentColor;
+  overflow: hidden;
+  background: var(--paper-deep);
+}
+.crew-shot__plate img { width: 100%; height: 100%; object-fit: cover; }
+/* the same grain the plates and the cells carry, so a photograph belongs to
+   the page rather than sitting on top of it */
+.crew-shot__plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--grain-fine), var(--grain-clump);
+  opacity: 0.34;
+  mix-blend-mode: overlay;
+}
+.crew-shot__n {
+  display: block;
+  font-family: var(--f-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-soft);
+  padding-top: 7px;
+}
+/* a contact sheet is never perfectly aligned — every other frame drops a
+   few pixels, which is the difference between a strip of film and a table */
+@media (min-width: 720px) {
+  .crew-shot:nth-child(even) { transform: translateY(clamp(10px, 1.6vw, 26px)); }
+}
+/* the line that used to be a pull quote inside an essay. It is the best
+   sentence on the site, so it is now the headline of its own band. */
+.crew-head { display: grid; gap: 18px; justify-items: start; }
+@media (min-width: 860px) {
+  .crew-head { grid-template-columns: 1fr auto; align-items: end; }
+}
 
 .chips { display: flex; gap: 9px; flex-wrap: wrap; }
 
@@ -1128,52 +1409,8 @@ body::before {
 .year__shot .frame { width: 320px; max-width: 100%; }
 @media (max-width: 859px) { .year__shot { justify-content: center; } }
 
-/* ---------- the story column ---------- */
-.story { display: grid; gap: clamp(28px, 4vw, 60px); }
-@media (min-width: 900px) { .story { grid-template-columns: 0.9fr 1.1fr; } }
-.story__p { font-family: var(--f-serif); font-size: 1.1rem; line-height: 1.62; margin: 0 0 20px; }
-.story__p:first-of-type::first-letter {
-  float: left;
-  font-family: var(--f-display);
-  font-weight: 800;
-  font-size: 3.6em;
-  line-height: 0.76;
-  padding: 0.06em 0.1em 0 0;
-  color: var(--accent-text);
-}
-/* THE AURA CARD. This was a naked gradient circle floating in the story
-   column doing nothing, which is a fair thing to be asked about. The boards
-   never float a gradient on its own — the reference orb has the line set ON
-   it. So the gradient stopped being decoration and became the pull quote's
-   own field, which is the only justification a shape like this ever has. */
-.story__pull {
-  position: relative;
-  overflow: hidden;
-  font-family: var(--f-serif);
-  font-style: italic;
-  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
-  line-height: 1.3;
-  margin: 34px 0;
-  padding: clamp(28px, 3.4vw, 42px);
-  color: var(--on-color);
-  background:
-    radial-gradient(62% 88% at 20% 18%, oklch(0.52 0.18 34), transparent 68%),
-    radial-gradient(58% 84% at 82% 22%, oklch(0.42 0.16 278), transparent 66%),
-    radial-gradient(66% 92% at 74% 86%, oklch(0.45 0.12 165), transparent 68%),
-    radial-gradient(54% 80% at 22% 88%, oklch(0.54 0.14 62), transparent 64%),
-    oklch(0.43 0.15 28);
-}
-.story__pull::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background-image: var(--grain-fine), var(--grain-clump);
-  opacity: 0.5;
-  mix-blend-mode: overlay;
-}
-.story__pull > span { position: relative; z-index: 1; display: block; }
+/* the signature under the crew wall — the one place a person speaks, and
+   now the only surviving trace of a three-paragraph founder essay */
 .story__sign {
   font-family: var(--f-mono);
   font-size: 0.6875rem;
@@ -1559,6 +1796,13 @@ body::before {
 
   .stub { transition: transform 300ms var(--ease), box-shadow 300ms var(--ease); }
   .stub:hover { transform: translate(-3px, -3px); box-shadow: 6px 6px 0 currentColor; }
+
+  /* a contact-sheet frame lifts and warms, the way one does when you pick
+     it up off the table. The even-frame offset has to be carried through
+     the hover transform or the row snaps flat on approach. */
+  .crew-shot__plate { transition: transform 320ms var(--ease), filter 320ms var(--ease); }
+  .crew-shot:hover .crew-shot__plate { transform: scale(1.045) rotate(-0.6deg); filter: saturate(1.12) brightness(1.05); }
+  .crew-shot:nth-child(even):hover .crew-shot__plate { transform: scale(1.045) rotate(0.6deg); }
 
   .source { transition: background 220ms var(--ease), color 220ms var(--ease); }
   .source:hover { background: var(--fg); color: var(--bg); }

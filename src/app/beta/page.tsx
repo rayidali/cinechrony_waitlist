@@ -26,20 +26,19 @@ export default function BetaPage() {
                 <span className="label label--red" style={{ marginBottom: 24 }}>
                   testflight · iphone
                 </span>
-                <h1 className="d1">{beta ? "the beta is open." : "the beta opens soon."}</h1>
-                <p className="body" style={{ marginTop: 26 }}>
+                <h1 className="d1">
                   {beta ? (
                     <>
-                      Cinechrony runs on TestFlight right now. Two minutes to join, free the whole
-                      time we&rsquo;re in beta, and every new build arrives on your phone
-                      automatically.
+                      the beta is <em>open.</em>
                     </>
                   ) : (
                     <>
-                      Cinechrony is coming to TestFlight. Waitlist members get the invite first, on
-                      the day it opens, and it&rsquo;s free while we&rsquo;re in beta.
+                      the beta opens <em>soon.</em>
                     </>
                   )}
+                </h1>
+                <p className="retro" style={{ marginTop: 24, maxWidth: "16ch" }}>
+                  {beta ? "two minutes. free." : "waitlist first."}
                 </p>
                 <div className="cta-row">
                   {beta ? (
@@ -69,14 +68,14 @@ export default function BetaPage() {
           </div>
         </section>
 
-        <section className="band band--deep section">
+        <section className="band band--ochre section">
           <div className="wrap">
             <Reveal>
               <div className="marker">
                 <span className="label">how to join</span>
               </div>
               <h2 className="d2" style={{ marginBottom: 44 }}>
-                start to finish in two minutes.
+                four taps, <em>start to finish.</em>
               </h2>
             </Reveal>
 
@@ -89,7 +88,7 @@ export default function BetaPage() {
                   <div className="istep__t">
                     <span className="n">step 1</span>
                     <h3>get testflight</h3>
-                    <p>Download Apple&rsquo;s free TestFlight app from the App Store.</p>
+                    <p>Apple&rsquo;s free app. This is the bit that catches people out.</p>
                   </div>
                 </div>
                 <div className="istep">
@@ -99,7 +98,7 @@ export default function BetaPage() {
                   <div className="istep__t">
                     <span className="n">step 2</span>
                     <h3>tap the link</h3>
-                    <p>Tap the invite link above. It opens straight inside TestFlight.</p>
+                    <p>It opens straight inside TestFlight.</p>
                   </div>
                 </div>
                 <div className="istep">
@@ -109,7 +108,7 @@ export default function BetaPage() {
                   <div className="istep__t">
                     <span className="n">step 3</span>
                     <h3>tap install</h3>
-                    <p>Hit Install and cinechrony downloads to your phone.</p>
+                    <p>It downloads like any other app.</p>
                   </div>
                 </div>
                 <div className="istep">
@@ -120,7 +119,7 @@ export default function BetaPage() {
                   <div className="istep__t">
                     <span className="n">step 4</span>
                     <h3>you&rsquo;re in</h3>
-                    <p>Find the popcorn on your home screen and share your first reel.</p>
+                    <p>Find the popcorn. Share a reel.</p>
                   </div>
                 </div>
               </div>
@@ -132,17 +131,13 @@ export default function BetaPage() {
                 <p className="body" style={{ margin: 0 }}>
                   {beta ? (
                     <>
-                      TestFlight is Apple&rsquo;s own beta app, and it is the only way to run an
-                      unreleased iPhone app. It is the usual stumble, so: install TestFlight first,
-                      then tap our link.{" "}
-                      <Link href="/waitlist">Join the waitlist</Link> too and we&rsquo;ll tell you
-                      the day the App Store version lands.
+                      TestFlight first, then our link.{" "}
+                      <Link href="/waitlist">Join the list</Link> for the App Store release.
                     </>
                   ) : (
                     <>
-                      The invite comes from us by email.{" "}
-                      <Link href="/waitlist">Join the waitlist</Link> and it&rsquo;ll be in your
-                      inbox the day the beta opens.
+                      The invite comes by email.{" "}
+                      <Link href="/waitlist">Join the list</Link> to get it first.
                     </>
                   )}
                 </p>

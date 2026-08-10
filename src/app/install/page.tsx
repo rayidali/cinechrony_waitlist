@@ -22,11 +22,12 @@ export default function InstallPage() {
                 <span className="label">the web app · no app store needed</span>
               </div>
               <div className="grab-head">
-                <h1 className="d2">add it to your home screen.</h1>
+                <h1 className="d2">
+                  add it to your <em>home screen.</em>
+                </h1>
                 <div>
-                  <p className="body">
-                    It works today, in any browser, and it&rsquo;s free. Add it once and it opens
-                    full screen with its own icon, the same as a downloaded app.
+                  <p className="retro" style={{ maxWidth: "16ch" }}>
+                    any browser. own icon. free.
                   </p>
                   <div className="cta-row">
                     <a className="btn btn--accent" href={site.appUrl} target="_blank" rel="noopener">
@@ -44,15 +45,15 @@ export default function InstallPage() {
               <div className="callout" style={{ marginTop: 44 }}>
                 <span className="label">one catch</span>
                 <p className="body" style={{ margin: 0 }}>
-                  Opened this from TikTok or Instagram? Tap the browser menu and choose Open in
-                  browser first. In-app browsers cannot install anything.
+                  Came here from TikTok or Instagram? Choose &ldquo;open in browser&rdquo; first.
+                  In-app browsers cannot install anything.
                 </p>
               </div>
             </Reveal>
           </div>
         </section>
 
-        <section className="band band--deep section">
+        <section className="band band--rose section">
           <div className="wrap">
             <Reveal delay={60}>
               <InstallSteps />

@@ -82,20 +82,36 @@ export const media = {
     alt: "Screen capture: a reel becomes a saved, rated list in forty seconds",
   },
 
-  /* ---- photography for the hero calendar (owner capture) ----
-     Six square photographs that drop straight into the hero grid's film
-     cells. The grid is composed to read as finished without them: the
-     cells are solid poster inks until a file lands. */
-  "grid-1": { src: null, kind: "image", alt: "" },
-  "grid-2": { src: null, kind: "image", alt: "" },
-  "grid-3": { src: null, kind: "image", alt: "" },
-  "grid-4": { src: null, kind: "image", alt: "" },
-  "grid-5": { src: null, kind: "image", alt: "" },
-  "grid-6": { src: null, kind: "image", alt: "" },
+  /* ---- photography ----------------------------------------------------
+     Six squares in the hero calendar's film cells, six portraits in the
+     crew wall, one wide still behind the friday poster. Every one of them
+     is pushed through ONE film curve (lifted blacks, warm highlights,
+     cool shadows, 0.9 saturation) by scripts/grade-photos.py, and that
+     pass is what stops thirteen photographs by thirteen photographers
+     reading as a stock library. Swap any file and re-run the script; a
+     photograph dropped in ungraded will stick out immediately.
+
+     These are placeholders in the sense that matters: they are the right
+     photographs of the wrong people. Real cinechrony nights, shot on a
+     real camera, beat them on every axis including the legal one. */
+  "grid-1": { src: "/media/grid-1.webp", kind: "image", alt: "" },
+  "grid-2": { src: "/media/grid-2.webp", kind: "image", alt: "" },
+  "grid-3": { src: "/media/grid-3.webp", kind: "image", alt: "" },
+  "grid-4": { src: "/media/grid-4.webp", kind: "image", alt: "" },
+  "grid-5": { src: "/media/grid-5.webp", kind: "image", alt: "" },
+  "grid-6": { src: "/media/grid-6.webp", kind: "image", alt: "" },
+
+  /* ---- the crew wall: the band that replaced 180 words of essay ---- */
+  "crew-1": { src: "/media/crew-1.webp", kind: "image", alt: "A group of friends outside at golden hour, shot on film" },
+  "crew-2": { src: "/media/crew-2.webp", kind: "image", alt: "Friends piled together for a flash photo" },
+  "crew-3": { src: "/media/crew-3.webp", kind: "image", alt: "Three friends pulling faces at a disposable camera" },
+  "crew-4": { src: "/media/crew-4.webp", kind: "image", alt: "Two people holding each other, watching the sun go down" },
+  "crew-5": { src: "/media/crew-5.webp", kind: "image", alt: "A room full of people at a small gig" },
+  "crew-6": { src: "/media/crew-6.webp", kind: "image", alt: "Two friends in sunglasses, grainy film frame" },
 
   /* ---- the full-bleed photograph behind the friday poster ---- */
   "poster-still": {
-    src: null,
+    src: "/media/poster-still.webp",
     kind: "image",
     alt: "",
   },

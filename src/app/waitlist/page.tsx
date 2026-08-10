@@ -17,9 +17,9 @@ export const metadata: Metadata = {
    "join the waitlist for the beta" while the beta is one tap away on the
    nav would be the same untruth from the other direction. */
 const PROMISES = [
-  ["01", "the day it hits the app store, in your inbox, before we post about it anywhere else."],
-  ["02", "what we shipped, occasionally, when it is actually worth an email."],
-  ["03", "a say in what comes next. we read every reply, and there are not many of you yet."],
+  ["01", "the app store day, before anywhere else"],
+  ["02", "what we shipped, when it's worth an email"],
+  ["03", "we read every reply"],
 ];
 
 export default function WaitlistPage() {
@@ -32,26 +32,27 @@ export default function WaitlistPage() {
               <div className="marker">
                 <span className="label">the list · est. 2026</span>
               </div>
-              <h1 className="d2">get in early.</h1>
+              <h1 className="d2">
+                get in <em>early.</em>
+              </h1>
             </Reveal>
 
             <div className="hero-split" style={{ marginTop: 44, alignItems: "start" }}>
               <Reveal>
                 <p className="body">
-                  The iOS beta is already open, so you do not have to wait for that one:{" "}
-                  <Link href="/beta">grab it on TestFlight</Link> and you can be scanning a reel in
-                  two minutes. This list is for everything after it.
+                  The beta is already open — <Link href="/beta">grab it on TestFlight</Link>. This
+                  list is for the App Store.
                 </p>
                 <div className="promises">
                   {PROMISES.map(([n, text]) => (
                     <div className="promise" key={n}>
                       <span className="label label--red">{n}</span>
-                      <p className="body">{text}</p>
+                      <p className="label label--ink">{text}</p>
                     </div>
                   ))}
                 </div>
                 <p className="label" style={{ marginTop: 26 }}>
-                  no schedule, no drip sequence, and one click to leave
+                  no drip sequence · one click to leave
                 </p>
               </Reveal>
 
