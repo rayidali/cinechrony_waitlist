@@ -1221,13 +1221,6 @@ body::before {
 .beat .num { color: var(--accent-text); }
 .beat .body { font-size: 1rem; color: var(--fg-soft); }
 
-.grab-proof { display: grid; gap: clamp(28px, 4vw, 52px); margin-top: clamp(48px, 6vw, 76px); align-items: center; }
-@media (min-width: 860px) { .grab-proof { grid-template-columns: auto 1fr; } }
-.grab-proof__shot { width: 300px; max-width: 100%; }
-/* with the aside gone the plate has nothing to sit beside, so it centres
-   rather than hugging the left edge of a column it no longer shares */
-.grab-proof--solo { display: flex; justify-content: center; }
-
 /* the poster band: one field, one line, nothing else on it — except that
    the field is now a photograph with the red printed over it. A duotone,
    basically: the still goes through `luminosity` so it keeps its shapes

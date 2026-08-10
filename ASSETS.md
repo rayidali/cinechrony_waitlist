@@ -1,18 +1,31 @@
 # What the site still needs from a human
 
-**Nothing blocking.** Every slot on the site is filled: seven real captures
-of the shipped app and twenty-two graded photographs. There is no
-placeholder frame left anywhere.
-
-Two things are worth doing when you get to them, and neither holds the site
-up.
+**One open slot, and it is deliberately open.** The "reel 03 · the grab"
+section has no image under its three beats — the scan capture came out on
+10.08 because you are shooting something better for it. Everything else is
+filled: six real captures of the shipped app and twenty-two graded
+photographs, no placeholder frames anywhere.
 
 To wire anything up: drop the file in `public/media/`, then set its `src`
 in the `media` map in `src/lib/site.ts`.
 
 ---
 
-## 1. The demo film — removed, and available on request
+## 1. The grab section's visual — YOU ARE MAKING THIS
+
+**Where it goes:** under the three beats in "one reel in. every film out."
+The section currently ends on the beats, which is a clean stop rather than
+a hole — so there is no rush and nothing looks broken while you work.
+
+**What the slot wants:** the scan actually happening. The old capture was
+a still of the finished result, which is the least interesting frame of a
+forty-second event. `app-grab` is still registered in `media`, so a new
+still drops straight in; a video needs the `kind: "video"` slot and the
+film frame putting back (see below).
+
+---
+
+## 2. The demo film — removed, and available on request
 
 The `demo-hero` video slot and the film-frame plate that held it came out
 on 10.08. It was a 16:9 black rectangle captioned AWAITING CAPTURE sitting
@@ -36,7 +49,7 @@ submission needs. One recording settles both.
 
 ---
 
-## 2. The photographs — filled, and worth replacing eventually
+## 3. The photographs — filled, and worth replacing eventually
 
 Twenty-two frames are live: eleven in the hero calendar's film cells, ten
 in the crew wall on the rust band, one behind the red poster band. They are
@@ -77,7 +90,7 @@ poster still 2000×1120 wide.
 
 | Slot | State |
 |---|---|
-| `app-grab` | live — the scan result, five films from one reel |
+| `app-grab` | registered but NOT ON THE PAGE — see 1 above |
 | `app-diary` | live — the month calendar |
 | `app-list` | live — "date night" with the night pinned and the poster grid |
 | `app-film` | live — a film open, showing "the clip that did it" |

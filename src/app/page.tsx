@@ -100,13 +100,82 @@ export default function LandingPage() {
           <span className="bulbs bulbs--bottom" aria-hidden="true" />
         </section>
 
-        {/* ---------------- reel 01 · the grab ---------------- */}
+        {/* ---------------- reel 01 · the crew wall ----------------
+            Where the founder essay used to be. Six photographs make the
+            same argument in about a second, and without asking anyone to
+            read three paragraphs about how films are better with people. */}
+        <section className="band band--rust section" id="story">
+          <span className="rays" aria-hidden="true" />
+          <div className="wrap">
+            <Reveal>
+              <div className="marker">
+                <span className="label">reel 01 · the point</span>
+              </div>
+              <div className="crew-head">
+                <p className="retro">
+                  the film was never the hard part.
+                  <br />
+                  <em>keeping hold of it was.</em>
+                </p>
+                <p className="story__sign">rayid · cinechrony</p>
+              </div>
+            </Reveal>
+          </div>
+          <Reveal delay={120}>
+            <div className="crew-strip">
+              {CREW.map(({ id, n }) => {
+                const shot = media[id];
+                if (!shot.src) return null;
+                return (
+                  <figure className="crew-shot" key={id}>
+                    <div className="crew-shot__plate">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={shot.src} alt={shot.alt} loading="lazy" />
+                    </div>
+                    <figcaption className="crew-shot__n">{n}</figcaption>
+                  </figure>
+                );
+              })}
+            </div>
+          </Reveal>
+        </section>
+
+        {/* ---------------- the year ---------------- */}
+        <section className="band band--forest section">
+          <div className="wrap">
+            <div className="year">
+              <Reveal className="year__copy">
+                <div className="marker">
+                  <span className="label">reel 02 · the year</span>
+                </div>
+                <h2 className="d2">
+                  a year you can <em>look at.</em>
+                </h2>
+                <p className="label" style={{ marginTop: 24 }}>
+                  the grid at the top of this page is this grid
+                </p>
+              </Reveal>
+              <Reveal delay={120} className="year__shot">
+                <Frame
+                  id="app-year"
+                  caption="the year grid"
+                  note="one read, no scan"
+                  ratio="4 / 5"
+                  focus="center 62%"
+                  offset
+                />
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- reel 03 · the grab ---------------- */}
         <section className="band band--ochre section" id="how">
           <Stickers scene="grab" />
           <div className="wrap">
             <Reveal>
               <div className="marker">
-                <span className="label">reel 01 · the grab</span>
+                <span className="label">reel 03 · the grab</span>
               </div>
               <h2 className="d2">
                 one reel in.
@@ -152,25 +221,14 @@ export default function LandingPage() {
               </div>
             </Reveal>
 
-            {/* The aside and the empty demo plate both came out. The aside
-                said "keep it now, file it whenever", which beat 03 already
-                says in three words; and the demo plate was a 16:9 black
-                rectangle captioned AWAITING CAPTURE — a placeholder for a
-                film nobody has shot, advertising its own absence on the
-                one screen that is meant to feel finished. It goes back in
-                the day there is footage, not before. */}
-            <Reveal delay={180}>
-              <div className="grab-proof grab-proof--solo">
-                <Frame
-                  id="app-grab"
-                  caption="five films, one reel"
-                  note="real capture"
-                  ratio="4 / 5"
-                  className="grab-proof__shot"
-                  offset
-                />
-              </div>
-            </Reveal>
+            {/* Everything that sat under the three beats is gone: the
+                "keep it now, file it whenever" aside (beat 03 says it in
+                three words), the empty demo plate, and now the scan
+                capture too — the owner is shooting something better for
+                this spot. What is left is a headline, four sources and
+                three beats, and it reads faster without any of it.
+                `app-grab` stays registered in `media` and ASSETS.md names
+                this as the open slot. */}
           </div>
         </section>
 
@@ -195,12 +253,12 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ---------------- reel 02 · what it does ---------------- */}
+        {/* ---------------- reel 04 · what it does ---------------- */}
         <section className="band band--rose section" id="features">
           <div className="wrap">
             <Reveal>
               <div className="marker">
-                <span className="label">reel 02 · what it does</span>
+                <span className="label">reel 04 · what it does</span>
               </div>
             </Reveal>
 
@@ -286,7 +344,7 @@ export default function LandingPage() {
             <div className="night">
               <Reveal className="night__copy">
                 <span className="label" style={{ marginBottom: 22 }}>
-                  reel 03 · movie night
+                  reel 05 · movie night
                 </span>
                 <h2 className="d2">
                   pick a night. <em>everyone knows.</em>
@@ -304,75 +362,6 @@ export default function LandingPage() {
                   going="three going, two thinking"
                   seats={5}
                   filled={3}
-                />
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        {/* ---------------- reel 04 · the crew wall ----------------
-            Where the founder essay used to be. Six photographs make the
-            same argument in about a second, and without asking anyone to
-            read three paragraphs about how films are better with people. */}
-        <section className="band band--rust section" id="story">
-          <span className="rays" aria-hidden="true" />
-          <div className="wrap">
-            <Reveal>
-              <div className="marker">
-                <span className="label">reel 04 · the point</span>
-              </div>
-              <div className="crew-head">
-                <p className="retro">
-                  the film was never the hard part.
-                  <br />
-                  <em>keeping hold of it was.</em>
-                </p>
-                <p className="story__sign">rayid · cinechrony</p>
-              </div>
-            </Reveal>
-          </div>
-          <Reveal delay={120}>
-            <div className="crew-strip">
-              {CREW.map(({ id, n }) => {
-                const shot = media[id];
-                if (!shot.src) return null;
-                return (
-                  <figure className="crew-shot" key={id}>
-                    <div className="crew-shot__plate">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={shot.src} alt={shot.alt} loading="lazy" />
-                    </div>
-                    <figcaption className="crew-shot__n">{n}</figcaption>
-                  </figure>
-                );
-              })}
-            </div>
-          </Reveal>
-        </section>
-
-        {/* ---------------- the year ---------------- */}
-        <section className="band band--forest section">
-          <div className="wrap">
-            <div className="year">
-              <Reveal className="year__copy">
-                <div className="marker">
-                  <span className="label">reel 05 · the year</span>
-                </div>
-                <h2 className="d2">
-                  a year you can <em>look at.</em>
-                </h2>
-                <p className="label" style={{ marginTop: 24 }}>
-                  the grid at the top of this page is this grid
-                </p>
-              </Reveal>
-              <Reveal delay={120} className="year__shot">
-                <Frame
-                  id="app-year"
-                  caption="the year grid"
-                  note="one read, no scan"
-                  ratio="4 / 5"
-                  focus="center 62%"
-                  offset
                 />
               </Reveal>
             </div>
