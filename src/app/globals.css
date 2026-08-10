@@ -1320,6 +1320,7 @@ body::before {
   padding: 18px 0;
   border-top: 1px solid var(--rule);
 }
+.footer-end { text-align: center; padding: 10px 0 4px; }
 .footer-ghost { margin-bottom: -3.2vw; text-align: center; }
 
 /* ---------- forms ---------- */
@@ -1567,6 +1568,188 @@ body::before {
 
   .faq summary { transition: color 200ms var(--ease); }
   .faq summary:hover { color: var(--accent-text); }
+}
+
+/* ==========================================================================
+   THE CINEMA LAYER
+   Everything here is borrowed from a real object in a real picture house or
+   a real television set: marquee bulbs, sprocket holes, the cue mark that
+   tells a projectionist to change reels, a row of seat backs, a VHS on-screen
+   display. None of it is a texture for its own sake — each one is a thing
+   the product's own subject would actually have.
+   ========================================================================== */
+
+/* ---- the marquee: bulbs above and below the running titles ---------------- */
+.marquee-band { position: relative; }
+.bulbs {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 16px;
+  z-index: 2;
+  pointer-events: none;
+}
+.bulbs--top { top: 6px; }
+.bulbs--bottom { bottom: 6px; }
+/* two offset rows of dots, chasing each other the way a real marquee does */
+.bulbs::before,
+.bulbs::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-repeat: repeat-x;
+  background-position: center;
+  background-size: 34px 16px;
+  animation: chase 1.5s steps(1, end) infinite;
+}
+.bulbs::before {
+  background-image: radial-gradient(
+    circle at 8.5px 8px,
+    oklch(0.99 0.02 92) 0 3.4px,
+    oklch(0.2 0.03 60 / 0.55) 3.4px 4.6px,
+    transparent 4.8px
+  );
+}
+.bulbs::after {
+  background-image: radial-gradient(
+    circle at 25.5px 8px,
+    oklch(0.99 0.02 92) 0 3.4px,
+    oklch(0.2 0.03 60 / 0.55) 3.4px 4.6px,
+    transparent 4.8px
+  );
+  animation-delay: 0.75s;
+}
+@keyframes chase {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0.28; }
+}
+.marquee-band .ticker { border: 0; padding: 32px 0; }
+/* the house board: what is on tonight, set into the left of the marquee */
+.now-showing {
+  position: absolute;
+  left: 28px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-1.5deg);
+  z-index: 3;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--f-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  padding: 8px 12px;
+  border: 1.5px solid var(--ink);
+  white-space: nowrap;
+}
+@media (max-width: 900px) { .now-showing { display: none; } }
+
+/* ---- the demo plate, as an actual film frame ----------------------------- */
+.filmframe { position: relative; }
+/* sprocket rails: real 35mm perforations, one column each side */
+.filmframe .frame__plate { padding: 0 26px; }
+.filmframe .frame__plate::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='34'%3E%3Crect x='6' y='7' width='14' height='20' rx='3.5' fill='%23e9e2d2'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='34'%3E%3Crect x='6' y='7' width='14' height='20' rx='3.5' fill='%23e9e2d2'/%3E%3C/svg%3E");
+  background-repeat: repeat-y, repeat-y;
+  background-position: left top, right top;
+  background-size: 26px 34px;
+  opacity: 0.9;
+}
+/* the picture sits under the perforations, the projection marks sit over
+   them — a blanket `> *` rule put the cue mark below the rails and it
+   simply never appeared */
+.filmframe .frame__plate > img,
+.filmframe .frame__plate > video,
+.filmframe .frame__plate > .frame__empty { position: relative; z-index: 1; }
+.filmframe .demo-film__play { z-index: 3; }
+.filmframe .cue { z-index: 3; }
+/* the cue mark: the circle in the corner that tells the box to change reels */
+.cue {
+  position: absolute;
+  top: 18px;
+  right: 44px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid oklch(0.99 0.02 92 / 0.75);
+  z-index: 3;
+}
+/* broadcast scanlines over the picture */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    oklch(1 0 0 / 0.045) 0 1px,
+    transparent 1px 3px
+  );
+}
+/* the technical slate under a plate, in place of a plain caption */
+.slate {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  border: 1px solid var(--rule-strong);
+  border-top: 0;
+}
+.slate span {
+  font-family: var(--f-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--fg-soft);
+  padding: 9px 14px;
+  flex: 1 1 auto;
+  text-align: center;
+}
+.slate span + span { border-left: 1px solid var(--rule-strong); }
+
+/* ---- the VHS on-screen display, for the clip row ------------------------- */
+.osd {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  color: oklch(0.97 0.06 200);
+  text-shadow: 0 0 6px oklch(0.6 0.14 210 / 0.9);
+}
+.osd__play {
+  width: 0;
+  height: 0;
+  border-left: 9px solid currentColor;
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+}
+
+/* ---- the seat row: the back of the stalls, along a band's edge ----------- */
+.seats {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 46px;
+  z-index: 2;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='104' height='48'%3E%3Crect y='40' width='104' height='8' fill='%23120e0b'/%3E%3Cpath d='M4 44V22a14 14 0 0114-14h12a14 14 0 0114 14v22z' fill='%23120e0b'/%3E%3Cpath d='M56 44V22a14 14 0 0114-14h12a14 14 0 0114 14v22z' fill='%23120e0b'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  background-position: bottom left;
+  background-size: 104px 48px;
+  opacity: 0.62;
 }
 
 /* ---------- utility ---------- */

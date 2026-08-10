@@ -36,7 +36,15 @@ inverts it:
   with a hairline ink edge and welded to the page by the same grain pass.
   Placements live in `SCENES` in `src/components/stickers.tsx`.
 - **Type carries the page.** Display lines are always lowercase, which is
-  the app's own rule.
+  the app's own rule, with one word per headline switching to Newsreader
+  italic — a second display voice rather than a fourth font.
+- **The cinema layer is borrowed from real objects.** Marquee bulbs chasing
+  above and below the running titles, a NOW SHOWING house board, 35mm
+  sprocket rails and a projectionist's cue mark on the demo plate, a
+  technical slate in place of its caption, broadcast scanlines, a VHS
+  on-screen display on the clip row, a row of seat backs along the closing
+  band, and section markers numbered as reels. Nothing is texture for its
+  own sake: each one is a thing the product's own subject would have.
 - **The product is shown, never drawn.** Every screenshot is a real capture
   of the shipped app, the same set that went to App Store Connect.
 

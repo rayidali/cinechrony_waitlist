@@ -9,8 +9,8 @@
  * printed, and the page's own grain pass over the top, which is what
  * actually welds them to the paper.
  *
- * Every one of them is either a cinema object or a piece of the same
- * late-night, group-chat furniture the app is for. Nothing generically
+ * Every one of them is either a cinema object, a broadcast one, or a piece
+ * of the same late-night furniture the app is for. Nothing generically
  * "fun" — a croissant would be Corner's joke, not ours.
  *
  * All of it is decoration: aria-hidden, pointer-events none, and gone
@@ -217,6 +217,88 @@ function Ticket() {
   );
 }
 
+
+function Clapper() {
+  return (
+    <svg viewBox="0 0 108 92" fill="none" aria-hidden="true">
+      {/* the slate */}
+      <rect x="6" y="34" width="96" height="52" rx="3" fill="#232a2d" stroke={INK} strokeWidth="2.4" />
+      <g stroke="#8f9a9f" strokeWidth="1.6" opacity="0.5">
+        <path d="M6 52h96M6 66h96" />
+      </g>
+      <path d="M18 44h34M18 76h52" stroke="#e9e2d2" strokeWidth="3" strokeLinecap="round" />
+      {/* the clapper stick, hinged open */}
+      <g transform="rotate(-11 12 30)">
+        <rect x="6" y="16" width="96" height="18" rx="2.5" fill="#e9e2d2" stroke={INK} strokeWidth="2.4" />
+        <path
+          d="M14 16l-8 18M32 16l-8 18M50 16l-8 18M68 16l-8 18M86 16l-8 18"
+          stroke={INK}
+          strokeWidth="7"
+        />
+        <rect x="6" y="16" width="96" height="18" rx="2.5" fill="none" stroke={INK} strokeWidth="2.4" />
+      </g>
+    </svg>
+  );
+}
+
+function Crt() {
+  return (
+    <svg viewBox="0 0 110 100" fill="none" aria-hidden="true">
+      {/* rabbit ears */}
+      <path d="M40 20L28 3M62 20L76 3" stroke={INK} strokeWidth="2.6" strokeLinecap="round" />
+      <circle cx="27" cy="3" r="3" fill={INK} />
+      <circle cx="77" cy="3" r="3" fill={INK} />
+      <rect x="4" y="20" width="102" height="74" rx="8" fill="#d8cdb8" stroke={INK} strokeWidth="2.6" />
+      <rect x="13" y="29" width="66" height="56" rx="6" fill="#2b6f7d" stroke={INK} strokeWidth="2.4" />
+      {/* scan lines on the tube */}
+      <g stroke="#a9d6dd" strokeWidth="1.4" opacity="0.45">
+        <path d="M15 39h62M15 47h62M15 55h62M15 63h62M15 71h62M15 79h62" />
+      </g>
+      <path d="M22 37l26 22-26 12z" fill="#f0e9d8" opacity="0.28" />
+      <g stroke={INK} strokeWidth="2.2">
+        <circle cx="93" cy="42" r="7" fill="#b9ad95" />
+        <circle cx="93" cy="63" r="7" fill="#b9ad95" />
+      </g>
+      <path d="M88 80h12" stroke={INK} strokeWidth="2.4" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function Glasses3D() {
+  return (
+    <svg viewBox="0 0 118 52" fill="none" aria-hidden="true">
+      <path d="M4 12h110v6a10 10 0 01-10 10H14A10 10 0 014 18z" fill="#e9e2d2" stroke={INK} strokeWidth="2.4" strokeLinejoin="round" />
+      <rect x="12" y="18" width="40" height="24" rx="4" fill="#c1443a" stroke={INK} strokeWidth="2.4" />
+      <rect x="66" y="18" width="40" height="24" rx="4" fill="#2b83a6" stroke={INK} strokeWidth="2.4" />
+      <path d="M52 24h14" stroke={INK} strokeWidth="2.6" />
+    </svg>
+  );
+}
+
+function Leader() {
+  return (
+    <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      <circle cx="50" cy="50" r="46" fill="#e9e2d2" stroke={INK} strokeWidth="2.6" />
+      <circle cx="50" cy="50" r="34" fill="none" stroke={INK} strokeWidth="1.6" opacity="0.45" />
+      {/* the sweep and the crosshair */}
+      <path d="M50 50V6A44 44 0 0194 50z" fill={INK} fillOpacity="0.1" />
+      <path d="M50 4v92M4 50h92" stroke={INK} strokeWidth="1.8" opacity="0.55" />
+      <text
+        x="50"
+        y="50"
+        textAnchor="middle"
+        dominantBaseline="central"
+        fontFamily="Space Mono, ui-monospace, monospace"
+        fontSize="46"
+        fontWeight="700"
+        fill={INK}
+      >
+        3
+      </text>
+    </svg>
+  );
+}
+
 const SHAPES = {
   disco: DiscoBall,
   popcorn: Popcorn,
@@ -228,6 +310,10 @@ const SHAPES = {
   daisy: Daisy,
   cursor: Cursor,
   ticket: Ticket,
+  clapper: Clapper,
+  crt: Crt,
+  glasses: Glasses3D,
+  leader: Leader,
 } as const;
 
 export type StickerKind = keyof typeof SHAPES;
@@ -305,6 +391,7 @@ const SCENES: Record<string, Placed[]> = {
     { kind: "butterfly", x: "84%", y: "16%", size: 86, rotate: 10, delay: 1.1, duration: 8.5 },
     { kind: "sparkle", x: "16%", y: "76%", size: 36, rotate: -8, delay: 2, duration: 7.5, desktopOnly: true },
     { kind: "daisy", x: "88%", y: "72%", size: 62, rotate: 14, delay: 0.9, duration: 9, desktopOnly: true },
+    { kind: "glasses", x: "50%", y: "92%", size: 108, rotate: -5, delay: 1.7, duration: 9.5, desktopOnly: true },
   ],
   /* the VHS sat at y:74% here, which put a dark object directly behind a
      line of white body copy; behind is not far enough when the contrast
@@ -313,6 +400,7 @@ const SCENES: Record<string, Placed[]> = {
     { kind: "vhs", x: "4%", y: "90%", size: 108, rotate: -7, delay: 0.5, duration: 10, desktopOnly: true },
     { kind: "ticket", x: "59%", y: "15%", size: 94, rotate: 9, delay: 1.6, duration: 8, desktopOnly: true },
     { kind: "sparkle", x: "89%", y: "80%", size: 36, rotate: -14, delay: 2.3, duration: 7.5, desktopOnly: true },
+    { kind: "crt", x: "93%", y: "24%", size: 92, rotate: -8, delay: 0.9, duration: 10, desktopOnly: true },
   ],
   /* on the ink band an object only earns its place if it reads at a glance:
      the film reel is dark grey on near-black and turned into a smudge, so
@@ -321,9 +409,11 @@ const SCENES: Record<string, Placed[]> = {
     { kind: "disco", x: "9%", y: "34%", size: 96, rotate: 7, delay: 0.3, duration: 10.5, desktopOnly: true },
     { kind: "popcorn", x: "88%", y: "62%", size: 92, rotate: -9, delay: 1.2, duration: 9, desktopOnly: true },
     { kind: "sparkle", x: "80%", y: "20%", size: 36, rotate: 16, delay: 2.4, duration: 7 },
+    { kind: "reel", x: "22%", y: "84%", size: 78, rotate: -11, delay: 1.8, duration: 9.5, desktopOnly: true },
   ],
   grab: [
-    { kind: "reel", x: "92%", y: "4%", size: 74, rotate: 11, delay: 0.8, duration: 9.5, desktopOnly: true },
+    { kind: "clapper", x: "92%", y: "4%", size: 104, rotate: 9, delay: 0.8, duration: 9.5, desktopOnly: true },
+    { kind: "leader", x: "5%", y: "62%", size: 76, rotate: -6, delay: 2, duration: 8.5, desktopOnly: true },
   ],
 };
 

@@ -98,6 +98,10 @@ export function Footer({
           <span className="label">made for the group chat</span>
         </div>
       </div>
+      {/* the end title, then the credits */}
+      <div className="footer-end" aria-hidden="true">
+        <span className="label">— the end —</span>
+      </div>
       <div className="footer-ghost ghost" aria-hidden="true">
         cinechrony
       </div>

@@ -17,6 +17,7 @@ export function Frame({
   id,
   caption,
   note,
+  emptyLabel,
   ratio,
   focus,
   offset = false,
@@ -29,6 +30,8 @@ export function Frame({
   caption?: string;
   /** the mono line under the plate, right side */
   note?: string;
+  /** what the empty plate says when a slate replaces the caption row */
+  emptyLabel?: string;
   /** aspect-ratio for the plate, e.g. "16 / 9" */
   ratio?: string;
   /**
@@ -71,7 +74,7 @@ export function Frame({
           <img src={asset.src} alt={asset.alt} loading="lazy" />
         ) : (
           <div className="frame__empty">
-            <span className="label">{caption ?? id}</span>
+            <span className="label">{emptyLabel ?? caption ?? id}</span>
             <span className="label" style={{ opacity: 0.55 }}>
               awaiting capture · {id}
             </span>

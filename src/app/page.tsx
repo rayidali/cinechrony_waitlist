@@ -67,18 +67,22 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* the marquee, as a cinema marquee: flat, mono, edge to edge */}
-        <section className="band band--marigold">
+        {/* the marquee, built as one: chasing bulbs above and below the
+            running titles, and a house board set into the left */}
+        <section className="band band--marigold marquee-band">
+          <span className="bulbs bulbs--top" aria-hidden="true" />
+          <span className="now-showing">now showing</span>
           <Ticker />
+          <span className="bulbs bulbs--bottom" aria-hidden="true" />
         </section>
 
-        {/* ---------------- 01 · the grab ---------------- */}
+        {/* ---------------- reel 01 · the grab ---------------- */}
         <section className="band band--paper section" id="how">
           <Stickers scene="grab" />
           <div className="wrap">
             <Reveal>
               <div className="marker">
-                <span className="label">01 · the grab</span>
+                <span className="label">reel 01 · the grab</span>
               </div>
               <div className="grab-head">
                 <h2 className="d2">
@@ -160,17 +164,21 @@ export default function LandingPage() {
             </Reveal>
 
             <Reveal delay={220}>
-              <Frame
-                id="demo-hero"
-                ratio="16 / 9"
-                caption="the demo film · forty seconds, one take"
-                note="sound off"
-                className="demo-film"
-              >
-                <span className="demo-film__play" aria-hidden="true">
-                  <span className="play" />
-                </span>
-              </Frame>
+              <div className="demo-film filmframe">
+                <Frame id="demo-hero" ratio="16 / 9" emptyLabel="the demo film" className="scanlines">
+                  <span className="demo-film__play" aria-hidden="true">
+                    <span className="play" />
+                  </span>
+                  <span className="cue" aria-hidden="true" />
+                </Frame>
+                <div className="slate">
+                  <span>reel 01</span>
+                  <span>the grab, one take</span>
+                  <span>00:40</span>
+                  <span>24 fps</span>
+                  <span>sound off</span>
+                </div>
+              </div>
             </Reveal>
           </div>
         </section>
@@ -195,12 +203,12 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ---------------- 02 · what it does ---------------- */}
+        {/* ---------------- reel 02 · what it does ---------------- */}
         <section className="band band--paper section" id="features">
           <div className="wrap">
             <Reveal>
               <div className="marker">
-                <span className="label">02 · what it does</span>
+                <span className="label">reel 02 · what it does</span>
               </div>
             </Reveal>
 
@@ -257,7 +265,12 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <div className="row__media">
-                  <Frame id="app-film" caption="a film, opened" note="clip attached" ratio="4 / 5" offset />
+                  <Frame id="app-film" caption="a film, opened" note="clip attached" ratio="4 / 5" offset>
+                    <span className="osd" aria-hidden="true">
+                      <span className="osd__play" />
+                      play 00:02:20
+                    </span>
+                  </Frame>
                 </div>
               </Reveal>
             </div>
@@ -271,7 +284,7 @@ export default function LandingPage() {
             <div className="night">
               <Reveal className="night__copy">
                 <span className="label" style={{ marginBottom: 22 }}>
-                  03 · movie night
+                  reel 03 · movie night
                 </span>
                 <h2 className="d2">pick a night. <em>everyone knows.</em></h2>
                 <p className="body" style={{ marginTop: 20 }}>
@@ -301,7 +314,7 @@ export default function LandingPage() {
             <div className="year">
               <Reveal className="year__copy">
                 <div className="marker">
-                  <span className="label">04 · the year</span>
+                  <span className="label">reel 04 · the year</span>
                 </div>
                 <h2 className="d2">a year you can look at.</h2>
                 <p className="body" style={{ marginTop: 20 }}>
@@ -327,7 +340,7 @@ export default function LandingPage() {
           <div className="wrap">
             <Reveal>
               <div className="marker">
-                <span className="label">05 · why</span>
+                <span className="label">reel 05 · why</span>
               </div>
             </Reveal>
             <div className="story">
@@ -358,6 +371,7 @@ export default function LandingPage() {
         {/* ---------------- the close ---------------- */}
         <section className="band band--aura section--xl" id="try">
           <Stickers scene="close" />
+          <span className="seats" aria-hidden="true" />
           <div className="wrap center">
             <Reveal>
               <span className="label" style={{ marginBottom: 26 }}>
