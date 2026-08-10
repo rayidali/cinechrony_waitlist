@@ -46,6 +46,12 @@ inverts it:
   stops at a hard edge. A soft interior inside a hard shape reads as print;
   the same gradient fading out into the paper is the ambient wash v2 died
   of, and that distinction is the only reason both can live here.
+- **Colour on a coloured field never dims.** Saturated bands set an ink
+  (`--on-color` / `--on-color-dark`) that does NOT flip with the theme,
+  because the field under it does not flip either, and they do not reduce
+  opacity for secondary text. Calendar cell fills are artwork and hold one
+  value in both themes; only the ink cell inverts, because its job is to
+  contrast with the page. Verified by `contrast.mjs` rather than by eye.
 - **Motion is touch-first.** Nothing the page needs sits behind `:hover` —
   a phone has no hover, and one that fakes it leaves the state stuck on
   after a tap. Entrances (the calendar deals itself in, cell by cell) play

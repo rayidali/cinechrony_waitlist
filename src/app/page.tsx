@@ -68,7 +68,7 @@ export default function LandingPage() {
         </section>
 
         {/* the marquee, as a cinema marquee: flat, mono, edge to edge */}
-        <section className="band band--ink">
+        <section className="band band--marigold">
           <Ticker />
         </section>
 
@@ -208,7 +208,7 @@ export default function LandingPage() {
               <Reveal className="row">
                 <div className="row__copy">
                   <span className="row__idx">the diary</span>
-                  <h2 className="d3">it fills in as you watch.</h2>
+                  <h2 className="d3">it fills in as you <em>watch</em>.</h2>
                   <p className="body">
                     A real month, not a feed. A poster lands on the day you watched something, a
                     tint on the days you grabbed one, a red dot on the nights you had people round.
@@ -273,7 +273,7 @@ export default function LandingPage() {
                 <span className="label" style={{ marginBottom: 22 }}>
                   03 · movie night
                 </span>
-                <h2 className="d2">pick a night. everyone knows.</h2>
+                <h2 className="d2">pick a night. <em>everyone knows.</em></h2>
                 <p className="body" style={{ marginTop: 20 }}>
                   A film on a shared list becomes a plan: one film, one time, up to nine other
                   people, one reminder that actually arrives. Guests do not need an account, and
@@ -333,7 +333,6 @@ export default function LandingPage() {
             <div className="story">
               <Reveal>
                 <h2 className="d2">films live on social now. the place you keep them didn&rsquo;t.</h2>
-                <div className="story__orb orb" aria-hidden="true" />
               </Reveal>
               <Reveal delay={120}>
                 <p className="story__p">
@@ -342,7 +341,7 @@ export default function LandingPage() {
                   You think, that one. Then you keep scrolling, and by morning it is gone.
                 </p>
                 <p className="story__pull">
-                  The film was never the hard part. Keeping hold of it was.
+                  <span>The film was never the hard part. Keeping hold of it was.</span>
                 </p>
                 <p className="story__p">
                   So cinechrony starts where the loss happens: at the share sheet, thirty seconds
@@ -364,7 +363,7 @@ export default function LandingPage() {
               <span className="label" style={{ marginBottom: 26 }}>
                 start with one reel
               </span>
-              <h2 className="d2">stop losing the film.</h2>
+              <h2 className="d2">stop losing the <em>film</em>.</h2>
               <p className="lead" style={{ marginTop: 24, marginInline: "auto" }}>
                 The iOS beta is open on TestFlight, and the web app works right now in any browser.
                 Both are free.

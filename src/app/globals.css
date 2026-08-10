@@ -46,6 +46,16 @@
   --sage-tint: oklch(0.87 0.055 152);
   --blush:    oklch(0.85 0.07 25);
 
+  /* INKS FOR COLOURED FIELDS — these must NOT flip with the theme, because
+     the field underneath them does not flip either. `--bone` was being used
+     for this and `--bone` IS redefined in dark (it is the raised surface,
+     0.235), so every saturated band quietly served dark text on a dark
+     field at night: the forest section, the red poster and the whole aura
+     close band were unreadable in dark mode and readable in light, which is
+     exactly the kind of fault a thumbnail-sized screenshot hides. */
+  --on-color:      oklch(0.97 0.006 80);
+  --on-color-dark: oklch(0.17 0.012 60);
+
   /* ---- semantic ---- */
   --bg:        var(--paper);
   --fg:        var(--ink);
@@ -198,11 +208,11 @@ body::before {
 .band--paper { background: var(--bg); }
 .band--deep  { background: var(--paper-deep); }
 .band--ink   { background: var(--ink); color: var(--paper); }
-.band--red   { background: var(--red); color: var(--bone); }
-.band--blue  { background: var(--blue); color: var(--bone); }
-.band--amber { background: var(--amber); color: oklch(0.2 0.03 70); }
-.band--forest { background: var(--forest); color: var(--bone); }
-.band--marigold { background: var(--marigold); color: oklch(0.19 0.04 55); }
+.band--red   { background: var(--red); color: var(--on-color); }
+.band--blue  { background: var(--blue); color: var(--on-color); }
+.band--amber { background: var(--amber); color: var(--on-color-dark); }
+.band--forest { background: var(--forest); color: var(--on-color); }
+.band--marigold { background: var(--marigold); color: var(--on-color-dark); }
 
 /* ==========================================================================
    AURA — the grainy multi-hue gradient from the boards.
@@ -213,7 +223,7 @@ body::before {
    v2 read as generated; a hard edge round a soft interior reads as print.
    ========================================================================== */
 .band--aura {
-  color: var(--bone);
+  color: var(--on-color);
   background:
     radial-gradient(68% 62% at 16% 20%, oklch(0.56 0.18 34 / 0.95), transparent 68%),
     radial-gradient(62% 58% at 84% 16%, oklch(0.44 0.16 288 / 0.92), transparent 66%),
@@ -297,9 +307,16 @@ body::before {
 }
 .band > * { position: relative; z-index: 1; }
 
-/* inverted fields need their own soft-ink + rule values */
+/* Inverted fields need their own soft-ink and rule values. 68% was lifted
+   straight from the paper bands, where the muted grey has a whole cream
+   sheet of headroom; on red, blue and forest the same figure put every mono
+   label between 3.0 and 4.4 against a 4.5 requirement. Hierarchy on a
+   coloured field has to come from size and letterspacing, not opacity. */
 .band--ink, .band--red, .band--blue, .band--forest, .band--aura {
-  --fg-soft: color-mix(in oklab, currentColor 68%, transparent);
+  /* and at 88% it still missed, so on a saturated field there is no
+     dimming at all: 0.69rem uppercase on 0.2em tracking already reads
+     as secondary by form, which is the only hierarchy available here */
+  --fg-soft: currentColor;
   --rule: color-mix(in oklab, currentColor 22%, transparent);
   --rule-strong: color-mix(in oklab, currentColor 45%, transparent);
 }
@@ -327,6 +344,20 @@ body::before {
 .d3 { font-size: clamp(1.85rem, 3.9vw, 3rem);    line-height: 0.98; }
 .h2 { font-size: clamp(1.6rem, 2.9vw, 2.35rem);  line-height: 1.02; font-weight: 700; }
 .h3 { font-size: 1.2rem; line-height: 1.15; font-weight: 700; letter-spacing: -0.03em; }
+
+/* THE SECOND DISPLAY VOICE. Not a fourth font — the same Newsreader, set
+   italic inside a Bricolage headline. It is the move every reference board
+   makes (almostfriday, Get Outside, Astro Attic): a grotesque line with one
+   word carrying the feeling in a contrasting italic serif. Mark the word
+   with <em> and it switches. */
+.d1 em, .d2 em, .d3 em, .h2 em, .display em, .display-2 em {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  text-transform: none;
+  padding-right: 0.04em;
+}
 
 /* the poster line: Newsreader, big, the one place a serif shouts */
 .poster-line {
@@ -429,7 +460,16 @@ body::before {
 .band--ink .btn:hover, .band--red .btn:hover, .band--blue .btn:hover {
   box-shadow: 3px 3px 0 currentColor;
 }
-.band--ink .btn--accent:hover, .band--red .btn--accent:hover { box-shadow: 3px 3px 0 var(--bone); }
+/* the film-red pill lands on the red quadrant of the aura and vanishes;
+   on that field the primary CTA goes maximum-contrast instead */
+.band--aura .btn--accent {
+  background: var(--on-color);
+  border-color: var(--on-color);
+  color: var(--on-color-dark);
+}
+.band--ink .btn--accent:hover,
+.band--red .btn--accent:hover { box-shadow: 3px 3px 0 var(--on-color); }
+.band--aura .btn:hover { box-shadow: 3px 3px 0 var(--on-color); }
 
 .link-quiet {
   font-family: var(--f-display);
@@ -532,17 +572,24 @@ body::before {
   color: var(--fg);
 }
 .pcell--mute .pcell__n { color: var(--ink-faint); opacity: 0.45; }
+/* INK IS THE ONE CELL THAT FLIPS, because its job is to contrast with the
+   page: leave it dark at night and the grid loses its whole armature. Every
+   coloured cell is ARTWORK and holds one value in both themes, which is the
+   rule the app already applies to its own poster stops — and it is also
+   what fixes the film title that could not reach 4.5 against a red that
+   lifted to 0.64 at night purely because the same token doubles as an
+   accent for small text. */
 .pcell--ink  { background: var(--ink); }
-.pcell--red  { background: var(--red); }
-.pcell--blue { background: var(--blue); }
-.pcell--dusk { background: var(--dusk); }
-.pcell--sage { background: var(--sage); }
-.pcell--amber { background: var(--amber); }
-.pcell--tint { background: var(--sage-tint); }
-.pcell--teal { background: var(--teal); }
-.pcell--forest { background: var(--forest); }
-.pcell--marigold { background: var(--marigold); }
-.pcell--blush { background: var(--blush); }
+.pcell--red  { background: oklch(0.5 0.17 33); }
+.pcell--blue { background: oklch(0.45 0.19 258); }
+.pcell--dusk { background: oklch(0.38 0.11 292); }
+.pcell--sage { background: oklch(0.46 0.1 150); }
+.pcell--amber { background: oklch(0.8 0.14 78); }
+.pcell--tint { background: oklch(0.87 0.055 152); }
+.pcell--teal { background: oklch(0.44 0.09 205); }
+.pcell--forest { background: oklch(0.4 0.085 155); }
+.pcell--marigold { background: oklch(0.72 0.16 62); }
+.pcell--blush { background: oklch(0.85 0.07 25); }
 .pcell--aura {
   background:
     radial-gradient(62% 62% at 28% 24%, oklch(0.64 0.19 38), transparent 68%),
@@ -552,12 +599,14 @@ body::before {
 }
 .pcell--aura2 {
   background:
-    radial-gradient(60% 60% at 26% 26%, oklch(0.62 0.16 245), transparent 66%),
-    radial-gradient(58% 58% at 78% 30%, oklch(0.68 0.13 198), transparent 66%),
-    radial-gradient(58% 58% at 66% 80%, oklch(0.58 0.14 302), transparent 66%),
-    oklch(0.54 0.15 262);
+    radial-gradient(60% 60% at 26% 26%, oklch(0.5 0.16 248), transparent 66%),
+    radial-gradient(58% 58% at 78% 30%, oklch(0.53 0.12 198), transparent 66%),
+    radial-gradient(58% 58% at 66% 80%, oklch(0.46 0.14 302), transparent 66%),
+    oklch(0.44 0.15 262);
 }
-.pcell--ink .pcell__n,
+/* an ink cell inverts WITH the theme, so its numeral tracks the page bg */
+.pcell--ink .pcell__n { color: var(--bg); }
+/* these fields stay dark in both themes, so their ink stays light */
 .pcell--red .pcell__n,
 .pcell--blue .pcell__n,
 .pcell--dusk .pcell__n,
@@ -565,10 +614,12 @@ body::before {
 .pcell--teal .pcell__n,
 .pcell--forest .pcell__n,
 .pcell--aura .pcell__n,
-.pcell--aura2 .pcell__n { color: var(--bone); }
+.pcell--aura2 .pcell__n { color: var(--on-color); }
+/* and these stay light, so their ink stays dark */
 .pcell--marigold .pcell__n,
-.pcell--blush .pcell__n { color: var(--ink); }
-.pcell--amber .pcell__n, .pcell--tint .pcell__n { color: var(--ink); }
+.pcell--amber .pcell__n { color: var(--on-color-dark); }
+.pcell--tint .pcell__n,
+.pcell--blush .pcell__n { color: var(--on-color-dark); }
 
 .pcell img {
   width: 100%;
@@ -579,7 +630,7 @@ body::before {
 }
 /* a numeral sitting on a filled cell reads as a knocked-out date */
 .pcell--img .pcell__n {
-  color: var(--bone);
+  color: var(--on-color);
   text-shadow: 0 1px 12px oklch(0 0 0 / 0.5);
 }
 /* the movie-night dot — the one mark that means something in the future */
@@ -594,7 +645,7 @@ body::before {
   background: var(--red);
   transform: translateX(-50%);
 }
-.pcell--ink .pcell__dot, .pcell--red .pcell__dot { background: var(--bone); }
+.pcell--ink .pcell__dot, .pcell--red .pcell__dot { background: var(--on-color); }
 
 /* a film title set small along the bottom of a filled cell, so the grid
    reads as films rather than as abstract colour */
@@ -608,16 +659,17 @@ body::before {
   font-size: 0.5625rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--bone);
-  opacity: 0.72;
+  color: var(--on-color);
+  opacity: 0.94;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .pcell--amber .pcell__t,
-.pcell--marigold .pcell__t,
+.pcell--marigold .pcell__t { color: var(--on-color-dark); }
 .pcell--blush .pcell__t,
-.pcell--tint .pcell__t { color: var(--ink); }
+.pcell--tint .pcell__t { color: var(--on-color-dark); }
+.pcell--ink .pcell__t { color: var(--bg); }
 /* a 55px cell cannot hold "past lives"; an ellipsised stub of a title is
    worse than no title, so below tablet the cells go back to pure colour */
 @media (max-width: 820px) { .pcell__t { display: none; } }
@@ -653,7 +705,7 @@ body::before {
 }
 .pgrid-legend .k:first-child { margin-left: 0; }
 .k--film { background: var(--ink); }
-.k--tint { background: var(--sage-tint); }
+.k--tint { background: oklch(0.87 0.055 152); }
 .k--dot  { background: var(--red); border-radius: 50%; width: 7px; height: 7px; }
 
 /* ---------- the hero ---------- */
@@ -1089,24 +1141,39 @@ body::before {
   padding: 0.06em 0.1em 0 0;
   color: var(--accent-text);
 }
+/* THE AURA CARD. This was a naked gradient circle floating in the story
+   column doing nothing, which is a fair thing to be asked about. The boards
+   never float a gradient on its own — the reference orb has the line set ON
+   it. So the gradient stopped being decoration and became the pull quote's
+   own field, which is the only justification a shape like this ever has. */
 .story__pull {
+  position: relative;
+  overflow: hidden;
   font-family: var(--f-serif);
   font-style: italic;
-  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
-  line-height: 1.28;
-  margin: 30px 0;
-  padding-left: 22px;
-  border-left: 3px solid var(--red);
+  font-size: clamp(1.35rem, 2.3vw, 1.85rem);
+  line-height: 1.3;
+  margin: 34px 0;
+  padding: clamp(28px, 3.4vw, 42px);
+  color: var(--on-color);
+  background:
+    radial-gradient(62% 88% at 20% 18%, oklch(0.52 0.18 34), transparent 68%),
+    radial-gradient(58% 84% at 82% 22%, oklch(0.42 0.16 278), transparent 66%),
+    radial-gradient(66% 92% at 74% 86%, oklch(0.45 0.12 165), transparent 68%),
+    radial-gradient(54% 80% at 22% 88%, oklch(0.54 0.14 62), transparent 64%),
+    oklch(0.43 0.15 28);
 }
-/* the orb sits under the story headline, in the dead space a two-column
-   editorial spread always leaves at the bottom of the shorter column */
-.story__orb {
-  width: clamp(150px, 20vw, 236px);
-  margin-top: 40px;
-  transform: rotate(-4deg);
+.story__pull::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--grain-fine), var(--grain-clump);
+  opacity: 0.5;
+  mix-blend-mode: overlay;
 }
-@media (max-width: 899px) { .story__orb { margin: 30px auto 0; } }
-
+.story__pull > span { position: relative; z-index: 1; display: block; }
 .story__sign {
   font-family: var(--f-mono);
   font-size: 0.6875rem;
