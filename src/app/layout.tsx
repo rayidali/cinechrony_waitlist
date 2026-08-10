@@ -1,19 +1,25 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Manrope, Space_Mono } from "next/font/google";
+import { Bricolage_Grotesque, Newsreader, Space_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Nav } from "@/components/nav";
 import { site } from "@/lib/site";
 import "./globals.css";
 
+// The app's three faces, and only those three. Bricolage carries every
+// display line and all UI chrome, Newsreader every piece of prose, Space
+// Mono every label. Manrope was here in v2 and nowhere in the product.
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-bricolage",
   display: "swap",
 });
 
-const manrope = Manrope({
+const newsreader = Newsreader({
   subsets: ["latin"],
-  variable: "--font-manrope",
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-newsreader",
   display: "swap",
 });
 
@@ -65,7 +71,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${bricolage.variable} ${manrope.variable} ${spaceMono.variable}`}
+      className={`${bricolage.variable} ${newsreader.variable} ${spaceMono.variable}`}
     >
       <body>
         <ThemeProvider attribute="data-theme" defaultTheme="system">

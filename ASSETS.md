@@ -1,44 +1,113 @@
-# Asset capture list
+# What the site still needs from a human
 
-Every screenshot and video the site wants, in priority order. Since the 2026-07 redesign, no slot looks unfinished anymore: each one renders a designed stand-in (CSS product mockups on the feature rows, a "screening room" video frame for the demo, a mocked phone on /beta) until its real file exists. Real captures still upgrade the site from "looks real" to "is real", so this list is still worth doing, in this order. To wire one up: drop the file in `public/media/`, then set its `src` in the `media` map in `src/lib/site.ts` (for example `src: "/media/demo-hero.mp4"`); the mockup disappears automatically.
+Short list, because most of it is already done. The five product captures
+are **real** now: they are the same App Store Connect shoot, converted to
+WebP and wired up, so every screenshot on the site is the shipped app
+rather than a drawing of it. Nothing on the page is waiting on a
+screenshot.
 
-General notes for all captures:
+Two things cannot be produced from this machine, and one of them is worth
+doing this week.
 
-- Capture in the app's light theme on the newsprint-cream background so the frames blend with the site. A second dark-theme set is a bonus, not required.
-- Use realistic list names and films (the site's animated demo uses "friday night club" with Whiplash, Heat, and The Nice Guys; consistency is nice but not required).
-- No notification banners, low-battery indicators, or personal info in frame.
+To wire any of these up: drop the file in `public/media/`, then set its
+`src` in the `media` map in `src/lib/site.ts` (for example
+`src: "/media/demo-hero.mp4"`). The placeholder disappears on its own.
 
-## 1. demo-hero (video, highest priority)
+---
 
-- Slot: the 16:9 "screening room" frame in the "Works with the clips you already share" section on the landing page (currently a dark styled player frame with a play button).
-- Content: the full hero flow in one continuous take, about 30 to 45 seconds. Share a TikTok or reel to Cinechrony, show the AI scan running, show the films appearing with IMDb ratings, end on the shared list with the clip attached to a film card.
-- Format: MP4 (H.264), 1920x1080 or a clean 16:9 screen recording composited onto a simple background. It autoplays muted and loops, so it must read clearly without sound. Keep it under ~8 MB if possible.
+## 1. The demo film — `demo-hero` (video)
 
-## 2. feature-shared-list (image)
+**Where it goes:** the wide plate at the bottom of "one reel in. every film
+out." on the landing page. Right now it is a black plate with a play mark
+and an honest caption.
 
-- Slot: first feature row, "Watchlists you build together."
-- Content: a shared list open in the app with 2 or 3 member avatars visible and a healthy list of films.
-- Format: PNG or WebP app screenshot, ideally in a device frame or clean crop, landscape-friendly (the frame is 4:3).
+**Why it is first:** it is the only place on the site where the hero loop
+actually *moves*, and the loop is the product.
 
-## 3. feature-ratings (image)
+**Worth knowing:** this is the same take as the fresh scan the App Store
+submission needs. One recording settles both — it produces the first real
+pipeline data point since 03.08 and gives the site its film.
 
-- Slot: second feature row, "Never save a dud."
-- Content: a list where the rating chips are prominent, ideally with a spread of green/amber ratings visible.
-- Format: same as above, 4:3 frame.
+- One continuous take, 30 to 45 seconds. No cuts, no captions, no music.
+- Share a reel to cinechrony from Instagram or TikTok, let the scan run on
+  screen, show the films arriving with their ratings, end on the list with
+  the clip still attached to a film.
+- MP4 (H.264), 1080p or a clean phone screen recording. It autoplays muted
+  and loops, so it has to read with the sound off.
+- Under about 8 MB if you can. Trim dead air at both ends.
+- No notification banners, no low battery, nothing personal in frame.
 
-## 4. feature-clip-attached (image)
+---
 
-- Slot: third feature row, "Remember why you saved it."
-- Content: a film card open with the original reel/clip visible on it.
-- Format: same as above, 4:3 frame.
+## 2. Six square photographs — `grid-1` … `grid-6`
 
-## 5. beta-phone (image)
+**Where they go:** the film cells of the calendar grid in the hero, and
+they are the single biggest upgrade available to this page.
 
-- Slot: the phone frame on `/beta`.
-- Content: any handsome screen of the iOS beta build (home or a list). Portrait.
-- Format: PNG or WebP, roughly 320x640 aspect (an iPhone screenshot works as-is).
+**Read this before shooting anything:** the grid is composed to look
+finished without them. Those six cells are solid poster inks today, which
+is a real composition rather than a hole. So this is an improvement, not a
+blocker, and a bad photograph is worse than the ink.
 
-## Later (when links exist)
+**What they should be:** the feeling on the reference boards — real, warm,
+slightly grainy, a bit vintage. Not stock-photo people pointing at
+laptops.
 
-- TestFlight invite URL: set `testflightUrl` in `src/lib/site.ts` and `/beta` flips to the live join flow.
-- App Store badge + link: add to the try-it band and footer when the full release ships.
+Good subjects, roughly in order of usefulness:
+
+1. A phone held in one hand, mid-scroll, screen slightly blown out.
+2. Friends on a sofa, lit only by a screen. Backs of heads are fine, better
+   even.
+3. A dark room with a projector or a TV throwing light on a wall.
+4. Popcorn, a bowl, hands in it.
+5. A cinema seat row, empty, house lights up.
+6. A laptop or telly at night, from across the room.
+
+**Format:** square, 1:1, at least 900 × 900. JPG, PNG or WebP. They get a
+slight saturation and contrast lift in CSS to sit on the paper, so hand
+them over untouched.
+
+**Faces:** avoid recognisable ones unless you have the person's yes. Backs,
+hands, silhouettes and screens all read better here anyway.
+
+**If shooting is not going to happen:** say the word and I will pull six
+from a free-licence library (Unsplash or Pexels, both fine for commercial
+use with no attribution required) and wire them up. Your call, because it
+is your brand and stock has a look.
+
+---
+
+## 3. One wide photograph — `poster-still` (optional)
+
+**Where it goes:** behind the red poster band, "and it's still there on
+friday." Set it and the band gets a photograph under the type instead of a
+flat field.
+
+Landscape, at least 2000px wide, and it must survive being darkened with
+big serif type over it. A quiet, dim, low-contrast frame works; a busy one
+does not. **The flat red field is genuinely good as it is**, so only do
+this if you have a shot you love.
+
+---
+
+## Already handled, do not re-shoot
+
+| Slot | State |
+|---|---|
+| `app-grab` | live — the scan result, five films from one reel |
+| `app-diary` | live — the month calendar |
+| `app-list` | live — a shared list with a night planned |
+| `app-film` | live — a film open with the clip attached |
+| `app-year` | live — the year grid |
+
+Those came from `/tmp/asc-shots-d/raw` (the App Store shoot, build 23),
+resized to 1440px tall and converted to WebP at quality 82. To refresh
+them after a UI change, re-run `scripts/appstore-screenshots.tmp.mjs` in
+the app repo and convert the same way.
+
+## Links, not files
+
+- **TestFlight** — wired. `site.testflightUrl` points at the live public
+  link, so `/beta` shows the real join flow.
+- **App Store badge + link** — add when the App Store release lands. It
+  goes in the hero and the closing band, next to the TestFlight button.

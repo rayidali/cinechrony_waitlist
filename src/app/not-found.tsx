@@ -9,26 +9,28 @@ export const metadata: Metadata = {
 export default function NotFound() {
   return (
     <>
-    <main id="main">
-      <section className="section">
-        <div className="wrap wrap--narrow" style={{ textAlign: "center" }}>
-          <div className="eyebrow hero-eyebrow">404 · not on the list</div>
-          <h1 className="display-2">This one&apos;s not in the archive.</h1>
-          <p className="body" style={{ marginTop: 24, color: "var(--fg-soft)" }}>
-            The page you&apos;re after moved, or never made the cut.
-          </p>
-          <div className="hero-cta-row" style={{ justifyContent: "center" }}>
-            <Link className="btn btn--accent btn--lg" href="/">
-              Back to the homepage
-            </Link>
-            <Link className="link-quiet" href="/support">
-              Get support
-            </Link>
+      <main id="main">
+        <section className="band band--paper section--xl">
+          <div className="wrap center">
+            <span className="label label--red" style={{ marginBottom: 24 }}>
+              404 · not on the list
+            </span>
+            <h1 className="d2">this one never made the cut.</h1>
+            <p className="body" style={{ margin: "24px auto 0" }}>
+              The page you were after moved, or was never here. It happens.
+            </p>
+            <div className="cta-row" style={{ justifyContent: "center" }}>
+              <Link className="btn btn--accent btn--lg" href="/">
+                back to the start
+              </Link>
+              <Link className="link-quiet" href="/support">
+                or tell us what broke
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
-    </main>
-    <Footer variant="minimal" />
+        </section>
+      </main>
+      <Footer variant="minimal" />
     </>
   );
 }

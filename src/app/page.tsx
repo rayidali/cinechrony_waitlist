@@ -1,492 +1,389 @@
 import Link from "next/link";
 import { Footer } from "@/components/footer";
-import { MediaSlot } from "@/components/media-slot";
-import { PhoneDemo } from "@/components/phone-demo";
-import { ReelCard } from "@/components/reel-card";
+import { Frame } from "@/components/frame";
+import { PosterGrid } from "@/components/poster-grid";
 import { Reveal } from "@/components/reveal";
-import { FilmStrip } from "@/components/film-strip";
-import { MockupSharedList, MockupRatings, MockupClipAttached } from "@/components/feature-mockups";
+import { Stub } from "@/components/stub";
+import { Ticker } from "@/components/ticker";
 import { TikTokIcon, InstagramIcon, YouTubeIcon, LinkIcon } from "@/components/icons";
 import { site } from "@/lib/site";
 
-const MARQUEE_TITLES = [
-  "whiplash",
-  "heat",
-  "parasite",
-  "arrival",
-  "the nice guys",
-  "dune",
-  "past lives",
-  "knives out",
-];
-
-function MarqueeGroup() {
-  return (
-    <span className="marquee__group">
-      {MARQUEE_TITLES.map((title) => (
-        <span className="marquee__item" key={title}>
-          {title}
-          <span className="marquee__dot">·</span>
-        </span>
-      ))}
-    </span>
-  );
-}
-
+/**
+ * The landing page, composed as a printed sheet.
+ *
+ * Two rules run through all of it. First, colour is a flat field with a hard
+ * edge, never an ambient glow: each band is one solid stock, grained like a
+ * press run, and it ends where the next one starts. Second, the product is
+ * shown, never drawn. Every screenshot here is a real capture of the shipped
+ * app, the same set that went to App Store Connect.
+ */
 export default function LandingPage() {
+  const beta = site.testflightUrl;
+
   return (
     <>
-    <main id="main">
-      {/* hero: a split layout -- headline left, the diorama right, so both
-          read together in the first viewport. The diorama itself is still
-          the single composed sentence from the narrative pass (doomscroll,
-          the AI catching it, the shared list with friends), just compacted
-          to fit a column. Depth is layered behind both columns: a projector
-          sun, two out-of-focus reel echoes, scattered bokeh dust, a print
-          texture patch behind the text, and a ground plane at the floor. */}
-      <section className="section section--xl grain hero">
-        <div className="hero-atmo" aria-hidden="true">
-          <span className="hero-sun" />
-          <span className="hero-beam hero-beam--red" />
-          <span className="hero-echo hero-echo--a pd-dusk-crimson" />
-          <span className="hero-echo hero-echo--b pd-teal-forest" />
-          <span className="hero-bokeh hero-bokeh--1 floaty floaty--d1" />
-          <span className="hero-bokeh hero-bokeh--2 floaty floaty--d2" />
-          <span className="hero-bokeh hero-bokeh--3 floaty floaty--d3" />
-          <span className="hero-bokeh hero-bokeh--4 floaty floaty--d4" />
-          <span className="hero-bokeh hero-bokeh--5 floaty floaty--d2" />
-          <span className="hero-dotfield" />
-          <span className="hero-ground" />
-        </div>
-        <div className="wrap">
-          <div className="hero-grid">
-            <Reveal className="hero-copy">
-              <div className="eyebrow hero-eyebrow">The social movie watchlist</div>
-              <h1 className="display">
-                Doomscroll. Save.
-                <br />
-                Watch together.
-              </h1>
-              <p className="lead">
-                Cinechrony turns the reels you scroll past into a rated watchlist you share with
-                friends.
-              </p>
-              <div className="hero-cta-row">
-                <a className="btn btn--accent btn--lg" href={site.appUrl} target="_blank" rel="noopener">
-                  Try it here
-                </a>
-                <a className="link-quiet" href="#demo">
-                  Watch the demo
-                </a>
-              </div>
-              <p className="meta hero-note">Free web app. Nothing to download.</p>
-            </Reveal>
-
-            <Reveal delay={150} className="hero-visual">
-              {/* the diorama: a single sentence, left to right --
-                  doomscroll -> the AI catches it -> a shared list with friends */}
-              <div className="hero-diorama">
-                <span className="stage-floor" aria-hidden="true" />
-
-                {/* 1a: the doomscroll (STORY 1 source) */}
-                <div className="diorama-reels" aria-hidden="true">
-                  <ReelCard handle="@moviebro" pd="pd-rose-amber" className="reel-card--back reel-card--back-b" />
-                  <ReelCard handle="@cinemaclips" pd="pd-teal-forest" className="reel-card--back reel-card--back-a" />
-                  <ReelCard handle="@filmtok" pd="pd-dusk-crimson" className="reel-card--front" />
-                  <span className="diorama-heart floaty floaty--d2">♡</span>
+      <main id="main">
+        {/* ---------------- hero: the diary, at poster scale ---------------- */}
+        <section className="band band--paper hero">
+          <div className="hero-shell">
+            <div className="hero-layout">
+              <Reveal className="hero-copy">
+                <span className="label label--red" style={{ marginBottom: 26 }}>
+                  est. 2026 · iphone and web
+                </span>
+                <h1 className="d1">
+                  share the reel.
+                  <br />
+                  keep the film.
+                </h1>
+                <p className="hero-sub">
+                  you find films while scrolling. this is where they stop disappearing.
+                </p>
+                <div className="cta-row">
+                  {beta ? (
+                    <a className="btn btn--accent btn--lg" href={beta} target="_blank" rel="noopener">
+                      get the ios beta
+                    </a>
+                  ) : (
+                    <Link className="btn btn--accent btn--lg" href="/waitlist">
+                      join the waitlist
+                    </Link>
+                  )}
+                  <a className="link-quiet" href={site.appUrl} target="_blank" rel="noopener">
+                    or open it in a browser
+                  </a>
                 </div>
+                <span className="label hero-note">
+                  free while we&rsquo;re in beta · testflight, then the app store
+                </span>
+              </Reveal>
 
-                {/* 1b: the catch -- the AI step made visible */}
-                <div className="diorama-flow" aria-hidden="true">
-                  {/* endpoints run a few units past the 0-220 viewBox on
-                      purpose (the svg is `overflow: visible`, see its own
-                      rule) -- the box sits in a 6px flex gap on each side
-                      from its neighbors, so a path that stopped exactly at
-                      the viewBox edge would visibly fall short of the reel
-                      card / phone bezel it's meant to touch. */}
-                  <svg
-                    className="diorama-flow__svg"
-                    viewBox="0 0 220 160"
-                    preserveAspectRatio="none"
-                    fill="none"
-                  >
-                    <defs>
-                      <marker
-                        id="hero-flow-arrowhead"
-                        viewBox="0 0 10 10"
-                        refX="7"
-                        refY="5"
-                        markerWidth="6"
-                        markerHeight="6"
-                        orient="auto-start-reverse"
-                      >
-                        <path d="M0 0L10 5L0 10z" fill="var(--fg)" fillOpacity="0.35" />
-                      </marker>
-                    </defs>
-                    <path
-                      d="M-4 128C64 46 148 40 226 80"
-                      stroke="var(--fg)"
-                      strokeOpacity="0.35"
-                      strokeWidth="2"
-                      strokeDasharray="5 7"
-                      strokeLinecap="round"
-                      markerEnd="url(#hero-flow-arrowhead)"
-                    />
-                  </svg>
-                  <span className="diorama-flow__mobile-line" />
-                  <div className="scan-pill">
-                    <div className="demo-scan demo-on">
-                      <span>3 films found</span>
-                      <span className="bar" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* 1c: the shared list (STORY 2) */}
-                <div className="diorama-phone">
-                  <div className="hero-stage__center">
-                    <PhoneDemo />
-                  </div>
-                  <div className="diorama-friends" aria-hidden="true">
-                    <span className="friend-chip friend-chip--ra">RA</span>
-                    <span className="friend-chip friend-chip--mk">MK</span>
-                    <span className="friend-chip friend-chip--jt">JT</span>
-                    <span className="friend-tick friend-tick--ra" />
-                    <span className="friend-tick friend-tick--mk" />
-                    <span className="friend-tick friend-tick--jt" />
-                    <span className="friend-stamp friend-stamp--mk">mk added heat</span>
-                    <span className="friend-stamp friend-stamp--jt">jt · worth it</span>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
+              <Reveal delay={120} className="hero-grid-col">
+                <PosterGrid />
+              </Reveal>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* screening room: source strip + demo video go full-bleed dark */}
-      <section className="section--tight scene--screening grain" id="demo">
-        <div className="wrap">
-          <Reveal>
-            <div className="section-head" style={{ marginBottom: 40 }}>
-              <span className="eyebrow">Works with the clips you already share</span>
-            </div>
-          </Reveal>
+        {/* the marquee, as a cinema marquee: flat, mono, edge to edge */}
+        <section className="band band--ink">
+          <Ticker />
+        </section>
 
-          <Reveal delay={80}>
-            <div className="source-row">
-              <span className="source source--lg">
-                <TikTokIcon />
-                TikTok
-              </span>
-              <span className="source source--lg">
-                <InstagramIcon />
-                Instagram Reels
-              </span>
-              <span className="source source--lg">
-                <YouTubeIcon />
-                YouTube Shorts
-              </span>
-              <span className="source source--lg">
-                <LinkIcon />
-                Any link
-              </span>
-            </div>
-          </Reveal>
-
-          <Reveal delay={160}>
-            <div style={{ marginTop: 56 }}>
-              <MediaSlot
-                id="demo-hero"
-                label="Demo video · a reel becomes a rated watchlist"
-                ratio="16 / 9"
-              />
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* the claim band */}
-      <section className="section scene--warm">
-        <div className="wrap">
-          <Reveal>
-            <div className="section-head">
-              <span className="eyebrow">The AI finds every film</span>
-              <h2 className="display-2">
-                Paste a reel.
-                <br />
-                Every film falls out.
-              </h2>
-              <p className="lead">
-                Titles, years, and IMDb ratings, pulled straight from the clip.
-              </p>
-              <div className="claim-pills">
-                <span className="pill">IMDb ratings</span>
-                <span className="pill">release years</span>
-                <span className="pill">the clip stays attached</span>
+        {/* ---------------- 01 · the grab ---------------- */}
+        <section className="band band--paper section" id="how">
+          <div className="wrap">
+            <Reveal>
+              <div className="marker">
+                <span className="label">01 · the grab</span>
               </div>
-            </div>
-          </Reveal>
-          <Reveal delay={120}>
-            {/* "one reel -> five rated films": a compact ReelCard + a dashed
-                arrow lead into the existing strip. Kept here (not inside
-                FilmStrip) so film-strip.tsx stays untouched -- the strip's
-                own claim-strip wrapper just becomes a flex sibling. */}
-            <div className="claim-row">
-              <div className="claim-lead" aria-hidden="true">
-                <ReelCard handle="@filmtok" pd="pd-dusk-crimson" compact />
-                <span className="claim-arrow">
-                  <svg
-                    className="claim-arrow__svg"
-                    viewBox="0 0 60 24"
-                    fill="none"
-                    preserveAspectRatio="none"
-                  >
-                    <path
-                      d="M2 12h44"
-                      stroke="var(--fg)"
-                      strokeOpacity="0.35"
-                      strokeWidth="2"
-                      strokeDasharray="5 6"
-                      strokeLinecap="round"
-                    />
-                    <path
-                      d="M40 5l12 7-12 7"
-                      stroke="var(--fg)"
-                      strokeOpacity="0.35"
-                      strokeWidth="2"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+              <div className="grab-head">
+                <h2 className="d2">
+                  one reel in.
+                  <br />
+                  every film out.
+                </h2>
+                <p className="body">
+                  Send a clip the way you&rsquo;d send it to a friend. Cinechrony watches the whole
+                  thing, reads the audio and the on-screen text as well as the footage, and comes
+                  back with every film it actually found. Titles, years, IMDb ratings, and an honest
+                  note when it is not certain.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={80}>
+              <div className="sources">
+                <span className="source">
+                  <TikTokIcon /> tiktok
+                </span>
+                <span className="source">
+                  <InstagramIcon /> instagram reels
+                </span>
+                <span className="source">
+                  <YouTubeIcon /> youtube shorts
+                </span>
+                <span className="source">
+                  <LinkIcon /> any link
                 </span>
               </div>
-              <div className="claim-fill">
-                <FilmStrip />
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+            </Reveal>
 
-      {/* how it works */}
-      <section className="section scene--bone" id="how">
-        <div className="wrap">
-          <Reveal>
-            <div className="section-head">
-              <span className="eyebrow">How it works</span>
-              <h2 className="display-2" style={{ textWrap: "balance" }}>
-                From the group chat{" "}
-                <br className="brk-desktop" />
-                to movie night.
-              </h2>
-            </div>
-          </Reveal>
-          <div className="steps">
-            <Reveal className="step" delay={0}>
-              <span className="step__num">01</span>
-              <h3 className="h3">Share the clip</h3>
-              <p className="body">Paste a reel, TikTok, or short. Or share it straight from the app.</p>
-              <div className="step-glow step-glow--blush">
-                <div className="step-vignette">
-                  <div className="demo-clip">
-                    <span className="thumb" />
-                    <span className="txt">
-                      <span className="l1">tiktok.com/@filmtok…</span>
-                      <span className="l2">shared by MK</span>
-                    </span>
-                  </div>
+            <Reveal delay={140}>
+              <div className="beats">
+                <div className="beat">
+                  <span className="num">01</span>
+                  <h3 className="h3">share it</h3>
+                  <p className="body">
+                    From the share sheet, or paste the link. Nothing to set up first.
+                  </p>
+                </div>
+                <div className="beat">
+                  <span className="num">02</span>
+                  <h3 className="h3">it watches</h3>
+                  <p className="body">
+                    Every film in the clip, matched to a real record so the rating comes with it.
+                  </p>
+                </div>
+                <div className="beat">
+                  <span className="num">03</span>
+                  <h3 className="h3">it stays</h3>
+                  <p className="body">
+                    Kept without being filed. Put it on a list later, or never.
+                  </p>
                 </div>
               </div>
             </Reveal>
-            <Reveal className="step" delay={120}>
-              <span className="step__num">02</span>
-              <h3 className="h3">The AI watches it</h3>
-              <p className="body">It identifies every film in the clip and pulls each IMDb rating.</p>
-              <div className="step-glow step-glow--amber">
-                <div className="step-vignette">
-                  <span className="meta">3 films found</span>
-                  <div className="progress-rail">
-                    <span className="progress-rail__fill" style={{ width: "100%" }} />
-                  </div>
+
+            <Reveal delay={180}>
+              <div className="grab-proof">
+                <Frame
+                  id="app-grab"
+                  caption="five films, one reel"
+                  note="real capture · august 2026"
+                  ratio="4 / 5"
+                  className="grab-proof__shot"
+                  offset
+                />
+                <div className="grab-proof__aside">
+                  <span className="stamp stamp--red">no list required</span>
+                  <p className="body">
+                    A first-time user sharing a reel used to be stopped and asked to name a list at
+                    the exact moment the app first did something useful. It isn&rsquo;t any more.
+                    Keep it now, file it whenever.
+                  </p>
                 </div>
               </div>
             </Reveal>
-            <Reveal className="step" delay={240}>
-              <span className="step__num">03</span>
-              <h3 className="h3">Save to a shared list</h3>
-              <p className="body">
-                Everything lands on a shared list. Your friends see it instantly, and the clip stays
-                attached.
+
+            <Reveal delay={220}>
+              <Frame
+                id="demo-hero"
+                ratio="16 / 9"
+                caption="the demo film · forty seconds, one take"
+                note="sound off"
+                className="demo-film"
+              >
+                <span className="demo-film__play" aria-hidden="true">
+                  <span className="play" />
+                </span>
+              </Frame>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ---------------- the poster ---------------- */}
+        <section className="band band--red section--xl poster-band">
+          <div className="wrap center">
+            <Reveal>
+              <span className="label" style={{ marginBottom: 30 }}>
+                found on a tuesday
+              </span>
+              <p className="poster-line">
+                and it&rsquo;s still there
+                <br />
+                <em>on friday.</em>
               </p>
-              <div className="step-glow step-glow--sagefield">
-                <div className="step-vignette">
-                  <div className="demo-saved">
-                    <svg
-                      width="11"
-                      height="11"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="3"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M20 6L9 17l-5-5" />
-                    </svg>
-                    saved to friday night club
+              <span className="label" style={{ marginTop: 34 }}>
+                the whole product, in one sentence
+              </span>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ---------------- 02 · what it does ---------------- */}
+        <section className="band band--paper section" id="features">
+          <div className="wrap">
+            <Reveal>
+              <div className="marker">
+                <span className="label">02 · what it does</span>
+              </div>
+            </Reveal>
+
+            <div className="rows">
+              <Reveal className="row">
+                <div className="row__copy">
+                  <span className="row__idx">the diary</span>
+                  <h2 className="d3">it fills in as you watch.</h2>
+                  <p className="body">
+                    A real month, not a feed. A poster lands on the day you watched something, a
+                    tint on the days you grabbed one, a red dot on the nights you had people round.
+                    Three marks, three meanings, nothing blended into a score.
+                  </p>
+                  <div className="chips">
+                    <span className="pill">no points</span>
+                    <span className="pill">no streak shaming</span>
                   </div>
                 </div>
+                <div className="row__media">
+                  <Frame id="app-diary" caption="the diary" note="august" ratio="4 / 5" offset />
+                </div>
+              </Reveal>
+
+              <Reveal className="row row--flip">
+                <div className="row__copy">
+                  <span className="row__idx">shared lists</span>
+                  <h2 className="d3">a list your friends can add to.</h2>
+                  <p className="body">
+                    Up to ten people on a list, everyone adding, everyone seeing it the moment it
+                    lands. The thing that dies in a group chat is a link nobody saved. This is where
+                    it goes instead.
+                  </p>
+                  <div className="chips">
+                    <span className="pill">up to 10 people</span>
+                    <span className="pill">live</span>
+                  </div>
+                </div>
+                <div className="row__media">
+                  <Frame id="app-list" caption="a shared list" note="with a night planned" ratio="4 / 5" offset />
+                </div>
+              </Reveal>
+
+              <Reveal className="row">
+                <div className="row__copy">
+                  <span className="row__idx">the clip</span>
+                  <h2 className="d3">you remember why you saved it.</h2>
+                  <p className="body">
+                    The reel that sold you stays attached to the film. Six weeks later, when the
+                    title on its own means nothing, the clip is still there to remind you.
+                  </p>
+                  <div className="chips">
+                    <span className="pill">imdb rating</span>
+                    <span className="pill">where to watch</span>
+                  </div>
+                </div>
+                <div className="row__media">
+                  <Frame id="app-film" caption="a film, opened" note="clip attached" ratio="4 / 5" offset />
+                </div>
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- movie night ---------------- */}
+        <section className="band band--blue section">
+          <div className="wrap">
+            <div className="night">
+              <Reveal className="night__copy">
+                <span className="label" style={{ marginBottom: 22 }}>
+                  03 · movie night
+                </span>
+                <h2 className="d2">pick a night. everyone knows.</h2>
+                <p className="body" style={{ marginTop: 20 }}>
+                  A film on a shared list becomes a plan: one film, one time, up to nine other
+                  people, one reminder that actually arrives. Guests do not need an account, and
+                  the morning after it asks how it went, which is the only way a watchlist ever
+                  becomes a record.
+                </p>
+              </Reveal>
+              <Reveal delay={120} className="night__stub">
+                <Stub
+                  title="past lives"
+                  when="fri 14.08"
+                  where="mine, the big telly"
+                  going="three going, two thinking"
+                  seats={5}
+                  filled={3}
+                />
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- the year ---------------- */}
+        <section className="band band--deep section">
+          <div className="wrap">
+            <div className="year">
+              <Reveal className="year__copy">
+                <div className="marker">
+                  <span className="label">04 · the year</span>
+                </div>
+                <h2 className="d2">a year you can look at.</h2>
+                <p className="body" style={{ marginTop: 20 }}>
+                  Every day of the year, filling in behind you. It is a mirror rather than a
+                  scoreboard, so there is nothing to game and nothing to lose. The streak is
+                  measured in weeks, because a film is two hours and a daily streak on a hobby is a
+                  punishment schedule.
+                </p>
+                <p className="label" style={{ marginTop: 26, maxWidth: "34ch", lineHeight: 1.7 }}>
+                  the grid at the top of this page is the same grid. we did not draw it for the
+                  website.
+                </p>
+              </Reveal>
+              <Reveal delay={120} className="year__shot">
+                <Frame id="app-year" caption="the year grid" note="one read, no scan" ratio="4 / 5" focus="center 62%" offset />
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- the story ---------------- */}
+        <section className="band band--paper section" id="story">
+          <div className="wrap">
+            <Reveal>
+              <div className="marker">
+                <span className="label">05 · why</span>
               </div>
             </Reveal>
+            <div className="story">
+              <Reveal>
+                <h2 className="d2">films live on social now. the place you keep them didn&rsquo;t.</h2>
+              </Reveal>
+              <Reveal delay={120}>
+                <p className="story__p">
+                  Almost everyone finds their next film the same way now. A reel at eleven at night,
+                  a TikTok someone sends to the group chat, a screen recording with no title on it.
+                  You think, that one. Then you keep scrolling, and by morning it is gone.
+                </p>
+                <p className="story__pull">
+                  The film was never the hard part. Keeping hold of it was.
+                </p>
+                <p className="story__p">
+                  So cinechrony starts where the loss happens: at the share sheet, thirty seconds
+                  after you saw it, before you have decided anything. It keeps the film without
+                  asking you to file it, keeps the clip so you remember why, and puts the whole
+                  thing somewhere your friends can reach. Then, on a Friday, it is still there.
+                </p>
+                <p className="story__sign">rayid · cinechrony</p>
+              </Reveal>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* features */}
-      <section className="section scene--paper" id="features">
-        <div className="wrap">
-          <div className="feature">
-            <Reveal className="feature__copy">
-              <div className="eyebrow">Built for the group chat</div>
-              <h2 className="h2">Watchlists you build together.</h2>
-              <p className="body" style={{ color: "var(--fg-soft)" }}>
-                Add up to ten friends to any list. Everyone adds, everyone sees, so nothing gets lost
-                in the group chat.
+        {/* ---------------- the close ---------------- */}
+        <section className="band band--ink section--xl" id="try">
+          <div className="wrap center">
+            <Reveal>
+              <span className="label" style={{ marginBottom: 26 }}>
+                start with one reel
+              </span>
+              <h2 className="d2">stop losing the film.</h2>
+              <p className="lead" style={{ marginTop: 24, marginInline: "auto" }}>
+                The iOS beta is open on TestFlight, and the web app works right now in any browser.
+                Both are free.
               </p>
-              <div style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 6, flexWrap: "wrap" }}>
-                <span className="pill">Up to 10 people</span>
-                <span className="pill">Real-time sync</span>
+              <div className="cta-row" style={{ justifyContent: "center" }}>
+                {beta ? (
+                  <a className="btn btn--accent btn--lg" href={beta} target="_blank" rel="noopener">
+                    get the ios beta
+                  </a>
+                ) : (
+                  <Link className="btn btn--accent btn--lg" href="/waitlist">
+                    join the waitlist
+                  </Link>
+                )}
+                <a className="btn btn--lg" href={site.appUrl} target="_blank" rel="noopener">
+                  open the web app
+                </a>
               </div>
-            </Reveal>
-            <Reveal className="feature__media stage stage--blush" delay={120}>
-              <span className="stage-stamp stage-stamp--1" aria-hidden="true">up to 10 friends</span>
-              <MediaSlot
-                id="feature-shared-list"
-                label="App screenshot · shared list with members"
-                className="stage-tilt--1"
-              >
-                <MockupSharedList />
-              </MediaSlot>
+              <span className="label" style={{ marginTop: 22 }}>
+                iphone · you&rsquo;ll need apple&rsquo;s testflight app first, it takes two minutes
+              </span>
             </Reveal>
           </div>
-
-          <div className="feature feature--flip">
-            <Reveal className="feature__copy">
-              <div className="eyebrow">Rated before you save</div>
-              <h2 className="h2">Never save a dud.</h2>
-              <p className="body" style={{ color: "var(--fg-soft)" }}>
-                Every film arrives with its rating, so you know what&apos;s worth your evening before
-                it ever hits the list.
-              </p>
-              <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginTop: 6 }}>
-                <span className="rating rating--good">8.1</span>
-                <span className="rating rating--good">7.6</span>
-                <span className="rating rating--mid">6.4</span>
-                <span className="rating rating--bad">4.9</span>
-              </div>
-            </Reveal>
-            <Reveal className="feature__media stage stage--sagefield" delay={120}>
-              <span className="stage-stamp stage-stamp--2" aria-hidden="true">8.1 worth it</span>
-              <MediaSlot
-                id="feature-ratings"
-                label="App screenshot · list with rating chips"
-                className="stage-tilt--2"
-              >
-                <MockupRatings />
-              </MediaSlot>
-            </Reveal>
-          </div>
-
-          <div className="feature">
-            <Reveal className="feature__copy">
-              <div className="eyebrow">The clip stays attached</div>
-              <h2 className="h2">Remember why you saved it.</h2>
-              <p className="body" style={{ color: "var(--fg-soft)" }}>
-                The reel that sold you stays with the film. Tap any card and it&apos;s right there.
-              </p>
-            </Reveal>
-            <Reveal className="feature__media stage stage--dusk" delay={120}>
-              <span className="stage-stamp stage-stamp--3" aria-hidden="true">the clip stays attached</span>
-              <MediaSlot
-                id="feature-clip-attached"
-                label="App screenshot · film card with attached clip"
-                className="stage-tilt--3"
-              >
-                <MockupClipAttached />
-              </MediaSlot>
-            </Reveal>
-          </div>
-        </div>
-      </section>
-
-      {/* our story */}
-      <section className="story-section" id="story">
-        <span className="story-orb" aria-hidden="true" />
-        <div className="wrap story-grid">
-          <Reveal className="story-lead">
-            <div className="eyebrow" style={{ marginBottom: 24 }}>
-              Why we built Cinechrony
-            </div>
-            <h2 className="display-2">Movies live on social now. Your watchlist doesn&apos;t.</h2>
-          </Reveal>
-          <Reveal className="story-body" delay={120}>
-            <p className="story__p">
-              Most people discover their next film on social media: a reel, a TikTok, a screen
-              recording from a friend. Then you scroll past, and it&apos;s gone.
-            </p>
-            <p className="story__pull">
-              There&apos;s Beli for restaurants. There&apos;s never really been one for the movies
-              you watch with friends.
-            </p>
-            <p className="story__p">
-              Letterboxd is a diary built for critics, not for the group chat. Cinechrony closes the
-              gap between finding a film on social and finally having somewhere to keep it, together.
-            </p>
-            <p className="story__sign">The Cinechrony team</p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* try-it band */}
-      <section className="band section section--xl grain" id="try">
-        <div className="marquee" aria-hidden="true">
-          <div className="marquee__track">
-            <MarqueeGroup />
-            <MarqueeGroup />
-          </div>
-        </div>
-        <div className="wrap wrap--narrow" style={{ textAlign: "center" }}>
-          <Reveal>
-            <div className="eyebrow" style={{ marginBottom: 22 }}>
-              Start your first list
-            </div>
-            <h2 className="display-2">Give it a try.</h2>
-            <p className="lead" style={{ margin: "24px auto 0" }}>
-              The web app is live and free. The iOS app is on its way.
-            </p>
-            <div className="hero-cta-row" style={{ justifyContent: "center" }}>
-              <a className="btn btn--accent btn--lg" href={site.appUrl} target="_blank" rel="noopener">
-                Try it here
-              </a>
-              <Link className="btn btn--lg btn--outline-cream" href="/install">
-                Add to home screen
-              </Link>
-            </div>
-            <p className="meta" style={{ marginTop: 20 }}>
-              Want a heads-up when the iOS app ships?{" "}
-              <Link href="/waitlist" style={{ textDecoration: "underline" }}>
-                Join the waitlist
-              </Link>
-              .
-            </p>
-          </Reveal>
-        </div>
-      </section>
-    </main>
-    <Footer />
+        </section>
+      </main>
+      <Footer />
     </>
   );
 }
