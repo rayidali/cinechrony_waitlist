@@ -20,8 +20,21 @@ inverts it:
   app's are.
 - **A visible armature.** Hairline rules, a real grid, mono captions under
   plates the way a photograph is captioned in print.
-- **Grain, not glow.** One fine layer over the page, one coarse layer on
-  every saturated field, so colour reads as a press run.
+- **Grain, not glow.** Two fixed layers over the whole page, a harder pass
+  on every saturated field and every plate, and a lens vignette. All the
+  noise is run through `feColorMatrix saturate 0` and blended with
+  `overlay` — raw `feTurbulence` is *colour* noise, and multiplied over
+  cream at any usable opacity it reads as dirt rather than film. Desaturated
+  and overlaid it centres on mid-grey and lightens and darkens in equal
+  measure, which is what silver halide actually does.
+- **Objects, drawn not rendered.** A set of cut-out stickers (disco ball,
+  popcorn, martini, VHS, ticket, butterfly, sparkle, daisy, cursor, reel)
+  drift at the margins of five bands. They sit behind the content, are
+  clipped by the band edge so they read as pasted onto a sheet, and thin
+  out on phones. Corner's equivalents are photoreal 3D renders on a
+  photographic sky; those would fight flat cream paper, so these are drawn
+  with a hairline ink edge and welded to the page by the same grain pass.
+  Placements live in `SCENES` in `src/components/stickers.tsx`.
 - **Type carries the page.** Display lines are always lowercase, which is
   the app's own rule.
 - **The product is shown, never drawn.** Every screenshot is a real capture

@@ -63,8 +63,18 @@
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --dur: 200ms;
 
-  /* grain: one fine layer over the whole page, one coarse layer on fields */
-  --grain-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  /* GRAIN — three sizes, because real film grain is not one frequency.
+     `fine` is the emulsion, `clump` is the pushed-stock blotch that makes a
+     scan look like a scan, `coarse` is what sits on ink fields.
+
+     ALL THREE ARE DESATURATED, and that is the whole trick. Raw feTurbulence
+     is COLOUR noise; multiplied over cream at any usable opacity it reads as
+     dirt rather than grain, which is why the first pass was invisible at
+     0.055 and still invisible at 0.14. Run through feColorMatrix saturate 0
+     the noise centres on mid-grey, so an `overlay` blend lightens and darkens
+     in equal measure — which is exactly what silver halide does. */
+  --grain-fine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  --grain-clump: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.24' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
   --grain-coarse: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.9'/%3E%3C/svg%3E");
 }
 
@@ -113,7 +123,12 @@ button { font: inherit; color: inherit; }
 ::selection { background: var(--amber); color: var(--ink); }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-/* the page-wide print grain. Fixed so it never scroll-shears. */
+/* THE PAGE-WIDE FILM PASS — two fixed layers, so it never scroll-shears.
+   The emulsion layer is the one you feel; the clump layer is the one that
+   makes it read as a scan rather than as CSS noise. Both are deliberately
+   held below the level where body copy starts to fray: the references are
+   pushed film with clean type sitting ON them, not through them, and the
+   heavy lifting happens on the colour fields and the plates instead. */
 body::after {
   content: "";
   position: fixed;
@@ -121,10 +136,32 @@ body::after {
   z-index: 9998;
   pointer-events: none;
   background-image: var(--grain-fine);
-  opacity: 0.055;
-  mix-blend-mode: multiply;
+  opacity: 0.38;
+  mix-blend-mode: overlay;
 }
-[data-theme="dark"] body::after { opacity: 0.075; mix-blend-mode: screen; }
+body::before {
+  content: "";
+  position: fixed;
+  inset: -50%;
+  z-index: 9997;
+  pointer-events: none;
+  background-image: var(--grain-clump);
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+}
+/* the lens: one soft corner falloff over the entire page */
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 9996;
+  pointer-events: none;
+  background: radial-gradient(125% 105% at 50% 45%, transparent 58%, oklch(0.2 0.02 60 / 0.16));
+}
+[data-theme="dark"] .vignette {
+  background: radial-gradient(125% 105% at 50% 45%, transparent 52%, oklch(0 0 0 / 0.42));
+}
+[data-theme="dark"] body::after { opacity: 0.34; }
+[data-theme="dark"] body::before { opacity: 0.24; }
 
 /* ---------- layout ---------- */
 .wrap {
@@ -172,9 +209,22 @@ body::after {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: var(--grain-coarse);
-  opacity: 0.09;
+  z-index: 0;
+  background-image: var(--grain-fine), var(--grain-clump);
+  opacity: 0.5;
   mix-blend-mode: overlay;
+}
+/* and a vignette, which is the other half of "shot on film". Kept off the
+   paper bands: a vignette on cream reads as a dirty screen, not as stock. */
+.band--ink::after,
+.band--red::after,
+.band--blue::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(135% 105% at 50% 42%, transparent 48%, oklch(0 0 0 / 0.32));
 }
 .band > * { position: relative; z-index: 1; }
 
@@ -383,9 +433,23 @@ body::after {
   border-bottom: 1px solid var(--rule-strong);
   overflow: hidden;
 }
+/* the cells are where the grain earns its keep: a flat colour square with
+   press grain over it reads as ink on paper, the same square without it
+   reads as a div */
+.pcell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: var(--grain-fine);
+  opacity: 0.36;
+  mix-blend-mode: overlay;
+}
 .pcell__n {
   position: absolute;
   inset: 0;
+  z-index: 2;
   display: grid;
   place-items: center;
   font-family: var(--f-display);
@@ -424,6 +488,7 @@ body::after {
 /* the movie-night dot — the one mark that means something in the future */
 .pcell__dot {
   position: absolute;
+  z-index: 2;
   left: 50%;
   bottom: 12%;
   width: 7px;
@@ -438,6 +503,7 @@ body::after {
    reads as films rather than as abstract colour */
 .pcell__t {
   position: absolute;
+  z-index: 2;
   left: 8px;
   right: 8px;
   bottom: 7px;
@@ -585,6 +651,16 @@ body::after {
   background: var(--surface);
   overflow: hidden;
 }
+.frame__plate::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-image: var(--grain-fine), var(--grain-clump);
+  opacity: 0.34;
+  mix-blend-mode: overlay;
+}
 .frame__plate > img,
 .frame__plate > video {
   width: 100%;
@@ -646,6 +722,40 @@ body::after {
   overflow: hidden;
 }
 .shot img { width: 100%; height: auto; }
+
+/* ==========================================================================
+   THE STICKERS — floating objects, Corner's energy on our own stock.
+   The layer is `overflow: hidden` on purpose: objects placed past the edge
+   get trimmed by the band, which is what makes them read as pasted onto a
+   sheet rather than arranged inside a box. It sits BEHIND the content
+   (z-index 0 against the band's z-index 1 children) so nothing an object
+   drifts past can ever become hard to read.
+   ========================================================================== */
+.stickers {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.band > .stickers { z-index: 0; }
+.sticker-slot { position: absolute; transform: translate(-50%, -50%); }
+.sticker { display: block; width: var(--sz); }
+.sticker svg { width: 100%; height: auto; overflow: visible; }
+/* the drift has to carry the rotation too, or the animation resets it */
+.sticker {
+  animation: drift var(--dur) ease-in-out var(--delay) infinite;
+  transform: rotate(var(--rot));
+}
+@keyframes drift {
+  0%,
+  100% { transform: rotate(var(--rot)) translateY(0); }
+  50% { transform: rotate(calc(var(--rot) + 3.5deg)) translateY(-15px); }
+}
+/* on a phone the same object stops being charm and starts being clutter */
+@media (max-width: 900px) {
+  .sticker-slot--desk { display: none; }
+  .sticker { --sz: calc(var(--sz)); }
+}
 
 /* ---------- stamps: rotated mono stickers, flat, hard-edged ---------- */
 .stamp {
@@ -801,6 +911,7 @@ body::after {
 .demo-film .frame__plate { background: oklch(0.14 0.01 60); color: var(--bone); }
 .demo-film__play {
   position: absolute;
+  z-index: 2;
   inset: 0;
   display: grid;
   place-items: center;

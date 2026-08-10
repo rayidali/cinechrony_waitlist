@@ -4,6 +4,7 @@ import { Frame } from "@/components/frame";
 import { PosterGrid } from "@/components/poster-grid";
 import { Reveal } from "@/components/reveal";
 import { Stub } from "@/components/stub";
+import { Stickers } from "@/components/stickers";
 import { Ticker } from "@/components/ticker";
 import { TikTokIcon, InstagramIcon, YouTubeIcon, LinkIcon } from "@/components/icons";
 import { site } from "@/lib/site";
@@ -25,6 +26,7 @@ export default function LandingPage() {
       <main id="main">
         {/* ---------------- hero: the diary, at poster scale ---------------- */}
         <section className="band band--paper hero">
+          <Stickers scene="hero" />
           <div className="hero-shell">
             <div className="hero-layout">
               <Reveal className="hero-copy">
@@ -72,6 +74,7 @@ export default function LandingPage() {
 
         {/* ---------------- 01 · the grab ---------------- */}
         <section className="band band--paper section" id="how">
+          <Stickers scene="grab" />
           <div className="wrap">
             <Reveal>
               <div className="marker">
@@ -174,6 +177,7 @@ export default function LandingPage() {
 
         {/* ---------------- the poster ---------------- */}
         <section className="band band--red section--xl poster-band">
+          <Stickers scene="poster" />
           <div className="wrap center">
             <Reveal>
               <span className="label" style={{ marginBottom: 30 }}>
@@ -262,6 +266,7 @@ export default function LandingPage() {
 
         {/* ---------------- movie night ---------------- */}
         <section className="band band--blue section">
+          <Stickers scene="night" />
           <div className="wrap">
             <div className="night">
               <Reveal className="night__copy">
@@ -352,6 +357,7 @@ export default function LandingPage() {
 
         {/* ---------------- the close ---------------- */}
         <section className="band band--ink section--xl" id="try">
+          <Stickers scene="close" />
           <div className="wrap center">
             <Reveal>
               <span className="label" style={{ marginBottom: 26 }}>
