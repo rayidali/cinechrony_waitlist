@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Cutout } from "@/components/cutouts";
 import { Footer } from "@/components/footer";
 import { Frame } from "@/components/frame";
 import { PosterGrid } from "@/components/poster-grid";
@@ -48,13 +49,16 @@ const CREW = [
 export default function LandingPage() {
   const beta = site.testflightUrl;
   const still = media["poster-still"].src;
-  const strip = media["hero-strip"];
 
   return (
     <>
       <main id="main">
         {/* ---------------- hero: the diary, at poster scale ---------------- */}
-        <section className="band band--paper hero">
+        {/* cut-band: on one column the camcorder leans past the right trim,
+            and a figure hanging off the SIDE would otherwise widen the page
+            by its own overhang — 32px of horizontal scroll on a phone, which
+            reads as a broken layout rather than as a bleed */}
+        <section className="band band--paper hero cut-band">
           <Stickers scene="hero" />
           <div className="hero-shell">
             <div className="hero-layout">
@@ -87,17 +91,15 @@ export default function LandingPage() {
 
               <Reveal delay={120} className="hero-grid-col">
                 <PosterGrid />
-                {/* the anamorphic strip. It runs off the right trim under
-                    the calendar, so the first screen carries one big
-                    photograph as well as thirty-five small ones — the
-                    glance had nowhere to land but the grid before. */}
-                {strip.src ? (
-                  <figure className="hero-strip">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={strip.src} alt={strip.alt} loading="eager" />
-                    <figcaption className="label">a full house · somewhere on a friday</figcaption>
-                  </figure>
-                ) : null}
+                {/* Pasted ON the calendar, not printed under it. A wide
+                    photograph in its own frame sat here first and was a
+                    picture NEXT TO the design however it was cropped; a
+                    figure with the background lifted out stands in front
+                    of the grid, breaks its left rule, and throws a shadow
+                    on the paper. Same photography, opposite relationship
+                    to the page. */}
+                <Cutout id="cut-camcorder" className="cut--camcorder" h={360} rotate={-3} eager />
+                <Cutout id="cut-popcorn" className="cut--popcorn" h={150} rotate={10} eager />
               </Reveal>
             </div>
           </div>
@@ -153,8 +155,15 @@ export default function LandingPage() {
         </section>
 
         {/* ---------------- reel 02 · the grab ---------------- */}
-        <section className="band band--ochre section" id="how">
+        <section className="band band--ochre section cut-band" id="how">
           <Stickers scene="grab" />
+          {/* Sitting on the seam. The stickers next door are clipped by the
+              band edge so they read as pasted onto ONE sheet; these are
+              deliberately not, because a photograph taped across two sheets
+              is the older and better collage move — and it is the only
+              thing on the page that treats the bands as physical. */}
+          <Cutout id="cut-legs" className="cut--legs" h={158} rotate={3} />
+          <Cutout id="cut-camera" className="cut--camera" h={230} rotate={-8} />
           <div className="wrap">
             <Reveal>
               <div className="marker">
@@ -321,8 +330,9 @@ export default function LandingPage() {
         </section>
 
         {/* ---------------- movie night ---------------- */}
-        <section className="band band--blue section">
+        <section className="band band--blue section cut-band">
           <Stickers scene="night" />
+          <Cutout id="cut-bench" className="cut--bench" h={206} rotate={-1} />
           <div className="wrap">
             <div className="night">
               <Reveal className="night__copy">

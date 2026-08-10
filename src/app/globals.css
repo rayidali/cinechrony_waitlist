@@ -963,42 +963,120 @@ body::before {
 }
 .hero-note { margin-top: 20px; }
 
-/* the anamorphic strip under the calendar. 2.6:1 because that is roughly
-   where a widescreen frame stops being a photograph and starts being a
-   piece of a film, and because a taller crop would push the whole hero
-   past the fold on a 900px screen and defeat the point of putting it here. */
-.hero-strip {
-  margin: clamp(16px, 1.8vw, 26px) 0 0;
-  position: relative;
+/* ==========================================================================
+   THE CUTOUTS — people pasted on top of the layout.
+   A wide photograph in its own frame sat under this calendar first, and it
+   was a picture NEXT TO a design no matter how it was cropped or graded.
+   These are the same photography in the opposite relationship: the
+   background is lifted out, so a figure stands in FRONT of the grid, breaks
+   its rules, and throws a shadow onto the paper.
+
+   The white trim is baked into the file (scripts/make-cutouts.py), not
+   drawn here: a die-cut edge follows the alpha, and CSS can only fake that
+   with a stack of drop-shadows. The cast shadow IS a drop-shadow, because
+   it has to follow the silhouette too — a box-shadow would draw a
+   rectangle around a person.
+   ========================================================================== */
+.cut {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  display: block;
+  line-height: 0;
+  transform: rotate(var(--cut-rot, 0deg));
+  filter: drop-shadow(0 14px 20px oklch(0.18 0.02 60 / 0.26));
 }
-.hero-strip img {
-  width: 100%;
-  aspect-ratio: 2.6 / 1;
-  object-fit: cover;
-  object-position: center 46%;
-  border-top: 1.5px solid var(--rule-strong);
-  border-bottom: 1.5px solid var(--rule-strong);
+/* One scale for the whole set per breakpoint, rather than a height per
+   cutout per width. A figure sized against a 1440 calendar is a figure
+   covering half an 1100 one — these have to shrink WITH the grid they are
+   pasted on, and the alternative is six numbers that drift apart. */
+.cut img {
+  display: block;
+  height: calc(var(--cut-h) * var(--cut-scale, 1));
+  width: auto;
 }
-.hero-strip figcaption { padding-top: 8px; }
-@media (min-width: 900px) {
-  /* the calendar's right rule is dropped so it reads as continuing past the
-     trim; the strip does the same, and its caption keeps the gutter type
-     needs */
-  .hero-strip figcaption { padding-right: 28px; }
+@media (max-width: 1199px) { .cut { --cut-scale: 0.78; } }
+@media (max-width: 899px)  { .cut { --cut-scale: 0.66; } }
+/* A cutout hanging off the SIDE would widen the page; one hanging over the
+   SEAM is the whole point. `overflow-x: clip` with `overflow-y: visible` is
+   the one pair CSS lets disagree — `hidden` on either axis forces the other
+   to scroll, which would guillotine the straddle. */
+.cut-band {
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+/* the hero: one figure big enough to catch the glance on its own, and one
+   object. Both anchored to the calendar rather than to the band, so they
+   keep their relationship to it at every width. */
+.hero-grid-col { position: relative; }
+/* Far enough left to BREAK the calendar's left rule rather than stand
+   inside the grid. A figure fully within the frame is a photograph in a
+   cell; one straddling the edge is pasted on top of it, and that is the
+   entire read. The gutter it leans into is empty at this height — the copy
+   column has its sub-headline and CTA lower and much further left. */
+.cut--camcorder {
+  left: -8%;
+  bottom: 78px;
+}
+.cut--popcorn {
+  right: 6%;
+  top: -30px;
+}
+@media (min-width: 1200px) {
+  .cut--camcorder { left: -19%; }
+}
+
+/* the grab band, which has no product shot in it by design — the owner is
+   making one. Until it lands these two carry the section on a diagonal
+   (seam top-left, camera mid-right), and neither pretends to be a
+   screenshot. */
+.cut--legs {
+  left: 6%;
+  top: 0;
+  transform: translateY(-56%) rotate(var(--cut-rot, 0deg));
+}
+.cut--camera {
+  left: 44%;
+  top: 8%;
+}
+.cut--bench {
+  left: 7%;
+  top: 0;
+  transform: translateY(-54%) rotate(var(--cut-rot, 0deg));
+}
+
+@media (max-width: 1099px) {
+  /* Below this the headline rewraps under where the camera sits and the
+     hand lands on the type. There is no other hole in this band big enough
+     for it, so it goes rather than shrinks. */
+  .cut--camera { display: none; }
 }
 @media (max-width: 899px) {
-  .hero-strip { margin-top: 22px; }
-  .hero-strip figcaption { padding-inline: 4px; }
+  /* On one column the calendar is full-bleed and there is no gutter for a
+     figure to stand in, so the big one moves to the right trim; the popcorn
+     goes entirely, because at phone size it stops being an object and
+     becomes a smudge over three date numerals. */
+  /* the bleed is a fixed 26px, not a percentage: 7% of a 390 column is a
+     lens crossing the trim, and 7% of a 768 one is the whole camcorder
+     gone over the edge */
+  .cut--camcorder {
+    left: auto;
+    right: -26px;
+    bottom: 58px;
+    --cut-scale: 0.56;
+  }
+  .cut--popcorn { display: none; }
+  .cut--bench { left: 3%; }
 }
 
 @media (min-width: 900px) {
   .hero-layout {
     grid-template-columns: minmax(340px, 0.82fr) 1.18fr;
-    /* START, not centre. The strip made the right column ~330px taller,
+    /* START, not centre. The calendar column is far taller than the copy,
        and a centred layout answered that by pushing the copy down — which
        put the primary CTA at the very bottom of a 900px screen. The copy
-       column is the one that has to stay above the fold; the photograph is
-       allowed to run past it. */
+       column is the one that has to stay above the fold. */
     align-items: start;
     padding-top: clamp(8px, 1.6vw, 26px);
   }

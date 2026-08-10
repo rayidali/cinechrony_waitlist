@@ -124,15 +124,30 @@ export const media = {
   "crew-9": { src: "/media/crew-9.webp", kind: "image", alt: "Two friends posing for a flash photo indoors" },
   "crew-10": { src: "/media/crew-10.webp", kind: "image", alt: "Two friends at night, one shooting back at the camera" },
 
-  /* The anamorphic strip under the hero calendar. The first screen had
-     photography only inside 110px calendar cells, so at a glance the eye
-     found the grid and nothing else — one wide print of a full house gives
-     it somewhere else to land without competing with the headline. */
-  "hero-strip": {
-    src: "/media/hero-strip.webp",
+  /* ---- the cutouts -----------------------------------------------------
+     People lifted out of their photographs and pasted ON the layout: they
+     sit on the calendar's rules, lean past the trim, and cast a shadow on
+     the paper. A rectangle of photograph is a picture NEXT TO a design; a
+     figure with no background is part of it, which is the whole reason the
+     wide strip that used to sit under the calendar never worked no matter
+     how it was cropped or graded.
+
+     Made in two steps, both in scripts/: cutout.swift lifts the figure with
+     Vision's subject segmentation, make-cutouts.py grades it through the
+     same film curve as every other photograph here and gives it the white
+     die-cut trim. Alt text is empty on all of them and the layer is
+     aria-hidden — they are decoration, and a screen reader reading out six
+     descriptions of strangers before the headline would be worse than
+     silence. */
+  "cut-camcorder": {
+    src: "/media/cut-camcorder.webp",
     kind: "image",
-    alt: "A packed cinema, faces lit by the screen",
+    alt: "",
   },
+  "cut-legs": { src: "/media/cut-legs.webp", kind: "image", alt: "" },
+  "cut-popcorn": { src: "/media/cut-popcorn.webp", kind: "image", alt: "" },
+  "cut-camera": { src: "/media/cut-camera.webp", kind: "image", alt: "" },
+  "cut-bench": { src: "/media/cut-bench.webp", kind: "image", alt: "" },
 
   /* ---- the full-bleed photograph behind the friday poster ---- */
   "poster-still": {

@@ -1,9 +1,9 @@
 # What the site still needs from a human
 
-**One open slot, and it is deliberately open.** The "reel 03 · the grab"
+**One open slot, and it is deliberately open.** The "reel 02 · the grab"
 section has no image under its three beats — the scan capture came out on
 10.08 because you are shooting something better for it. Everything else is
-filled: six real captures of the shipped app and twenty-two graded
+filled: five real captures of the shipped app and twenty-seven graded
 photographs, no placeholder frames anywhere.
 
 To wire anything up: drop the file in `public/media/`, then set its `src`
@@ -51,8 +51,15 @@ submission needs. One recording settles both.
 
 ## 3. The photographs — filled, and worth replacing eventually
 
-Twenty-two frames are live: eleven in the hero calendar's film cells, ten
-in the crew wall on the rust band, one behind the red poster band. They are
+Twenty-seven frames are live: eleven in the hero calendar's film cells, ten
+in the crew wall on the rust band, one behind the red poster band, and
+**five cutouts** — people lifted out of their backgrounds and pasted on top
+of the layout (a figure with a camcorder over the hero calendar, a hand
+with a popcorn box, a hand with a disposable camera, four pairs of legs
+dangling over a band seam, five friends sitting on another one). The wide
+photograph that used to sit under the calendar is gone; a cutout is what
+replaced it, and the difference is that a rectangle sits NEXT TO a design
+while a cutout stands in front of it. They are all
 **free-licence frames from Unsplash**, chosen for the film-camera feeling
 on the reference boards — flash at night, grain, backs of heads, a drive-in
 sign, a rooftop screening, a garden projector, a red cinema, popcorn.
@@ -60,29 +67,48 @@ sign, a rooftop screening, a garden projector, a red cinema, popcorn.
 **Two honest caveats, both yours to weigh:**
 
 1. **They are the right photographs of the wrong people.** The site now
-   says "this is the crew" using six groups of strangers. For a product
-   whose whole pitch is *your friends*, your own camera roll beats this on
-   the only axis that matters. If you have twenty candid frames from real
-   nights, they are a straight upgrade and I will swap them in.
-2. **Licensing.** The Unsplash licence covers commercial use with no
-   attribution, but it does not grant rights to the *people depicted* —
-   nobody signed a model release. That is how most indie sites work and the
-   exposure is small, but it is a real difference from photographs of
-   friends who said yes.
+   says "this is the crew" using ten groups of strangers in the wall and
+   five more cut out and pasted over the layout. For a product whose whole
+   pitch is *your friends*, your own camera roll beats this on the only
+   axis that matters. If you have twenty candid frames from real nights,
+   they are a straight upgrade and I will swap them in.
+2. **Licensing, and it is sharper for the cutouts.** The Unsplash licence
+   covers commercial use with no attribution, but it does not grant rights
+   to the *people depicted* — nobody signed a model release. That is how
+   most indie sites work and the exposure is small. It is worth noting the
+   cutouts raise it a little rather than leaving it flat: a face in a 110px
+   calendar cell and a person lifted out of their background and printed
+   360px tall over the hero are not quite the same use, and the second one
+   is the more identifiable.
 
 **If you replace them,** put the originals somewhere and run them through
 the grader rather than dropping them in raw:
 
 ```bash
-python3 scripts/grade-photos.py sources.tsv     # writes out/*.png
+python3 scripts/grade-photos.py sources.tsv     # rectangles → out/*.png
 cwebp -q 80 -m 6 out/crew-1.png -o public/media/crew-1.webp
 ```
+
+A cutout is two steps, and the first one is free — Vision's subject
+segmentation ships in macOS, so there is nothing to install:
+
+```bash
+swift scripts/cutout.swift shot.jpg raw.png     # lift the figure
+python3 scripts/make-cutouts.py cutouts.tsv     # grade + die-cut trim
+cwebp -q 82 -m 6 -alpha_q 100 out/cut-legs.png -o public/media/cut-legs.webp
+```
+
+Pick sources with **air around the subject**. A photograph already cropped
+tight to a person produces a cutout with flat edges where the frame was,
+which reads as a crop rather than a cut and is the one failure mode of the
+whole pipeline. `cutout.swift` exits 3 and says `NO_SUBJECT` when Vision
+finds nobody, rather than writing a silent empty file.
 
 The one curve is the whole point: it is what stops a set of photographs
 from different cameras reading as a stock library. A frame dropped in
 ungraded will stick out immediately, and you will see it before you can
 name it. Formats: hero cells 1:1 (900×900), crew wall 4:5 (1000×1250), the
-poster still 2000×1120 wide.
+poster still 2000×1120 wide, cutouts whatever shape the person is.
 
 ---
 
@@ -98,6 +124,12 @@ poster still 2000×1120 wide.
 | `grid-1` … `grid-11` | live — the hero calendar's film cells |
 | `crew-1` … `crew-10` | live — the crew wall |
 | `poster-still` | live — duotone under the friday line |
+| `cut-camcorder` | live — over the hero calendar, breaking its left rule |
+| `cut-popcorn` | live — top right of the hero calendar |
+| `cut-legs` | live — sitting on the crew/grab seam |
+| `cut-camera` | live — reaching in past "every film out." |
+| `cut-bench` | live — sitting on the seam above movie night |
+| `hero-strip` | GONE — the wide print under the calendar, replaced by the cutouts |
 
 The five `app-*` came from `/tmp/asc-shots-d/raw` (the App Store shoot,
 build 23), resized to 1440px tall and converted to WebP at quality 82. To

@@ -22,10 +22,26 @@ better. So:
   paragraphs and kept a headline and two chips. The three grab beats kept
   three words each. The founder essay — three paragraphs about films being
   social — is deleted outright.
-- **Photographs replaced it.** Twenty-two now: eleven in the hero
+- **Photographs replaced it.** Twenty-seven now: eleven in the hero
   calendar's film cells, ten in the crew wall on the rust band, one duotone
-  under the friday line. The crew wall makes the essay's argument in about
-  a second, headlined with the one line worth keeping from it.
+  under the friday line, and five with no background at all — see the
+  cutouts below. The crew wall makes the essay's argument in about a
+  second, headlined with the one line worth keeping from it.
+- **Five of them are cut out and pasted on top.** A wide print of a full
+  cinema sat under the hero calendar first and it was, correctly, hated: a
+  rectangle of photograph beside a design stays a picture NEXT TO the
+  design however it is cropped or graded. Lifting the background out
+  inverts the relationship — a figure stands in FRONT of the calendar,
+  breaks its left rule, sits on a band seam with its feet hanging into the
+  next colour, and throws a shadow on the paper. Same photography, opposite
+  read, and the only version of it that is a collage rather than a gallery.
+  Two steps make one: `scripts/cutout.swift` (Vision's subject
+  segmentation, nothing to install — it is in the OS) then
+  `scripts/make-cutouts.py` for the film curve and the die-cut white trim.
+  The trim is not decoration: a figure with its sky deleted and nothing
+  else done to it reads as an image that failed to load, and the white edge
+  is what makes it deliberate. It also hides Vision's one-pixel fringe of
+  old background, which is the kind of fix you take.
 - **Every band has its own stock, and none of them is flat.** "The
   background is a plain colour" was said four times and answered twice by
   adding *objects* to the same cream. It is answered in the substrate now:
@@ -114,12 +130,22 @@ inverts it:
   `(hover: hover) and (pointer: fine)`; `:active` gives a thumb an answer.
   Transform and opacity only, so nothing touches layout.
 
-- **The photographs are one roll.** Twenty-two free-licence frames, all run
-  through a single curve in `scripts/grade-photos.py` — blacks lifted to
-  0.055, highlights rolled to 0.965, a smoothstep S, warm highlights and
-  cool shadows, saturation 0.90. That one pass is what stops twenty-two
-  photographs by twenty-two photographers reading as a stock library. Never
-  drop a photograph in ungraded; you will see it before you can name it.
+- **The photographs are one roll.** Twenty-seven free-licence frames, all
+  run through a single curve in `scripts/grade-photos.py` — blacks lifted
+  to 0.055, highlights rolled to 0.965, a smoothstep S, warm highlights and
+  cool shadows, saturation 0.90. That one pass is what stops twenty-seven
+  photographs by twenty-seven photographers reading as a stock library.
+  Never drop a photograph in ungraded; you will see it before you can name
+  it. The cutouts go through the same curve by importing it rather than
+  copying it — a second copy of those six lines is how the two quietly
+  drift apart.
+- **A cutout hanging off the SIDE widens the page; one hanging over a SEAM
+  is the point.** `.cut-band` is `overflow-x: clip` with `overflow-y:
+  visible` — the one pair CSS lets disagree, because `hidden` on either
+  axis forces the other to scroll and would guillotine the straddle. It is
+  on every band a cutout leans out of. Without it the hero grew 32px of
+  horizontal scroll on a phone, which reads as a broken layout rather than
+  as a bleed.
 - **An opaque gradient seals the contrast walk.** `background: linear-gradient(...)`
   resets `background-color` to transparent, so `contrast.mjs` kept climbing
   past a fully opaque band and reported the cream PAGE as the field for

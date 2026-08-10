@@ -41,3 +41,10 @@ yarn-error.log*
 next-env.d.ts
 
 shots/
+
+# python bytecode from scripts/
+__pycache__/
+
+# throwaway probes; never commit one
+*.tmp.mjs
+*.tmp.js
