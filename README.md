@@ -26,13 +26,18 @@ better. So:
   calendar's film cells, ten in the crew wall on the rust band, one duotone
   under the friday line. The crew wall makes the essay's argument in about
   a second, headlined with the one line worth keeping from it.
-- **Every band has its own stock.** "The background is a plain colour" was
-  said three times and answered twice by adding *objects* to the same
-  cream. v4 finally answers it in the substrate: six papers (cream, ochre,
-  rose, mint, deep, and their dark-mode twins), a wide two-stop aged tint
-  inside every one, and a 4px halftone dot screen over that. Grain says
-  "shot on film"; halftone says "printed on a press"; they are different
-  claims and the page now makes both.
+- **Every band has its own stock, and none of them is flat.** "The
+  background is a plain colour" was said four times and answered twice by
+  adding *objects* to the same cream. It is answered in the substrate now:
+  six papers (cream, ochre, rose, mint, deep and their dark twins), a
+  sun-fade running warm off the top edge into rose at the bottom, and a 4px
+  halftone dot screen over it. The saturated bands are **duotone** — rust
+  into oxblood, forest into deep teal, blue into dusk, on a long diagonal.
+  That is the seventies poster move: two inks on one pull, the second
+  showing through where the first thins out. Grain says "shot on film";
+  halftone says "printed on a press"; a duotone says both were done on
+  purpose. Set `background-color` AND `background-image` separately, never
+  the `background` shorthand — see the gate note below.
 - **A fourth face.** Fraunces, variable, `SOFT 60 / WONK 1` — an old-style
   display serif with the slanted alternates and soft terminals of hand-cut
   type. It carries the poster line, the `<em>` in every headline, and the
@@ -115,6 +120,13 @@ inverts it:
   cool shadows, saturation 0.90. That one pass is what stops twenty-two
   photographs by twenty-two photographers reading as a stock library. Never
   drop a photograph in ungraded; you will see it before you can name it.
+- **An opaque gradient seals the contrast walk.** `background: linear-gradient(...)`
+  resets `background-color` to transparent, so `contrast.mjs` kept climbing
+  past a fully opaque band and reported the cream PAGE as the field for
+  cream type — twenty failures, every one imaginary. Two fixes, both kept:
+  the bands declare a real `background-color` under the gradient (which is
+  also the fallback if it fails to parse), and the auditor now stops
+  walking the moment it meets a gradient with a fully opaque stop.
 - **A photo cell is a dark cell.** Calendar cells carrying a photograph get
   an ink field, the picture dimmed onto it, and a radial scrim under the
   numeral. `contrast.mjs` is CSS-only and cannot see an `<img>`, so it

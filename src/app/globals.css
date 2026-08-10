@@ -267,13 +267,49 @@ body::before {
 .band--mint  { background: var(--p-mint); }
 .band--ink   { background: var(--ink); color: var(--paper); }
 .band--red   { background: var(--red); color: var(--on-color); }
-.band--blue  { background: var(--blue); color: var(--on-color); }
 .band--amber { background: var(--amber); color: var(--on-color-dark); }
-.band--forest { background: var(--forest); color: var(--on-color); }
 .band--marigold { background: var(--marigold); color: var(--on-color-dark); }
-.band--rust  { background: var(--rust); color: var(--on-color); }
 .band--olive { background: var(--olive); color: var(--on-color); }
 .band--plum  { background: var(--plum); color: var(--on-color); }
+
+/* SATURATED BANDS ARE DUOTONE NOW, not flat. Each one runs from its own
+   ink into a neighbouring hue on a long diagonal — rust into oxblood,
+   forest into deep teal, blue into dusk. It is the seventies poster move:
+   two inks on one pull, the second showing through where the first thins
+   out. Still contained, still guillotined by the band edge, so it is a
+   printed field rather than the ambient wash v2 died of. Every stop is
+   sampled by contrast.mjs, so a hue that ruins the type fails the gate
+   rather than shipping. */
+/* background-COLOR and background-IMAGE separately, never the `background`
+   shorthand. The shorthand resets background-color to transparent, and a
+   band with no colour under its gradient is a band that reports the cream
+   page as its field — which is how the first cut of this produced twenty
+   contrast failures that were all imaginary. The colour is also a real
+   fallback: it is what paints if the gradient ever fails to parse. */
+.band--rust {
+  color: var(--on-color);
+  background-color: var(--rust);
+  background-image: linear-gradient(158deg, oklch(0.5 0.145 48) 0%, var(--rust) 46%, oklch(0.38 0.13 24) 100%);
+}
+.band--forest {
+  color: var(--on-color);
+  background-color: var(--forest);
+  background-image: linear-gradient(162deg, oklch(0.45 0.085 148) 0%, var(--forest) 52%, oklch(0.36 0.075 196) 100%);
+}
+.band--blue {
+  color: var(--on-color);
+  background-color: var(--blue);
+  background-image: linear-gradient(154deg, oklch(0.47 0.175 250) 0%, var(--blue) 48%, oklch(0.37 0.145 290) 100%);
+}
+[data-theme="dark"] .band--rust {
+  background-image: linear-gradient(158deg, oklch(0.44 0.13 48) 0%, var(--rust) 46%, oklch(0.33 0.115 24) 100%);
+}
+[data-theme="dark"] .band--forest {
+  background-image: linear-gradient(162deg, oklch(0.37 0.075 148) 0%, var(--forest) 52%, oklch(0.29 0.065 196) 100%);
+}
+[data-theme="dark"] .band--blue {
+  background-image: linear-gradient(154deg, oklch(0.42 0.16 250) 0%, var(--blue) 48%, oklch(0.32 0.13 290) 100%);
+}
 
 /* layer 2 — the aged tint. Two very wide stops, one warm from the top
    left and one cool from the bottom right, at an opacity you notice only
@@ -290,9 +326,13 @@ body::before {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(120% 78% at 8% 0%, oklch(0.76 0.12 68 / 0.2), transparent 64%),
-    radial-gradient(110% 80% at 96% 100%, oklch(0.6 0.11 348 / 0.16), transparent 62%),
-    radial-gradient(90% 60% at 50% 52%, oklch(0.72 0.09 168 / 0.07), transparent 70%);
+    /* the sun-fade: a warm wash off the top edge and a rose one off the
+       bottom, which is what a poster that has hung in a window for twenty
+       years actually looks like */
+    linear-gradient(180deg, oklch(0.85 0.1 74 / 0.26) 0%, transparent 40%, oklch(0.68 0.1 344 / 0.2) 100%),
+    radial-gradient(120% 78% at 8% 0%, oklch(0.76 0.13 68 / 0.24), transparent 64%),
+    radial-gradient(110% 80% at 96% 100%, oklch(0.6 0.12 348 / 0.2), transparent 62%),
+    radial-gradient(90% 60% at 50% 52%, oklch(0.72 0.09 168 / 0.08), transparent 70%);
 }
 [data-theme="dark"] .band--paper::before,
 [data-theme="dark"] .band--deep::before,
@@ -300,9 +340,10 @@ body::before {
 [data-theme="dark"] .band--rose::before,
 [data-theme="dark"] .band--mint::before {
   background:
-    radial-gradient(120% 78% at 8% 0%, oklch(0.68 0.13 62 / 0.16), transparent 64%),
-    radial-gradient(110% 80% at 96% 100%, oklch(0.55 0.14 300 / 0.17), transparent 62%),
-    radial-gradient(90% 60% at 50% 52%, oklch(0.6 0.1 190 / 0.08), transparent 70%);
+    linear-gradient(180deg, oklch(0.62 0.13 66 / 0.2) 0%, transparent 40%, oklch(0.5 0.13 306 / 0.22) 100%),
+    radial-gradient(120% 78% at 8% 0%, oklch(0.68 0.13 62 / 0.18), transparent 64%),
+    radial-gradient(110% 80% at 96% 100%, oklch(0.55 0.14 300 / 0.19), transparent 62%),
+    radial-gradient(90% 60% at 50% 52%, oklch(0.6 0.1 190 / 0.09), transparent 70%);
 }
 
 /* layer 3 — the dot screen. `currentColor` means it inherits the band's own
@@ -922,10 +963,44 @@ body::before {
 }
 .hero-note { margin-top: 20px; }
 
+/* the anamorphic strip under the calendar. 2.6:1 because that is roughly
+   where a widescreen frame stops being a photograph and starts being a
+   piece of a film, and because a taller crop would push the whole hero
+   past the fold on a 900px screen and defeat the point of putting it here. */
+.hero-strip {
+  margin: clamp(16px, 1.8vw, 26px) 0 0;
+  position: relative;
+}
+.hero-strip img {
+  width: 100%;
+  aspect-ratio: 2.6 / 1;
+  object-fit: cover;
+  object-position: center 46%;
+  border-top: 1.5px solid var(--rule-strong);
+  border-bottom: 1.5px solid var(--rule-strong);
+}
+.hero-strip figcaption { padding-top: 8px; }
+@media (min-width: 900px) {
+  /* the calendar's right rule is dropped so it reads as continuing past the
+     trim; the strip does the same, and its caption keeps the gutter type
+     needs */
+  .hero-strip figcaption { padding-right: 28px; }
+}
+@media (max-width: 899px) {
+  .hero-strip { margin-top: 22px; }
+  .hero-strip figcaption { padding-inline: 4px; }
+}
+
 @media (min-width: 900px) {
   .hero-layout {
     grid-template-columns: minmax(340px, 0.82fr) 1.18fr;
-    align-items: center;
+    /* START, not centre. The strip made the right column ~330px taller,
+       and a centred layout answered that by pushing the copy down — which
+       put the primary CTA at the very bottom of a 900px screen. The copy
+       column is the one that has to stay above the fold; the photograph is
+       allowed to run past it. */
+    align-items: start;
+    padding-top: clamp(8px, 1.6vw, 26px);
   }
   .hero { padding-bottom: clamp(48px, 6vw, 84px); }
   /* the last column's right rule would sit on the trim; drop it so the
@@ -1269,20 +1344,28 @@ body::before {
   scrollbar-width: none;
 }
 .crew-strip::-webkit-scrollbar { display: none; }
-/* ten frames want two rows, not one — at six across a tenth frame is 130px
-   and every face in it is a smudge. Five across over two rows keeps each
-   print big enough to actually read as a photograph. */
+/* THREE TIERS, NOT A UNIFORM ROW. Ten equal frames five-across is a sheet
+   of thumbnails: nothing in it is big enough for the eye to land on, so the
+   whole band reads as texture and the glance goes past it. A real contact
+   sheet is not uniform either — you print the frames you like bigger. So a
+   twelve-column grid runs 4·4·4 / 3·3·3·3 / 4·4·4: the outer tiers are
+   ~440px prints at 1440, which is a photograph you actually look at, and
+   the middle tier is the strip they were cut from. */
 @media (min-width: 720px) {
   .crew-strip {
     grid-auto-flow: initial;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(12, 1fr);
     overflow: visible;
-    gap: clamp(12px, 1.4vw, 22px) clamp(10px, 1.2vw, 18px);
+    gap: clamp(16px, 1.8vw, 30px) clamp(10px, 1.2vw, 18px);
     padding: 0 28px;
   }
-}
-@media (min-width: 1180px) {
-  .crew-strip { grid-template-columns: repeat(5, 1fr); }
+  .crew-shot:nth-child(-n + 3),
+  .crew-shot:nth-child(n + 8) { grid-column: span 4; }
+  .crew-shot:nth-child(n + 4):nth-child(-n + 7) { grid-column: span 3; }
+  /* Every plate stays 4:5. Turning the big ones landscape would have been
+     the better contact sheet, but these sources are portrait-composed and
+     a 5:4 crop of a 4:5 frame throws away 64% of the height — which is to
+     say it decapitates people. Width alone carries the hierarchy. */
 }
 .crew-shot { scroll-snap-align: center; display: block; }
 .crew-shot figure { margin: 0; }

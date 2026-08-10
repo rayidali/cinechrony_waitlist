@@ -48,6 +48,7 @@ const CREW = [
 export default function LandingPage() {
   const beta = site.testflightUrl;
   const still = media["poster-still"].src;
+  const strip = media["hero-strip"];
 
   return (
     <>
@@ -86,6 +87,17 @@ export default function LandingPage() {
 
               <Reveal delay={120} className="hero-grid-col">
                 <PosterGrid />
+                {/* the anamorphic strip. It runs off the right trim under
+                    the calendar, so the first screen carries one big
+                    photograph as well as thirty-five small ones — the
+                    glance had nowhere to land but the grid before. */}
+                {strip.src ? (
+                  <figure className="hero-strip">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={strip.src} alt={strip.alt} loading="eager" />
+                    <figcaption className="label">a full house · somewhere on a friday</figcaption>
+                  </figure>
+                ) : null}
               </Reveal>
             </div>
           </div>
@@ -140,42 +152,13 @@ export default function LandingPage() {
           </Reveal>
         </section>
 
-        {/* ---------------- the year ---------------- */}
-        <section className="band band--forest section">
-          <div className="wrap">
-            <div className="year">
-              <Reveal className="year__copy">
-                <div className="marker">
-                  <span className="label">reel 02 · the year</span>
-                </div>
-                <h2 className="d2">
-                  a year you can <em>look at.</em>
-                </h2>
-                <p className="label" style={{ marginTop: 24 }}>
-                  the grid at the top of this page is this grid
-                </p>
-              </Reveal>
-              <Reveal delay={120} className="year__shot">
-                <Frame
-                  id="app-year"
-                  caption="the year grid"
-                  note="one read, no scan"
-                  ratio="4 / 5"
-                  focus="center 62%"
-                  offset
-                />
-              </Reveal>
-            </div>
-          </div>
-        </section>
-
-        {/* ---------------- reel 03 · the grab ---------------- */}
+        {/* ---------------- reel 02 · the grab ---------------- */}
         <section className="band band--ochre section" id="how">
           <Stickers scene="grab" />
           <div className="wrap">
             <Reveal>
               <div className="marker">
-                <span className="label">reel 03 · the grab</span>
+                <span className="label">reel 02 · the grab</span>
               </div>
               <h2 className="d2">
                 one reel in.
@@ -253,12 +236,12 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ---------------- reel 04 · what it does ---------------- */}
+        {/* ---------------- reel 03 · what it does ---------------- */}
         <section className="band band--rose section" id="features">
           <div className="wrap">
             <Reveal>
               <div className="marker">
-                <span className="label">reel 04 · what it does</span>
+                <span className="label">reel 03 · what it does</span>
               </div>
             </Reveal>
 
@@ -344,7 +327,7 @@ export default function LandingPage() {
             <div className="night">
               <Reveal className="night__copy">
                 <span className="label" style={{ marginBottom: 22 }}>
-                  reel 05 · movie night
+                  reel 04 · movie night
                 </span>
                 <h2 className="d2">
                   pick a night. <em>everyone knows.</em>
@@ -362,6 +345,32 @@ export default function LandingPage() {
                   going="three going, two thinking"
                   seats={5}
                   filled={3}
+                />
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        {/* ---------------- the year ---------------- */}
+        <section className="band band--forest section">
+          <div className="wrap">
+            <div className="year">
+              <Reveal className="year__copy">
+                <div className="marker">
+                  <span className="label">reel 05 · the year</span>
+                </div>
+                <h2 className="d2">
+                  a year you can <em>look at.</em>
+                </h2>
+              </Reveal>
+              <Reveal delay={120} className="year__shot">
+                <Frame
+                  id="app-year"
+                  caption="the year grid"
+                  note="one read, no scan"
+                  ratio="4 / 5"
+                  focus="center 62%"
+                  offset
                 />
               </Reveal>
             </div>

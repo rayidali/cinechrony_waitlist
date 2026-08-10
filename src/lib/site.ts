@@ -124,6 +124,16 @@ export const media = {
   "crew-9": { src: "/media/crew-9.webp", kind: "image", alt: "Two friends posing for a flash photo indoors" },
   "crew-10": { src: "/media/crew-10.webp", kind: "image", alt: "Two friends at night, one shooting back at the camera" },
 
+  /* The anamorphic strip under the hero calendar. The first screen had
+     photography only inside 110px calendar cells, so at a glance the eye
+     found the grid and nothing else — one wide print of a full house gives
+     it somewhere else to land without competing with the headline. */
+  "hero-strip": {
+    src: "/media/hero-strip.webp",
+    kind: "image",
+    alt: "A packed cinema, faces lit by the screen",
+  },
+
   /* ---- the full-bleed photograph behind the friday poster ---- */
   "poster-still": {
     src: "/media/poster-still.webp",

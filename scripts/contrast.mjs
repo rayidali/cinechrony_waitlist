@@ -88,6 +88,18 @@ for (const scheme of ['light', 'dark']) {
           .filter((c) => !clear(c));
 
       const opaque = (c) => c && c !== 'transparent' && !/rgba\([^)]*,\s*0\s*\)/.test(c);
+      // fully opaque: composites identically over white and over black
+      const solid = (c) => {
+        cx.clearRect(0, 0, 1, 1);
+        cx.fillStyle = '#ffffff'; cx.fillRect(0, 0, 1, 1);
+        cx.fillStyle = c; cx.fillRect(0, 0, 1, 1);
+        const a = cx.getImageData(0, 0, 1, 1).data;
+        cx.clearRect(0, 0, 1, 1);
+        cx.fillStyle = '#000000'; cx.fillRect(0, 0, 1, 1);
+        cx.fillStyle = c; cx.fillRect(0, 0, 1, 1);
+        const z = cx.getImageData(0, 0, 1, 1).data;
+        return a[0] === z[0] && a[1] === z[1] && a[2] === z[2];
+      };
 
       const out = [];
       const nodes = [...document.querySelectorAll('body *')].filter((el) => {
@@ -105,12 +117,25 @@ for (const scheme of ['light', 'dark']) {
         // walk up for the field this text actually sits on
         let node = el;
         let bgs = [];
+        let sealed = false;
         while (node && node !== document.documentElement) {
           const s = getComputedStyle(node);
           if (s.backgroundImage && s.backgroundImage !== 'none') {
             const st = stops(s.backgroundImage);
-            if (st.length) bgs = st;
+            if (st.length) {
+              bgs = st;
+              // A GRADIENT WITH A FULLY OPAQUE STOP SEALS THE WALK. A
+              // linear-gradient painted with no background-color under it
+              // leaves backgroundColor transparent, so the old loop kept
+              // climbing to <body> and reported the cream PAGE as the field
+              // for cream type sitting on an opaque green band — twenty
+              // failures, every one of them imaginary. If the gradient is
+              // opaque it covers whatever is behind it, and behind it is
+              // not a field any more.
+              if (st.some((c) => solid(c))) sealed = true;
+            }
           }
+          if (sealed) break;
           if (opaque(s.backgroundColor)) {
             bgs = bgs.concat([s.backgroundColor]);
             break;
