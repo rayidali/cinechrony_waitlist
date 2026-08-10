@@ -1,31 +1,29 @@
 # What the site still needs from a human
 
-Short list, and it got shorter. Every screenshot on the site is the shipped
-app, and **every photograph slot is now filled** — thirteen film-look
-frames, all graded through one curve. So nothing on the page is a
-placeholder frame any more.
+**Nothing blocking.** Every slot on the site is filled: seven real captures
+of the shipped app and twenty-two graded photographs. There is no
+placeholder frame left anywhere.
 
-Exactly **one** thing is genuinely missing, and it is the only slot on the
-site that still draws a hatched empty plate.
+Two things are worth doing when you get to them, and neither holds the site
+up.
 
 To wire anything up: drop the file in `public/media/`, then set its `src`
 in the `media` map in `src/lib/site.ts`.
 
 ---
 
-## 1. The demo film — `demo-hero` (video) — THE ONLY OPEN SLOT
+## 1. The demo film — removed, and available on request
 
-**Where it goes:** the wide plate at the bottom of "one reel in. every film
-out." Right now it is a black film frame with sprockets, a cue mark, a play
-mark and a technical slate — designed, but empty.
+The `demo-hero` video slot and the film-frame plate that held it came out
+on 10.08. It was a 16:9 black rectangle captioned AWAITING CAPTURE sitting
+on the one screen that has to feel finished: a placeholder advertising its
+own absence.
 
-**Why it is the last one:** it is the only place on the site where the hero
-loop actually *moves*, and the loop is the product. Everything else is a
-still of something that happens over forty seconds.
+**If you shoot it, say so and it goes back in** — the slot, the sprocket
+rails, the cue mark and the slate are one commit away in the history.
 
 **Worth knowing:** this is the same take as the fresh scan the App Store
-submission needs. One recording settles both — it produces the first real
-pipeline data point since 03.08 and gives the site its film.
+submission needs. One recording settles both.
 
 - One continuous take, 30 to 45 seconds. No cuts, no captions, no music.
 - Share a reel to cinechrony from Instagram or TikTok, let the scan run on
@@ -40,11 +38,11 @@ pipeline data point since 03.08 and gives the site its film.
 
 ## 2. The photographs — filled, and worth replacing eventually
 
-Thirteen frames are live: six in the hero calendar's film cells, six in the
-crew wall on the rust band, one behind the red poster band. They are
+Twenty-two frames are live: eleven in the hero calendar's film cells, ten
+in the crew wall on the rust band, one behind the red poster band. They are
 **free-licence frames from Unsplash**, chosen for the film-camera feeling
-on the reference boards — flash at night, grain, backs of heads, a marquee,
-an outdoor screening, popcorn.
+on the reference boards — flash at night, grain, backs of heads, a drive-in
+sign, a rooftop screening, a garden projector, a red cinema, popcorn.
 
 **Two honest caveats, both yours to weigh:**
 
@@ -81,11 +79,11 @@ poster still 2000×1120 wide.
 |---|---|
 | `app-grab` | live — the scan result, five films from one reel |
 | `app-diary` | live — the month calendar |
-| `app-list` | live — a shared list with a night planned |
-| `app-film` | live — a film open with the clip attached |
+| `app-list` | live — "date night" with the night pinned and the poster grid |
+| `app-film` | live — a film open, showing "the clip that did it" |
 | `app-year` | live — the year grid |
-| `grid-1` … `grid-6` | live — the hero calendar's film cells |
-| `crew-1` … `crew-6` | live — the crew wall |
+| `grid-1` … `grid-11` | live — the hero calendar's film cells |
+| `crew-1` … `crew-10` | live — the crew wall |
 | `poster-still` | live — duotone under the friday line |
 
 The five `app-*` came from `/tmp/asc-shots-d/raw` (the App Store shoot,

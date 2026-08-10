@@ -1037,22 +1037,6 @@ body::before {
 .frame__empty .label { background: var(--bg); padding: 6px 10px; }
 
 /* the play mark on the demo plate */
-.play {
-  width: 66px;
-  height: 66px;
-  border-radius: 50%;
-  border: 1.5px solid currentColor;
-  display: grid;
-  place-items: center;
-}
-.play::after {
-  content: "";
-  border-left: 15px solid currentColor;
-  border-top: 9px solid transparent;
-  border-bottom: 9px solid transparent;
-  margin-left: 4px;
-}
-
 /* a phone screenshot, presented as a plate rather than a floating mockup */
 .shot {
   border: 1.5px solid currentColor;
@@ -1240,24 +1224,9 @@ body::before {
 .grab-proof { display: grid; gap: clamp(28px, 4vw, 52px); margin-top: clamp(48px, 6vw, 76px); align-items: center; }
 @media (min-width: 860px) { .grab-proof { grid-template-columns: auto 1fr; } }
 .grab-proof__shot { width: 300px; max-width: 100%; }
-.grab-proof__aside { display: grid; gap: 20px; justify-items: start; }
-
-/* the demo plate is centred and capped rather than run to the column edge:
-   a 16:9 frame at full width is 660px of black hole while the film is
-   still un-shot, and a plate reads better than a band anyway */
-.demo-film { margin: clamp(48px, 6vw, 76px) auto 0; max-width: 920px; }
-.demo-film .frame__plate { background: oklch(0.14 0.01 60); color: var(--bone); }
-.demo-film__play {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: var(--bone);
-  pointer-events: none;
-}
-/* once a real film is registered the plate fills; the mark hides itself */
-.demo-film .frame__plate:has(video) .demo-film__play { display: none; }
+/* with the aside gone the plate has nothing to sit beside, so it centres
+   rather than hugging the left edge of a column it no longer shares */
+.grab-proof--solo { display: flex; justify-content: center; }
 
 /* the poster band: one field, one line, nothing else on it — except that
    the field is now a photograph with the red printed over it. A duotone,
@@ -1307,14 +1276,20 @@ body::before {
   scrollbar-width: none;
 }
 .crew-strip::-webkit-scrollbar { display: none; }
+/* ten frames want two rows, not one — at six across a tenth frame is 130px
+   and every face in it is a smudge. Five across over two rows keeps each
+   print big enough to actually read as a photograph. */
 @media (min-width: 720px) {
   .crew-strip {
     grid-auto-flow: initial;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     overflow: visible;
-    gap: clamp(10px, 1.2vw, 18px);
+    gap: clamp(12px, 1.4vw, 22px) clamp(10px, 1.2vw, 18px);
     padding: 0 28px;
   }
+}
+@media (min-width: 1180px) {
+  .crew-strip { grid-template-columns: repeat(5, 1fr); }
 }
 .crew-shot { scroll-snap-align: center; display: block; }
 .crew-shot figure { margin: 0; }
@@ -1887,98 +1862,12 @@ body::before {
 }
 @media (max-width: 900px) { .now-showing { display: none; } }
 
-/* ---- the demo plate, as an actual film frame ----------------------------- */
-.filmframe { position: relative; }
-/* sprocket rails: real 35mm perforations, one column each side */
-.filmframe .frame__plate { padding: 0 26px; }
-.filmframe .frame__plate::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='34'%3E%3Crect x='6' y='7' width='14' height='20' rx='3.5' fill='%23e9e2d2'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='34'%3E%3Crect x='6' y='7' width='14' height='20' rx='3.5' fill='%23e9e2d2'/%3E%3C/svg%3E");
-  background-repeat: repeat-y, repeat-y;
-  background-position: left top, right top;
-  background-size: 26px 34px;
-  opacity: 0.9;
-}
-/* the picture sits under the perforations, the projection marks sit over
-   them — a blanket `> *` rule put the cue mark below the rails and it
-   simply never appeared */
-.filmframe .frame__plate > img,
-.filmframe .frame__plate > video,
-.filmframe .frame__plate > .frame__empty { position: relative; z-index: 1; }
-.filmframe .demo-film__play { z-index: 3; }
-.filmframe .cue { z-index: 3; }
-/* the cue mark: the circle in the corner that tells the box to change reels */
-.cue {
-  position: absolute;
-  top: 18px;
-  right: 44px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  border: 2px solid oklch(0.99 0.02 92 / 0.75);
-  z-index: 3;
-}
-/* broadcast scanlines over the picture */
-.scanlines::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background: repeating-linear-gradient(
-    to bottom,
-    oklch(1 0 0 / 0.045) 0 1px,
-    transparent 1px 3px
-  );
-}
-/* the technical slate under a plate, in place of a plain caption */
-.slate {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0;
-  border: 1px solid var(--rule-strong);
-  border-top: 0;
-}
-.slate span {
-  font-family: var(--f-mono);
-  font-size: 0.625rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  color: var(--fg-soft);
-  padding: 9px 14px;
-  flex: 1 1 auto;
-  text-align: center;
-}
-.slate span + span { border-left: 1px solid var(--rule-strong); }
-
-/* ---- the VHS on-screen display, for the clip row ------------------------- */
-.osd {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--f-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.14em;
-  color: oklch(0.97 0.06 200);
-  text-shadow: 0 0 6px oklch(0.6 0.14 210 / 0.9);
-}
-.osd__play {
-  width: 0;
-  height: 0;
-  border-left: 9px solid currentColor;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-}
+/* The film-frame layer — sprocket rails, the projectionist's cue mark, the
+   broadcast scanlines and the technical slate — lived on the demo plate and
+   nowhere else. The demo plate is gone (it was a black rectangle captioned
+   AWAITING CAPTURE, which is a placeholder advertising its own absence),
+   so all of it came out with it rather than sitting here unreferenced. It
+   is in the history the day there is footage to put behind it. */
 
 /* ---- the seat row: the back of the stalls, along a band's edge ----------- */
 .seats {

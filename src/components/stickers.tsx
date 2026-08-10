@@ -218,29 +218,6 @@ function Ticket() {
 }
 
 
-function Clapper() {
-  return (
-    <svg viewBox="0 0 108 92" fill="none" aria-hidden="true">
-      {/* the slate */}
-      <rect x="6" y="34" width="96" height="52" rx="3" fill="#232a2d" stroke={INK} strokeWidth="2.4" />
-      <g stroke="#8f9a9f" strokeWidth="1.6" opacity="0.5">
-        <path d="M6 52h96M6 66h96" />
-      </g>
-      <path d="M18 44h34M18 76h52" stroke="#e9e2d2" strokeWidth="3" strokeLinecap="round" />
-      {/* the clapper stick, hinged open */}
-      <g transform="rotate(-11 12 30)">
-        <rect x="6" y="16" width="96" height="18" rx="2.5" fill="#e9e2d2" stroke={INK} strokeWidth="2.4" />
-        <path
-          d="M14 16l-8 18M32 16l-8 18M50 16l-8 18M68 16l-8 18M86 16l-8 18"
-          stroke={INK}
-          strokeWidth="7"
-        />
-        <rect x="6" y="16" width="96" height="18" rx="2.5" fill="none" stroke={INK} strokeWidth="2.4" />
-      </g>
-    </svg>
-  );
-}
-
 function Crt() {
   return (
     <svg viewBox="0 0 110 100" fill="none" aria-hidden="true">
@@ -310,7 +287,6 @@ const SHAPES = {
   daisy: Daisy,
   cursor: Cursor,
   ticket: Ticket,
-  clapper: Clapper,
   crt: Crt,
   glasses: Glasses3D,
   leader: Leader,
@@ -412,7 +388,6 @@ const SCENES: Record<string, Placed[]> = {
     { kind: "reel", x: "22%", y: "84%", size: 78, rotate: -11, delay: 1.8, duration: 9.5, desktopOnly: true },
   ],
   grab: [
-    { kind: "clapper", x: "92%", y: "4%", size: 104, rotate: 9, delay: 0.8, duration: 9.5, desktopOnly: true },
     { kind: "leader", x: "5%", y: "62%", size: 76, rotate: -6, delay: 2, duration: 8.5, desktopOnly: true },
   ],
 };

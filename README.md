@@ -22,9 +22,10 @@ better. So:
   paragraphs and kept a headline and two chips. The three grab beats kept
   three words each. The founder essay — three paragraphs about films being
   social — is deleted outright.
-- **Six photographs replaced it.** The crew wall on the rust band makes
-  the essay's argument in about a second. Its headline is the one line
-  worth keeping from the essay, promoted out of a pull quote.
+- **Photographs replaced it.** Twenty-two now: eleven in the hero
+  calendar's film cells, ten in the crew wall on the rust band, one duotone
+  under the friday line. The crew wall makes the essay's argument in about
+  a second, headlined with the one line worth keeping from it.
 - **Every band has its own stock.** "The background is a plain colour" was
   said three times and answered twice by adding *objects* to the same
   cream. v4 finally answers it in the substrate: six papers (cream, ochre,
@@ -77,14 +78,15 @@ inverts it:
   Placements live in `SCENES` in `src/components/stickers.tsx`.
 - **Type carries the page.** Display lines are always lowercase, which is
   the app's own rule, with one word per headline switching to Newsreader
-  italic — a second display voice rather than a fourth font.
+  italic — a second display voice rather than a fourth font. (v4 moved that
+  role to Fraunces; see above.)
 - **The cinema layer is borrowed from real objects.** Marquee bulbs chasing
-  above and below the running titles, a NOW SHOWING house board, 35mm
-  sprocket rails and a projectionist's cue mark on the demo plate, a
-  technical slate in place of its caption, broadcast scanlines, a VHS
-  on-screen display on the clip row, a row of seat backs along the closing
-  band, and section markers numbered as reels. Nothing is texture for its
-  own sake: each one is a thing the product's own subject would have.
+  above and below the running titles, a NOW SHOWING house board, a row of
+  seat backs along the closing band, and section markers numbered as reels.
+  Nothing is texture for its own sake: each one is a thing the product's own
+  subject would have — which is also why the clapper board came out. It is
+  the one film object that is pure cliché, and the sprocket rails, cue mark,
+  slate and VHS display went with the plates they were attached to.
 - **The product is shown, never drawn.** Every screenshot is a real capture
   of the shipped app, the same set that went to App Store Connect.
 
@@ -107,11 +109,11 @@ inverts it:
   `(hover: hover) and (pointer: fine)`; `:active` gives a thumb an answer.
   Transform and opacity only, so nothing touches layout.
 
-- **The photographs are one roll.** Thirteen free-licence frames, all run
+- **The photographs are one roll.** Twenty-two free-licence frames, all run
   through a single curve in `scripts/grade-photos.py` — blacks lifted to
   0.055, highlights rolled to 0.965, a smoothstep S, warm highlights and
-  cool shadows, saturation 0.90. That one pass is what stops thirteen
-  photographs by thirteen photographers reading as a stock library. Never
+  cool shadows, saturation 0.90. That one pass is what stops twenty-two
+  photographs by twenty-two photographers reading as a stock library. Never
   drop a photograph in ungraded; you will see it before you can name it.
 - **A photo cell is a dark cell.** Calendar cells carrying a photograph get
   an ink field, the picture dimmed onto it, and a radial scrim under the

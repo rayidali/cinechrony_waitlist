@@ -53,17 +53,20 @@ const MONTH: Cell[] = [
   { d: 28, mute: true }, { d: 29, mute: true }, { d: 30, mute: true },
   { d: 1 }, { d: 2, img: "grid-1", fill: "ink", title: "past lives" }, { d: 3 }, { d: 4, fill: "ink" },
 
-  { d: 5, fill: "ink" }, { d: 6, dot: true }, { d: 7 }, { d: 8, img: "grid-2", fill: "red", title: "heat" },
-  { d: 9 }, { d: 10, fill: "tint" }, { d: 11, fill: "teal" },
+  { d: 5, img: "grid-7", fill: "ink" }, { d: 6, dot: true }, { d: 7 },
+  { d: 8, img: "grid-2", fill: "red", title: "heat" },
+  { d: 9 }, { d: 10, fill: "tint" }, { d: 11, img: "grid-8", fill: "teal" },
 
   { d: 12 }, { d: 13, img: "grid-3", fill: "aura" }, { d: 14 }, { d: 15, fill: "marigold" },
   { d: 16, fill: "ink" }, { d: 17, fill: "tint" }, { d: 18, fill: "amber", title: "arrival" },
 
-  { d: 19, fill: "blue" }, { d: 20 }, { d: 21, img: "grid-4", fill: "ink", title: "whiplash" },
-  { d: 22 }, { d: 23, dot: true }, { d: 24, fill: "ink" }, { d: 25 },
+  { d: 19, img: "grid-9", fill: "blue" }, { d: 20 },
+  { d: 21, img: "grid-4", fill: "ink", title: "whiplash" },
+  { d: 22 }, { d: 23, dot: true }, { d: 24, img: "grid-10", fill: "ink" }, { d: 25 },
 
   { d: 26, fill: "tint" }, { d: 27, fill: "ink" }, { d: 28 }, { d: 29, img: "grid-5", fill: "red" },
-  { d: 30, fill: "aura2" }, { d: 31, img: "grid-6", fill: "blue", title: "parasite" }, { d: 1, mute: true },
+  { d: 30, img: "grid-11", fill: "aura2" },
+  { d: 31, img: "grid-6", fill: "blue", title: "parasite" }, { d: 1, mute: true },
 ];
 
 const DAYS = ["m", "t", "w", "t", "f", "s", "s"];

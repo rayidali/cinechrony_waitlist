@@ -51,17 +51,10 @@ export function Footer({
             </p>
           </div>
           <div>
-            <h3>the product</h3>
+            {/* the three in-page anchors came out: on a page this short
+                they are a table of contents for two scrolls */}
+            <h3>get it</h3>
             <ul>
-              <li>
-                <Link href="/#how">how it works</Link>
-              </li>
-              <li>
-                <Link href="/#features">what it does</Link>
-              </li>
-              <li>
-                <Link href="/#story">the point</Link>
-              </li>
               <li>
                 <Link href="/beta">ios beta</Link>
               </li>

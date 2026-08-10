@@ -29,13 +29,19 @@ import { media, site } from "@/lib/site";
  */
 
 /* the crew wall. Frame numbers run like a contact sheet, odd numbers with
-   an A, because that is how a strip of 35mm is actually numbered. */
+   an A, because that is how a strip of 35mm is actually numbered. Ten
+   frames across two rows: rooftop screenings, a garden projector, a red
+   cinema, and the people in front of all of it. */
 const CREW = [
-  { id: "crew-1", n: "11a" },
+  { id: "crew-1", n: "9a" },
+  { id: "crew-7", n: "10" },
+  { id: "crew-3", n: "10a" },
+  { id: "crew-8", n: "11" },
+  { id: "crew-5", n: "11a" },
   { id: "crew-2", n: "12" },
-  { id: "crew-3", n: "12a" },
+  { id: "crew-9", n: "12a" },
   { id: "crew-4", n: "13" },
-  { id: "crew-5", n: "13a" },
+  { id: "crew-10", n: "13a" },
   { id: "crew-6", n: "14" },
 ] as const;
 
@@ -60,9 +66,7 @@ export default function LandingPage() {
                   <br />
                   keep the <em>film.</em>
                 </h1>
-                <p className="hero-sub">
-                  the films you find scrolling, in one place that isn&rsquo;t your camera roll.
-                </p>
+                <p className="hero-sub">your group chat&rsquo;s watchlist, finally in one place.</p>
                 <div className="cta-row">
                   {beta ? (
                     <a className="btn btn--accent btn--lg" href={beta} target="_blank" rel="noopener">
@@ -148,8 +152,15 @@ export default function LandingPage() {
               </div>
             </Reveal>
 
+            {/* The aside and the empty demo plate both came out. The aside
+                said "keep it now, file it whenever", which beat 03 already
+                says in three words; and the demo plate was a 16:9 black
+                rectangle captioned AWAITING CAPTURE — a placeholder for a
+                film nobody has shot, advertising its own absence on the
+                one screen that is meant to feel finished. It goes back in
+                the day there is footage, not before. */}
             <Reveal delay={180}>
-              <div className="grab-proof">
+              <div className="grab-proof grab-proof--solo">
                 <Frame
                   id="app-grab"
                   caption="five films, one reel"
@@ -158,30 +169,6 @@ export default function LandingPage() {
                   className="grab-proof__shot"
                   offset
                 />
-                <div className="grab-proof__aside">
-                  <span className="stamp stamp--red">no list required</span>
-                  <p className="retro" style={{ maxWidth: "14ch" }}>
-                    keep it now. file it <em>whenever.</em>
-                  </p>
-                </div>
-              </div>
-            </Reveal>
-
-            <Reveal delay={220}>
-              <div className="demo-film filmframe">
-                <Frame id="demo-hero" ratio="16 / 9" emptyLabel="the demo film" className="scanlines">
-                  <span className="demo-film__play" aria-hidden="true">
-                    <span className="play" />
-                  </span>
-                  <span className="cue" aria-hidden="true" />
-                </Frame>
-                <div className="slate">
-                  <span>reel 01</span>
-                  <span>the grab, one take</span>
-                  <span>00:40</span>
-                  <span>24 fps</span>
-                  <span>sound off</span>
-                </div>
               </div>
             </Reveal>
           </div>
@@ -238,7 +225,7 @@ export default function LandingPage() {
                 <div className="row__copy">
                   <span className="row__idx">shared lists</span>
                   <h2 className="d3">
-                    a list your friends can <em>add to.</em>
+                    one list. <em>everyone adds.</em>
                   </h2>
                   <div className="chips">
                     <span className="pill">up to 10 people</span>
@@ -246,11 +233,15 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <div className="row__media">
+                  {/* focus, not the default `center top`: the top of this
+                      capture is the list header, and a row headlined "one
+                      list, everyone adds" needs the FILMS in frame */}
                   <Frame
                     id="app-list"
-                    caption="a shared list"
-                    note="with a night planned"
+                    caption="date night"
+                    note="five films in"
                     ratio="4 / 5"
+                    focus="center 34%"
                     offset
                   />
                 </div>
@@ -260,7 +251,7 @@ export default function LandingPage() {
                 <div className="row__copy">
                   <span className="row__idx">the clip</span>
                   <h2 className="d3">
-                    you remember <em>why</em> you saved it.
+                    the clip <em>comes with it.</em>
                   </h2>
                   <div className="chips">
                     <span className="pill">imdb rating</span>
@@ -268,12 +259,20 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <div className="row__media">
-                  <Frame id="app-film" caption="a film, opened" note="clip attached" ratio="4 / 5" offset>
-                    <span className="osd" aria-hidden="true">
-                      <span className="osd__play" />
-                      play 00:02:20
-                    </span>
-                  </Frame>
+                  <Frame
+                    id="app-film"
+                    caption="the clip that did it"
+                    note="still attached"
+                    ratio="4 / 5"
+                    focus="center 46%"
+                    offset
+                  />
+                  {/* the VHS on-screen display came off: it was pale cyan
+                      pinned to the plate's top-left, which on the re-shot
+                      capture is white app chrome — invisible. And the
+                      capture now contains a real play button on a real
+                      clip, so a fake one over the top of it was competing
+                      with the thing it was pretending to be. */}
                 </div>
               </Reveal>
             </div>

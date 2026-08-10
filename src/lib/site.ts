@@ -59,15 +59,22 @@ export const media = {
     kind: "image",
     alt: "The diary: a month calendar filling in with film posters on the days you watched",
   },
+  /* Re-shot 2026-08-10. The old app-list was cropped to the header, so the
+     row headlined "one list, everyone adds" sat above a picture with no
+     films in it; and the old app-film was captioned "clip attached" and
+     contained no clip, because NO film on the demo account had a
+     socialLink — the block had never rendered on that account and could
+     not have. Both fixed at the source (scripts/dress-demo-for-site.tmp.ts)
+     rather than by re-cropping a shot of the wrong thing. */
   "app-list": {
     src: "/media/app-list.webp",
     kind: "image",
-    alt: "A shared list with a movie night planned at the top",
+    alt: "A shared list called date night: a movie night pinned at the top and five film posters below it",
   },
   "app-film": {
     src: "/media/app-film.webp",
     kind: "image",
-    alt: "A film open in the drawer, with the clip that found it still attached",
+    alt: "A film open in the drawer, showing the clip that found it with play and open-in-Instagram buttons",
   },
   "app-year": {
     src: "/media/app-year.webp",
@@ -75,12 +82,11 @@ export const media = {
     alt: "The year grid: every day of the year, filling in as you watch",
   },
 
-  /* ---- the demo film (owner capture, see ASSETS.md) ---- */
-  "demo-hero": {
-    src: null,
-    kind: "video",
-    alt: "Screen capture: a reel becomes a saved, rated list in forty seconds",
-  },
+  /* The `demo-hero` video slot was removed with the plate that held it.
+     A 16:9 black rectangle captioned AWAITING CAPTURE is a placeholder
+     advertising its own absence, and it sat on the one screen that has to
+     feel finished. If the film gets shot, the slot and the film frame come
+     back together — both are one commit away in the history. */
 
   /* ---- photography ----------------------------------------------------
      Six squares in the hero calendar's film cells, six portraits in the
@@ -100,6 +106,11 @@ export const media = {
   "grid-4": { src: "/media/grid-4.webp", kind: "image", alt: "" },
   "grid-5": { src: "/media/grid-5.webp", kind: "image", alt: "" },
   "grid-6": { src: "/media/grid-6.webp", kind: "image", alt: "" },
+  "grid-7": { src: "/media/grid-7.webp", kind: "image", alt: "" },
+  "grid-8": { src: "/media/grid-8.webp", kind: "image", alt: "" },
+  "grid-9": { src: "/media/grid-9.webp", kind: "image", alt: "" },
+  "grid-10": { src: "/media/grid-10.webp", kind: "image", alt: "" },
+  "grid-11": { src: "/media/grid-11.webp", kind: "image", alt: "" },
 
   /* ---- the crew wall: the band that replaced 180 words of essay ---- */
   "crew-1": { src: "/media/crew-1.webp", kind: "image", alt: "A group of friends outside at golden hour, shot on film" },
@@ -108,6 +119,10 @@ export const media = {
   "crew-4": { src: "/media/crew-4.webp", kind: "image", alt: "Two people holding each other, watching the sun go down" },
   "crew-5": { src: "/media/crew-5.webp", kind: "image", alt: "A room full of people at a small gig" },
   "crew-6": { src: "/media/crew-6.webp", kind: "image", alt: "Two friends in sunglasses, grainy film frame" },
+  "crew-7": { src: "/media/crew-7.webp", kind: "image", alt: "An open-air cinema filling up at blue hour" },
+  "crew-8": { src: "/media/crew-8.webp", kind: "image", alt: "Two people watching a projector in a garden under string lights" },
+  "crew-9": { src: "/media/crew-9.webp", kind: "image", alt: "Two friends posing for a flash photo indoors" },
+  "crew-10": { src: "/media/crew-10.webp", kind: "image", alt: "Two friends at night, one shooting back at the camera" },
 
   /* ---- the full-bleed photograph behind the friday poster ---- */
   "poster-still": {

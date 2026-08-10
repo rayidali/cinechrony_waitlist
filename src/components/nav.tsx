@@ -11,9 +11,11 @@ import { site } from "@/lib/site";
  * no blur, no floating pill: the wordmark holds the left, small mono links
  * hold the right, and the actual ask lives in the page.
  */
+/* Three, not five. "how it works" and "features" both pointed at anchors
+   two scrolls down a page that is now short enough to just scroll, and a
+   masthead with five links plus a button plus a theme toggle is a SaaS
+   chrome bar wearing paper. The references carry two or three. */
 const links = [
-  { href: "/#how", label: "how it works" },
-  { href: "/#features", label: "features" },
   { href: "/beta", label: "ios beta" },
   { href: "/install", label: "install" },
   { href: "/support", label: "support" },
