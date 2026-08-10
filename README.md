@@ -87,10 +87,18 @@ inks) and turns photographic the moment files land in `media`. See
 
 ```bash
 npm install
-npm run dev     # http://localhost:3000
-npm run build   # production build
+npm run dev              # http://localhost:3000
+npm run build            # production build
 npm run lint
+npm run check:contrast   # WCAG audit, needs a server running
 ```
+
+`check:contrast` reads the computed colour of every text run on every route
+in both themes, resolves the field it actually sits on (including every stop
+of a gradient, and takes the worst one), and exits non-zero on any AA
+failure. It exists because a dark-mode contrast bug survived three rounds of
+review: a full-page screenshot scaled to thumbnail width hides one
+completely. `CHROME=` overrides the browser path, `BASE=` the origin.
 
 ## Configuration
 
