@@ -211,47 +211,32 @@ button { font: inherit; color: inherit; }
 ::selection { background: var(--amber); color: var(--ink); }
 :focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 
-/* THE PAGE-WIDE FILM PASS: two fixed layers, so it never scroll-shears.
-   The emulsion layer is the one you feel; the clump layer is the one that
-   makes it read as a scan rather than as CSS noise. Both are deliberately
-   held below the level where body copy starts to fray: the references are
-   pushed film with clean type sitting ON them, not through them, and the
-   heavy lifting happens on the colour fields and the plates instead. */
-body::after {
-  content: "";
-  position: fixed;
-  inset: -50%;
-  z-index: 9998;
-  pointer-events: none;
-  background-image: var(--grain-fine);
-  opacity: 0.38;
-  mix-blend-mode: overlay;
-  transform: translateZ(0);
-}
-body::before {
-  content: "";
-  position: fixed;
-  inset: -50%;
-  z-index: 9997;
-  pointer-events: none;
-  background-image: var(--grain-clump);
-  opacity: 0.2;
-  mix-blend-mode: soft-light;
-  transform: translateZ(0);
-}
-/* the lens: one soft corner falloff over the entire page */
-.vignette {
-  position: fixed;
-  inset: 0;
-  z-index: 9996;
-  pointer-events: none;
-  background: radial-gradient(125% 105% at 50% 45%, transparent 58%, oklch(0.2 0.02 60 / 0.16));
-}
-[data-theme="dark"] .vignette {
-  background: radial-gradient(125% 105% at 50% 45%, transparent 52%, oklch(0 0 0 / 0.42));
-}
-[data-theme="dark"] body::after { opacity: 0.34; }
-[data-theme="dark"] body::before { opacity: 0.24; }
+/* THE PAGE-WIDE FILM PASS IS GONE, AND `position: fixed` IS THE REASON.
+
+   It was two full-page grain layers (fine at 0.38 `overlay`, clump at 0.2
+   `soft-light`) plus a fixed vignette reaching 42% black at the corners in
+   dark mode, all pinned to the VIEWPORT at z-index 9996-9998. On a page of
+   flat colour fields that is invisible and lovely: a flat field looks the
+   same wherever it sits, so the texture reads as the stock itself.
+
+   Put a painting under it and it stops being the stock. The picture scrolls
+   and the grain does not, so the eye can suddenly tell which of the two is
+   attached to the page, and the answer is the wrong one. It read as a haze
+   sitting between the reader and the artwork, which is exactly what it was.
+
+   Three more reasons it had to go rather than be turned down. Every band on
+   every route now carries a painting with grain already baked in at its own
+   scale, so this was a SECOND tooth over the first: the same "two surfaces
+   claiming to be the paper" fault as the halftone screen removed from the
+   scened bands. `mix-blend-mode: overlay` at 0.38 does not just add
+   texture, it pushes saturation and contrast, so it was quietly moving
+   colours that paint-mural.py had measured. And the vignette was crushing
+   the corners of pictures that carry their own light.
+
+   The local passes stay, because they are attached to the thing they
+   texture and move with it: `.frame__plate::after` and
+   `.crew-shot__plate::after` grain their own photographs, and the mural
+   grains itself. Grain belongs to a surface, not to a screen. */
 
 /* ---------- layout ---------- */
 .wrap {

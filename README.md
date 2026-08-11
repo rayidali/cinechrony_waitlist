@@ -113,6 +113,25 @@ better. So:
   runs, and accent red comes off a scened band entirely because 11px of red
   on a sky this saturated is around 2.9:1 and lifting the red does not reach
   4.5 even at oklch 0.88, by which point it is not red.
+- **The page-wide film pass is gone, and `position: fixed` is the reason.**
+  Two full-page grain layers (fine at 0.38 `overlay`, clump at 0.2
+  `soft-light`) and a vignette reaching 42% black at the corners in dark
+  mode, all pinned to the VIEWPORT. On flat colour fields that is invisible
+  and lovely, because a flat field looks the same wherever it sits, so the
+  texture reads as the stock. Put a painting under it and the picture
+  scrolls while the grain does not, so the eye can suddenly tell which of
+  the two is attached to the page, and it is the wrong one. It read as a
+  haze between the reader and the artwork, which is what it was. The local
+  passes stay, because they move with the thing they texture: the
+  screenshots and crew photographs grain themselves, and so does the mural.
+  Grain belongs to a surface, not to a screen.
+- **That layer was invisible to every screenshot in this whole redesign, so
+  the gate now refuses to score a page carrying one.** `fullPage` builds a
+  tall image out of a scrolling viewport and `position: fixed` renders once,
+  at the top, so every band below the fold was being measured without a
+  layer a reader sees over all of them. `check:contrast-pixels` reported
+  pass throughout, truthfully, about a page that did not exist. It exits 2
+  and names the element now.
 - **The masthead stays solid, and that was tested rather than assumed.** It
   is the one strip the mural does not reach, so it was built as a window:
   78% paper with a backdrop blur. It fails, and not on taste. The bar is

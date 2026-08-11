@@ -95,6 +95,38 @@ for (const scheme of ['light', 'dark']) {
       }
       window.scrollTo(0, 0);
     });
+    // A FIXED FULL-PAGE OVERLAY IS THIS GATE'S BLIND SPOT, so it refuses to
+    // score a page carrying one rather than reporting a pass it cannot back
+    // up. `fullPage` composites a tall image out of a scrolling viewport and
+    // `position: fixed` renders ONCE, at the top, so every band below the
+    // fold gets measured without a layer that a reader sees over all of
+    // them. The site carried exactly that for months (two grain passes and a
+    // vignette at z-index 9996-9998) and this gate reported pass throughout,
+    // truthfully, about a page that does not exist.
+    const overlays = await page.evaluate(() => {
+      const out = [];
+      for (const el of [document.documentElement, document.body, ...document.querySelectorAll('body *')])
+        for (const pe of [null, '::before', '::after']) {
+          const cs = getComputedStyle(el, pe);
+          if (cs.position !== 'fixed') continue;
+          if (pe && (cs.content === 'none' || cs.content === 'normal')) continue;
+          const paints = cs.backgroundImage !== 'none' || cs.backgroundColor !== 'rgba(0, 0, 0, 0)';
+          if (!paints) continue;
+          const r = el.getBoundingClientRect();
+          const covers = pe ? true : r.width >= innerWidth * 0.9 && r.height >= innerHeight * 0.6;
+          if (!covers) continue;
+          out.push(el.tagName.toLowerCase() + (el.className ? '.' + String(el.className).trim().split(/\s+/)[0] : '') + (pe || ''));
+        }
+      return [...new Set(out)];
+    });
+    if (overlays.length) {
+      console.log(`PIXEL CONTRAST: cannot score ${path} [${scheme}].`);
+      console.log(`  A fixed full-page layer is present and a full-page screenshot`);
+      console.log(`  reproduces it only at the top: ${overlays.join(', ')}`);
+      console.log(`  Give it to the surfaces it textures, or teach this gate to scroll.`);
+      process.exit(2);
+    }
+
     // FREEZE EVERYTHING FIRST. The whole method is a diff of two captures,
     // so anything that moves between them reads as a glyph, and the
     // stickers drift on an infinite loop. A cream popcorn box that shifted

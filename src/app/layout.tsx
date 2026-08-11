@@ -95,7 +95,6 @@ export default function RootLayout({
           {/* the lens falloff and the film pass both sit above everything and
               take no input; they are the last thing in the tree so they can
               never end up inside a stacking context that clips them */}
-          <div className="vignette" aria-hidden="true" />
         </ThemeProvider>
       </body>
     </html>
