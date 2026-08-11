@@ -20,34 +20,34 @@ import { media, type MediaId } from "@/lib/site";
 /**
  * One slice of the mural.
  *
- * These are not ten pictures. scripts/riso-mural.py paints ONE landscape
+ * These are not ten pictures. scripts/paint-mural.py paints ONE landscape
  * running from the top of the page to the bottom of the footer and cuts it
  * into a slice per band, so the bottom row of each is the top row of the
  * next. The order below is the order down the page and it is load-bearing:
  * move a band and its slice no longer joins its neighbours.
  *
  * The file is a CSS background rather than an <img>, and that is not a
- * style preference. Four of the slices need a second version for dark
+ * style preference. Five of the slices need a second version for dark
  * mode, and only a background can be swapped by `[data-theme]`, so the
  * theme toggle is obeyed and exactly one of the pair is ever downloaded.
  * Two <img>s would fetch both and then hide one.
  *
  * It is also why there is no `media` entry and no src here: an empty span
  * is the whole component, and everything true about these sits in
- * globals.css next to the URLs, including the lightness window each slice
- * is painted inside, which is a contrast decision the press checks at
- * build time.
+ * globals.css next to the URLs, and scripts/paint-mural.py is the press.
+ * Each slice's colours are checked against the ink of its own band before
+ * it is written, so a picture nobody could read is a build failure.
  */
 export type SceneId =
-  | "sky" //     hero: morning, almost all sky
+  | "sky" //     hero: flat blue, almost all sky, the crest at the foot
   | "hedge" //   the marquee strip: a hedgerow, no sky at all
-  | "shade" //   the crew wall: under the canopy, a lit horizon at the foot
-  | "field" //   the grab: a sunflower field
+  | "shade" //   the crew wall: deep spruce, three ridges receding
+  | "field" //   the grab: the reference itself, and the one car on the page
   | "sunset" //  the poster: the day turns here
   | "meadow" //  what it does: wildflowers, the tallest band on the page
-  | "dusk" //    movie night: a moon and a bank of flat cloud
+  | "dusk" //    movie night: indigo, a moon that stays round
   | "lake" //    the year: ridges receding, water holding the light
-  | "night" //   the close: deepest point, no horizon in it
+  | "night" //   the close: deepest point of the walk
   | "dawn"; //   the footer: first light, and the walk ends where it began
 
 export function BandScene({ id }: { id: SceneId }) {

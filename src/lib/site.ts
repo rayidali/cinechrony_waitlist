@@ -131,7 +131,7 @@ export const media = {
      three: `[data-theme="dark"]` swaps the file so a manual theme toggle
      is obeyed, and only the one file the reader can actually see is ever
      downloaded. An <img> pair would fetch both. The slices live in
-     globals.css under THE MURAL, and scripts/riso-mural.py paints them.
+     globals.css under THE MURAL, and scripts/paint-mural.py paints them.
 
      `poster-still` below is still registered and is no longer on the
      page: the mural is the picture on that band now, and a photograph

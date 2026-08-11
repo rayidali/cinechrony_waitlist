@@ -44,78 +44,81 @@ better. So:
   is what makes it deliberate. It also hides Vision's one-pixel fringe of
   old background, which is the kind of fix you take.
 - **The whole page is one painted landscape.** "The background is a plain
-  colour" survived flat fields, objects on the fields, duotone gradients, a
-  photograph screenprinted into each band in one ink, and then a painted
-  landscape pinned to the foot of four bands with its sky continuing above
-  as flat colour. Two of those failures are worth keeping. The screenprint:
-  a greyscale still multiplied into a band can only ever put down more of
-  that band's own colour, so the property that made it safe for the palette
-  is what made it invisible. And the capped landscape: on a 900px band it
-  was a picture, on the 2200px band it was 60% flat colour with a picture
-  along the bottom edge, which is the original report restated.
-  `scripts/riso-mural.py` paints **one** landscape now, top of the page to
-  the bottom of the footer, and cuts it into a slice per band: morning sky,
-  a hedgerow, into the shade, a sunflower field, the sunset, a wildflower
-  meadow, dusk, a lake, deep night, first light. Drawn rather than
-  photographed is what lets scenery into a strict palette at all: every
-  colour is chosen rather than found, so it cannot arrive as a second
-  palette the way a full-colour photograph would.
+  colour" was answered five times before this: flat fields, objects on the
+  fields, duotone gradients, a photograph screenprinted in one ink, and a
+  painted landscape pinned to the foot of four bands with flat sky above.
+  Two of those failures are worth keeping. The screenprint, because a
+  greyscale still multiplied into a band can only put down more of that
+  band's own colour, so the property that made it safe for the palette is
+  what made it invisible. And the capped landscape, because on a 900px band
+  it was a picture and on the 2200px band it was 60% flat colour with a
+  picture along the bottom, which is the original report restated.
+  `scripts/paint-mural.py` paints **one** landscape, top of the page to the
+  bottom of the footer, and cuts it into a slice per band.
 - **It is fitted by height, and the band heights are why that works.**
   Measured at 390 / 768 / 1440 / 1920, every band's height moves by at most
   ~1.3x while its width moves by 5x. So each slice is drawn at roughly its
   band's real height and laid down with `background-size: auto 100%;
   background-repeat: repeat-x`, which fills the band edge to edge, never
-  touches the aspect, and lands EXACTLY on the top and bottom edges at
-  every viewport. That exactness is the whole trick: it is what makes slice
-  N's bottom row meet slice N+1's top row at every viewport too, so the
-  page is one painting rather than ten pictures. `cover` would have
-  magnified a tall band's drawing 1.6x and turned a stippled field into
-  confetti; stretching to `100% 100%` would have squeezed a sun into an
-  ellipse on a phone. Every drawing routine wraps in x for the repeat:
-  integer-harmonic ridgelines, clouds stamped again at x +/- W, the channel
-  misregistration applied with a roll rather than a shift that would leave a
-  raw stripe down the seam. The build prints the seam width and the two
-  colours at every join.
-- **Neighbours in the same register join invisibly; a register flip is a
-  hard horizon.** The two lightness windows below do not overlap, so where
-  the page goes from a paper band to a saturated one there is no colour
-  legal on both sides and no blend is possible. That is not a compromise:
-  land against a bright sky is the reference board's favourite picture, and
-  it is the most common line in the genre.
-- **The five bands that invert have a second pull for dark mode.** Cream by
-  day, near-black by night, and a pale sky behind dark mode's light type
-  would be a worse bug than the flat colour this replaced. So the same
-  ground is painted twice and the second walk is after sunset. They are CSS
-  backgrounds rather than `<img>` for that exact reason: only a background
-  can be swapped by `[data-theme="dark"]`, so the manual theme toggle is
-  obeyed and only the file you can see is downloaded. The page has a time
-  of day. The marquee strip is the odd one: `--on-color-dark` is oklch 0.17
-  in both themes, so it stays a paper slice at night and gets a dusk pull
-  instead of a night one.
-- **The mural cannot ship unreadable, and it made the site more readable
-  rather than less.** Each slice declares the oklch lightness window its
-  band's type needs (WCAG solved backwards: ink is 0.165, so 0.635 is
-  exactly 4.5:1; `--on-color` is 0.97, so 0.52 is), the build refuses any
-  colour outside it, and then re-measures the rendered pixels because grain
-  moves them. `check:contrast-pixels` went from **11 failing text runs to
-  0**: a painted ground is built inside a window and a duotone gradient
-  never was. Two things fell out of holding that line. Accent red comes off
-  a scened band entirely, because 11px of oklch-0.44 red on the palest sky
-  this system permits is 2.93:1 and lifting the red does not reach 4.5 even
-  at oklch 0.88, by which point it is not red; dropping it also lifted the
-  night slices' ceiling from 0.325 back to 0.50. And the close band is
-  built UNDER its window rather than inside it, because the two buttons on
-  it are cream at oklch 0.94 rather than `--on-color`'s 0.97, and a window
-  sized for the worst ink a band is known to carry is the wrong number when
-  the band carries something dimmer.
+  touches the aspect, and lands EXACTLY on the top and bottom edges at every
+  viewport. That exactness is what makes slice N's bottom row meet slice
+  N+1's top row at every viewport too. `cover` would have magnified a tall
+  band's drawing 1.6x; stretching to `100% 100%` would have squeezed a sun
+  into an ellipse on a phone.
+- **The picture is flat colour, one diagonal, and a hard smear.** The first
+  painting drew gradient skies, cumulus clouds built from unions of circles,
+  a disc sun and stippled dot fields, which is a flat vector poster. The
+  reference is a painting: the sky is ONE flat colour with nothing in it,
+  everything else is smeared along a single diagonal like a long exposure
+  from a moving car, the horizon is a diagonal that stays crisp while the
+  smear runs past it, and heavy paper tooth sits over the whole pull.
+- **The horizon requirement is what decides the architecture.** Blurring
+  along a line does not blur an edge PARALLEL to that line, so the crest and
+  the smear share one angle for the whole page and the horizon survives the
+  pass that dissolves the flowers. Each slice is therefore two layers, a
+  flat plate that is never blurred and a drift layer that is blurred hard,
+  plus a third for the car, which at the length that turns a bank of scrub
+  into wisps would be gone completely. The crest is straight for 72% of a
+  tile and turns back over the other 28%: a sine wraps perfectly and reads
+  as a dome, and a hillside is not a dome, so the turn is parked on the
+  seam and the straight run is centred on what a reader is looking at.
+- **Every drawing routine wraps in x**, because slices repeat sideways on a
+  wide screen: crests meet themselves at the tile edge, dabs are stamped
+  again at x +/- W, and the smear shifts horizontally with a roll that wraps
+  and vertically with edge replication that is invisible because the first
+  and last row of every slice are a flat colour by construction. The build
+  prints each tile's seam width and the two colours at every join.
+- **Contrast is measured, not proxied, and that is what bought the colour.**
+  The press used to gate on an oklch lightness window, 0.66 and up for a
+  band with dark ink, and that number is derived for a NEUTRAL: luminance
+  depends on hue as much as on lightness, so the window was banning
+  saturation it never needed to. `--ink` is oklch 0.165 and its real
+  luminance is 0.0044, so a ground needs 0.195 to clear 4.5:1, and
+  oklch(0.62 0.15 244) is a vivid azure at 5.4:1. Each colour is now checked
+  against the ink of its own band, so "how blue can this sky be" is answered
+  by measurement.
+- **The reference's own cobalt goes on five bands and can never go on the
+  other five.** About rgb(23 88 148), it is 6.8:1 against cream and 2.6:1
+  against ink. So the five bands that carry light ink in both themes get the
+  reference colour exactly, and the five paper ones get the same painting in
+  its high-key register; those five are painted twice so dark mode is the
+  same walk after sunset. The page alternates, which is a better answer than
+  one compromise applied evenly to both.
+- **The tooth is clipped, and that is a contrast decision.** Gaussian tails
+  are unbounded, so across a few million pixels the 0.02nd percentile sits
+  about 3.5 sigma out: the first pull took a sky asking for 5.83:1 and
+  rendered it at 4.15:1, and the audit refused it. Clipping at 1.7 sigma
+  halves the worst excursion and costs about a tenth of the grain by eye.
+  `check:contrast` and `check:contrast-pixels` both pass across all 768 text
+  runs, and accent red comes off a scened band entirely because 11px of red
+  on a sky this saturated is around 2.9:1 and lifting the red does not reach
+  4.5 even at oklch 0.88, by which point it is not red.
 - **The masthead stays solid, and that was tested rather than assumed.** It
   is the one strip the mural does not reach, so it was built as a window:
   78% paper with a backdrop blur. It fails, and not on taste. The bar is
   sticky, so its ground is every band in turn, and the moment the field
   stopped being a known colour `check:contrast` put the mono links at
-  3.28:1. At night, 22% of the marigold band's hedgerow lifts the field
-  under cream type to about 2.9:1, and the opacity that fixes that shows no
-  painting at all.
+  3.28:1.
 - **Every band has its own stock, and none of them is flat.** "The
   background is a plain colour" was said four times and answered twice by
   adding *objects* to the same cream. It is answered in the substrate now:

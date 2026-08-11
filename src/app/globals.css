@@ -1004,59 +1004,62 @@ body::before {
 /* ==========================================================================
    THE MURAL: one painting, cut into one slice per band.
 
-   "The background is a plain colour" was said five times. It was answered
-   with objects, then duotone gradients, then a photograph screenprinted in
-   one ink, then a painted landscape pinned to the foot of each band with
-   its sky continuing above as flat colour. Every answer was still,
-   correctly, a plain colour, and the last one is the most instructive: on
-   a 900px band it was a picture, and on the 2200px band it was 60% flat
-   colour with a picture along the bottom edge.
+   "The background is a plain colour" was answered five times before this
+   one, and each answer is worth a line because each was wrong in a
+   different way. Flat fields, then objects on the fields, then duotone
+   gradients: all three were the report restated. Then a photograph
+   screenprinted in one ink, which was safe for the palette by construction
+   and invisible for exactly the same reason, because multiplying a grey
+   into a colour can only lay down more of that colour. Then a painted
+   landscape pinned to the foot of four bands with flat sky above it, which
+   on the 2200px band was 60% flat colour with a picture along the bottom.
 
-   That cap existed because `cover` on a tall band magnifies the drawing
-   1.6x and turns a stippled field into confetti. Both faults are the same
-   fault: the picture was being fitted to the band by SCALING it.
+   The sixth answer fixed the fitting: `background-size: auto 100%` with
+   `repeat-x`, which fills a band edge to edge, never touches the aspect,
+   and lands exactly on its top and bottom edges at every viewport, so
+   slice N's bottom row is slice N+1's top row and the page is one painting
+   rather than ten pictures. That part was right and is unchanged.
 
-   IT IS FITTED BY HEIGHT NOW, AND THE BAND HEIGHTS SAY THAT WORKS.
-   Measured at 390 / 768 / 1440 / 1920, every band's height moves by at
-   most ~1.3x while its width moves by 5x. So `background-size: auto 100%`
-   fills the band edge to edge, never touches the aspect, and lands
-   EXACTLY on the top and bottom edges at every viewport. That last part is
-   the whole trick: an exact fit at both edges means slice N's bottom row
-   meets slice N+1's top row at every viewport too. The page is one
-   painting, not ten pictures.
+   WHAT CHANGED IS THE PAINTING, because the sixth answer drew the wrong
+   picture: gradient skies, cumulus clouds built from unions of circles, a
+   sun that was a disc, fields of stippled dots. That is a flat vector
+   poster. The reference is a painting, and four things make it. The sky is
+   ONE FLAT COLOUR, no gradient and nothing in it. Everything else is
+   SMEARED along one diagonal, like a long exposure from a moving car. The
+   HORIZON IS A DIAGONAL and stays crisp while the smear runs past it. And
+   heavy paper TOOTH sits over the whole pull with the colour separating
+   slightly along the smear.
 
-   REPEAT-X SUPPLIES THE WIDTH. A phone shows the middle of a slice; an
-   ultrawide runs out of drawing and gets the next tile. Every routine in
-   riso-mural.py wraps in x for this reason: integer-harmonic ridgelines,
-   clouds and blooms stamped again at x +/- W, a channel misregistration
-   applied with np.roll rather than a shift that would leave a raw stripe
-   down the seam.
-
-   THE JOINS. Neighbours in the same register share an exact colour and the
-   seam is invisible. Where the register flips they cannot: the two
-   lightness windows do not overlap, so no colour is legal on both sides.
-   That join is a hard horizon instead, which is not a compromise: land
-   against a bright sky is the reference board's favourite picture.
+   The third of those decides the architecture, in scripts/paint-mural.py:
+   blurring along a line does not blur an edge parallel to that line, so
+   the crest and the smear share an angle, and the horizon survives the
+   very pass that dissolves the flowers. Each slice is two layers, a flat
+   plate that is never blurred and a drift layer that is blurred hard, plus
+   a third for the car, which at the length that turns scrub into wisps
+   would otherwise be gone completely.
 
    THEY ARE FULL OPACITY, ON PURPOSE. Anything less mixes the painting with
    the band colour underneath and makes contrast a function of two layers
    instead of one. At opacity 1 the numbers baked into the file are the
-   numbers on the screen. The band colour stays as the load-time and
-   fallback field, which is all it was ever load-bearing for.
+   numbers on the screen. The band colour is the load-time and fallback
+   field, which is all it was ever load-bearing for.
 
-   TWO REGISTERS, BECAUSE THE PAPER BANDS INVERT. Six bands are dark in
-   both themes, so one pull serves both. The four paper ones are cream by
-   day and near-black by night, and a pale sky behind dark mode's light
-   type would be a worse bug than the flat colour this replaces, so those
-   are drawn twice. Light theme walks a whole day, morning to first light;
-   dark theme walks the same ground after sunset.
+   TWO REGISTERS, BECAUSE FIVE BANDS INVERT. The five that carry light ink
+   in both themes get the reference's own colour: its cobalt is about
+   rgb(23 88 148), which is 6.8:1 against cream and 2.6:1 against ink, so
+   it can live on those five and on none of the others. The five paper ones
+   are cream by day and near-black by night, so they are painted twice, and
+   the second walk is after sunset. The page has a time of day.
 
-   CONTRAST IS DECIDED IN THE RAMP. Ink is oklch 0.165, so a ground at
-   oklch L 0.635 is exactly 4.5:1: the paper slices are built entirely
-   above 0.66. `--on-color` is oklch 0.97, so a ground at L 0.52 is exactly
-   4.5:1: the dark slices are built entirely below 0.50. riso-mural.py
-   refuses to write a file that leaves its window and re-measures the
-   rendered pixels afterwards because grain moves them.
+   CONTRAST IS MEASURED, NOT PROXIED, and that is what bought the colour.
+   The previous press gated on an oklch lightness window, 0.66 and up for a
+   band with dark ink, and that number is derived for a NEUTRAL: luminance
+   depends on hue as much as on lightness, so the window was quietly
+   banning saturation it never needed to. `--ink` is oklch 0.165 and its
+   real luminance is 0.0044, so a ground needs 0.195 to clear 4.5:1, and
+   oklch(0.62 0.15 244) is a vivid azure at 5.4:1. Every colour is now
+   checked against the ink of its own band, and the rendered pixels are
+   re-measured afterwards because the tooth moves them.
    ========================================================================== */
 .scene {
   position: absolute;
@@ -1113,13 +1116,12 @@ body::before {
 
    AND ACCENT RED COMES OFF ENTIRELY. `--accent-text` is oklch 0.44 by day
    and 0.75 by night, and neither survives a painted field: 11px of red on
-   the palest sky this system permits is 2.93:1 against a 4.5 requirement.
-   Lifting the red was tried on the previous set and does not reach 4.5
-   even at oklch L 0.88, by which point it is not red. So the red goes to
-   ink here and keeps its own field elsewhere, on buttons and on unscened
-   stock. It also buys the night slices their colour back: the third
-   lightness window the old set needed to protect this red capped them at
-   oklch 0.325, and they run to 0.50 now.
+   a sky this saturated is around 2.9:1 against a 4.5 requirement, and
+   lifting the red does not reach 4.5 even at oklch L 0.88, by which point
+   it is not red. So the red goes to ink here and keeps its own field
+   elsewhere, on buttons and on unscened stock. It also buys the night
+   slices their depth back: the extra window the old set needed to protect
+   this red was capping them well short of what light ink can carry.
 
    `:has` rather than a modifier class so that adding a slice tomorrow
    brings its own ink with it; the two can never drift apart because there
@@ -1128,6 +1130,27 @@ body::before {
   --fg-soft: currentColor;
   --accent-text: currentColor;
 }
+
+/* AND THE STOCK'S OWN FINISHES COME OFF. Every band carries a 4px halftone
+   dot screen (paper) or a vignette (saturated), and both were sized against
+   a flat field. Over a painting they are wrong in the same way: the screen
+   prints a regular grid across a sky whose whole job is to be one flat
+   colour with nothing in it but tooth, and the vignette darkens the corners
+   of a picture that has its own light. The file carries its own grain, at
+   its own scale, measured by the same audit that clears its contrast. Two
+   surfaces claiming to be the paper is one too many. */
+.band--paper:has(> .scene)::after,
+.band--deep:has(> .scene)::after,
+.band--ochre:has(> .scene)::after,
+.band--rose:has(> .scene)::after,
+.band--mint:has(> .scene)::after,
+.band--ink:has(> .scene)::after,
+.band--red:has(> .scene)::after,
+.band--blue:has(> .scene)::after,
+.band--forest:has(> .scene)::after,
+.band--rust:has(> .scene)::after,
+.band--olive:has(> .scene)::after,
+.band--plum:has(> .scene)::after { display: none; }
 
 /* ==========================================================================
    THE CUTOUTS: people pasted on top of the layout.

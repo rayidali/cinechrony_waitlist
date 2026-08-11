@@ -16,9 +16,9 @@ import { PNG } from 'pngjs';
  * something that is not there.
  *
  * It is also the gate that has caught real work rather than confirming it.
- * The mural took this from 11 failing runs to 0, and the last two it held
- * out on were genuine: two cream buttons at oklch 0.94 on a night sky
- * built for `--on-color`'s 0.97.
+ * The mural took this from 11 failing runs to 0, and the two it held out
+ * on were genuine: two cream buttons at oklch 0.94 on a night sky built
+ * for `--on-color`'s 0.97. That slice is scored against the button now.
  *
  * So: screenshot the page twice, once normally and once with every glyph
  * made transparent. Diffing them gives a mask of THE PIXELS THE GLYPHS

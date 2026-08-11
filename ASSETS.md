@@ -78,14 +78,19 @@ landscapes pinned to the foot of their bands with the sky continuing above
 as flat colour, which on the 2200px band was 60% flat colour with a
 picture along the bottom edge.
 
-`scripts/riso-mural.py` paints **one** landscape now, from the top of the
+`scripts/paint-mural.py` paints **one** landscape now, from the top of the
 page to the bottom of the footer, and cuts it into a slice per band:
 morning sky, a hedgerow, into the shade, a sunflower field, the sunset, a
-wildflower meadow, dusk, a lake, deep night, first light. Gradient skies,
-flat clouds built from unions of circles, hard horizons, a sun that is a
-plain disc, stippled fields, print grain and a 1px channel
-misregistration. Nothing to shoot, nothing to license, and every colour
-chosen rather than found.
+wildflower meadow, dusk, a lake, deep night, first light.
+
+**It is painted the way the reference is painted, which took two goes.**
+The first drew gradient skies, clouds built from circles, a disc sun and
+stippled dot fields: a flat vector poster, not this. The reference is flat
+saturated colour, one diagonal horizon, everything else smeared along that
+diagonal like a long exposure from a moving car, and heavy paper tooth over
+the whole pull. So each slice is a flat plate that is never blurred, a
+drift layer that is blurred hard, and a third layer for the car, which at
+the smear length that turns scrub into wisps would otherwise vanish.
 
 **One thing to know before you touch it: the order is load-bearing.** Each
 slice's bottom row is the next slice's top row, so moving a band in
@@ -136,13 +141,14 @@ finds nobody, rather than writing a silent empty file.
 The mural needs no source material, only a rebuild:
 
 ```bash
-python3 scripts/riso-mural.py                   # fifteen PNGs into out/
+python3 scripts/paint-mural.py                  # fifteen PNGs into out/
 for f in out/scene-*.png; do n=$(basename "$f" .png); \
-  cwebp -q 66 -m 6 -sharp_yuv "$f" -o "public/media/$n.webp"; done
+  cwebp -q 62 -m 6 -sharp_yuv "$f" -o "public/media/$n.webp"; done
 ```
 
-Two things it will not let you do. It refuses to write a slice whose
-colours leave the lightness window its band's type needs, and it
+Two things it will not let you do. It refuses to write a slice carrying a
+colour under 4.5:1 against the ink of its own band, measured rather than
+approximated by a lightness window, and it
 re-measures the rendered pixels afterwards because grain moves them, so a
 picture you like but cannot read fails at build time rather than at review
 time. It also prints each tile's horizontal seam width, because the slices
@@ -169,8 +175,8 @@ poster still 2000×1120 wide, cutouts whatever shape the person is.
 | `grid-1` … `grid-11` | live: the hero calendar's film cells |
 | `crew-1` `crew-2` `crew-3` `crew-6` `crew-7` `crew-8` `crew-10` | live: the crew wall, two rows |
 | `poster-still` | live: duotone under the friday line |
-| the mural, ten slices | live, drawn: `sky` `hedge` `shade` `field` `sunset` `meadow` `dusk` `lake` `night` `dawn`, in page order |
-| five dark pulls | live, drawn: `sky` `hedge` `field` `meadow` `dawn` after sunset, for the bands that invert |
+| the mural, ten slices | live, painted: `sky` `hedge` `shade` `field` `sunset` `meadow` `dusk` `lake` `night` `dawn`, in page order |
+| five dark pulls | live, painted: `sky` `hedge` `field` `meadow` `dawn` again, for the five bands whose stock inverts |
 | `poster-still` | BENCHED: the photograph under the friday line. The mural is the picture on that band now, and two of them is mud |
 | `crew-4` `crew-5` `crew-9` | BENCHED: graded and on disk, off the page |
 | `cut-camcorder` | live: over the hero calendar, breaking its left rule |
