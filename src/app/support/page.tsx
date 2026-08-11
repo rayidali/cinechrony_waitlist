@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BandScene } from "@/components/cutouts";
 import { Footer } from "@/components/footer";
 import { site } from "@/lib/site";
 
@@ -24,6 +25,7 @@ export default function SupportPage() {
             the FAQ and the contact card must render for every visitor,
             crawler and screen reader on first paint. */}
         <section className="band band--paper section">
+        <BandScene id="sky" />
           <div className="wrap">
             <div className="marker">
               <span className="label">support</span>
@@ -61,6 +63,7 @@ export default function SupportPage() {
             this is also what an App Store reviewer reads. Trimmed, not
             gutted: every one of these still resolves the question. */}
         <section className="band band--mint section">
+        <BandScene id="meadow" />
           <div className="wrap wrap--narrow">
             <div className="marker">
               <span className="label">frequently asked</span>

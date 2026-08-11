@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BandScene } from "@/components/cutouts";
 import { Footer } from "@/components/footer";
 import { InstallSteps } from "@/components/install-steps";
 import { Reveal } from "@/components/reveal";
@@ -16,6 +17,7 @@ export default function InstallPage() {
     <>
       <main id="main">
         <section className="band band--paper section">
+        <BandScene id="sky" />
           <div className="wrap">
             <Reveal>
               <div className="marker">
@@ -54,6 +56,7 @@ export default function InstallPage() {
         </section>
 
         <section className="band band--rose section">
+        <BandScene id="meadow" />
           <div className="wrap">
             <Reveal delay={60}>
               <InstallSteps />

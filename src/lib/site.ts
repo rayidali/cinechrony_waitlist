@@ -124,14 +124,18 @@ export const media = {
   "crew-9": { src: "/media/crew-9.webp", kind: "image", alt: "Two friends posing for a flash photo indoors" },
   "crew-10": { src: "/media/crew-10.webp", kind: "image", alt: "Two friends at night, one shooting back at the camera" },
 
-  /* The band scenes are NOT registered here, and that is deliberate. They
-     are painted landscapes that fill a whole band, they carry no meaning
-     (empty alt, aria-hidden), and each one needs a second file for dark
-     mode. A CSS background handles all three: `[data-theme="dark"]` swaps
-     the file so a manual theme toggle is obeyed, and only the one file the
-     reader can actually see is ever downloaded. An <img> pair would fetch
-     both. They live in globals.css under THE BAND SCENES, and
-     scripts/riso-scenes.py draws them. */
+  /* THE MURAL IS NOT REGISTERED HERE, and that is deliberate. It is one
+     painted landscape running the whole page, cut into a slice per band,
+     it carries no meaning (empty alt, aria-hidden), and five of its
+     slices need a second file for dark mode. A CSS background handles all
+     three: `[data-theme="dark"]` swaps the file so a manual theme toggle
+     is obeyed, and only the one file the reader can actually see is ever
+     downloaded. An <img> pair would fetch both. The slices live in
+     globals.css under THE MURAL, and scripts/riso-mural.py paints them.
+
+     `poster-still` below is still registered and is no longer on the
+     page: the mural is the picture on that band now, and a photograph
+     multiplied over a painted sunset is mud. Benched, like crew-4/5/9. */
 
   /* ---- the cutouts -----------------------------------------------------
      People lifted out of their photographs and pasted ON the layout: they

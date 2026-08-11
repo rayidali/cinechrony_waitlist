@@ -4,12 +4,13 @@
 section has no image under its three beats: the scan capture came out on
 10.08 because you are shooting something better for it. Everything else is
 filled: five real captures of the shipped app, twenty-four graded
-photographs and six drawn band scenes, no placeholder frames anywhere.
+photographs and one drawn mural in fifteen slices, no placeholder frames
+anywhere.
 
 To wire anything up: drop the file in `public/media/`, then set its `src`
-in the `media` map in `src/lib/site.ts`. The band scenes are the one
-exception, and section 3 says why: they are CSS backgrounds, so they live
-in `globals.css` instead.
+in the `media` map in `src/lib/site.ts`. The mural is the one exception,
+and section 3 says why: it is CSS backgrounds, so it lives in
+`globals.css` instead.
 
 ---
 
@@ -68,15 +69,29 @@ while a cutout stands in front of it. They are all
 on the reference boards: flash at night, grain, backs of heads, a drive-in
 sign, a rooftop screening, a garden projector, a red cinema, popcorn.
 
-**The four band scenes are no longer photographs at all** (11.08). They
-were, briefly: greyscale stills multiplied into each band in one ink, which
-was safe for the palette by construction and invisible for exactly the same
-reason, because multiplying a grey into a colour can only ever lay down
-more of that colour. They are drawn now, by `scripts/riso-scenes.py`:
-gradient skies, flat clouds built from unions of circles, hard horizons, a
-sun that is a plain disc, stippled flower fields, then print grain and a
-1px channel misregistration over the whole pull. Nothing to shoot, nothing
-to license, and every colour chosen rather than found.
+**The band backgrounds are not photographs at all** (11.08), and they are
+not four scenes either. They were, briefly: greyscale stills multiplied
+into each band in one ink, which was safe for the palette by construction
+and invisible for exactly the same reason, because multiplying a grey into
+a colour can only ever lay down more of that colour. Then four painted
+landscapes pinned to the foot of their bands with the sky continuing above
+as flat colour, which on the 2200px band was 60% flat colour with a
+picture along the bottom edge.
+
+`scripts/riso-mural.py` paints **one** landscape now, from the top of the
+page to the bottom of the footer, and cuts it into a slice per band:
+morning sky, a hedgerow, into the shade, a sunflower field, the sunset, a
+wildflower meadow, dusk, a lake, deep night, first light. Gradient skies,
+flat clouds built from unions of circles, hard horizons, a sun that is a
+plain disc, stippled fields, print grain and a 1px channel
+misregistration. Nothing to shoot, nothing to license, and every colour
+chosen rather than found.
+
+**One thing to know before you touch it: the order is load-bearing.** Each
+slice's bottom row is the next slice's top row, so moving a band in
+`page.tsx` without moving its slice breaks the join. The build prints the
+two colours at every seam and says whether it is a `match` (same register)
+or a `horizon` (the register flips, and no colour is legal on both sides).
 
 **Two honest caveats, both yours to weigh:**
 
@@ -118,20 +133,21 @@ which reads as a crop rather than a cut and is the one failure mode of the
 whole pipeline. `cutout.swift` exits 3 and says `NO_SUBJECT` when Vision
 finds nobody, rather than writing a silent empty file.
 
-The band scenes need no source material, only a rebuild:
+The mural needs no source material, only a rebuild:
 
 ```bash
-python3 scripts/riso-scenes.py                  # six PNGs into out/
-cwebp -q 64 -m 6 -sharp_yuv out/scene-hills.png -o public/media/scene-hills.webp
+python3 scripts/riso-mural.py                   # fifteen PNGs into out/
+for f in out/scene-*.png; do n=$(basename "$f" .png); \
+  cwebp -q 66 -m 6 -sharp_yuv "$f" -o "public/media/$n.webp"; done
 ```
 
-Two things it will not let you do. It refuses to write a scene whose
+Two things it will not let you do. It refuses to write a slice whose
 colours leave the lightness window its band's type needs, and it
 re-measures the rendered pixels afterwards because grain moves them, so a
 picture you like but cannot read fails at build time rather than at review
-time. And if you repaint a sky, re-sample the flat colour that continues it
-above the picture (`--sky` in globals.css, the mean of the file's top six
-rows) or there will be a seam across every tall band.
+time. It also prints each tile's horizontal seam width, because the slices
+repeat sideways on a wide screen and a tile that does not meet itself
+prints a scar down the page.
 
 The one curve is the whole point: it is what stops a set of photographs
 from different cameras reading as a stock library. A frame dropped in
@@ -153,10 +169,9 @@ poster still 2000×1120 wide, cutouts whatever shape the person is.
 | `grid-1` … `grid-11` | live: the hero calendar's film cells |
 | `crew-1` `crew-2` `crew-3` `crew-6` `crew-7` `crew-8` `crew-10` | live: the crew wall, two rows |
 | `poster-still` | live: duotone under the friday line |
-| `scene-flowers` | live, drawn: sunflower field behind the grab band, sunset in dark mode |
-| `scene-meadow` | live, drawn: wildflowers under a big sky behind what-it-does, night in dark mode |
-| `scene-night` | live, drawn: moon and cloud behind movie night, one file for both themes |
-| `scene-hills` | live, drawn: sunset over a lake behind the year, one file for both themes |
+| the mural, ten slices | live, drawn: `sky` `hedge` `shade` `field` `sunset` `meadow` `dusk` `lake` `night` `dawn`, in page order |
+| five dark pulls | live, drawn: `sky` `hedge` `field` `meadow` `dawn` after sunset, for the bands that invert |
+| `poster-still` | BENCHED: the photograph under the friday line. The mural is the picture on that band now, and two of them is mud |
 | `crew-4` `crew-5` `crew-9` | BENCHED: graded and on disk, off the page |
 | `cut-camcorder` | live: over the hero calendar, breaking its left rule |
 | `cut-popcorn` | live: top right of the hero calendar |

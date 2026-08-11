@@ -9,11 +9,16 @@ import { PNG } from 'pngjs';
  *
  * WHY THIS EXISTS ALONGSIDE contrast.mjs. That one reads computed CSS and
  * walks up for the field a text run sits on. It is exact for a flat colour
- * or a gradient and BLIND to an <img>: four bands now carry a photograph
- * screenprinted into them with `mix-blend-mode: multiply`, and multiply only
- * ever darkens, so on a light band under dark type the real field is darker
- * than any CSS anywhere on the page admits. Scoring those bands against
- * their flat colour is scoring them against a field that is not there.
+ * or a gradient and BLIND to a picture: every band now carries a slice of
+ * a painted mural, and what CSS reports for those bands is the fallback
+ * colour underneath, which is a field no reader ever sees. Scoring a
+ * sunflower field against the ochre behind it is scoring it against
+ * something that is not there.
+ *
+ * It is also the gate that has caught real work rather than confirming it.
+ * The mural took this from 11 failing runs to 0, and the last two it held
+ * out on were genuine: two cream buttons at oklch 0.94 on a night sky
+ * built for `--on-color`'s 0.97.
  *
  * So: screenshot the page twice, once normally and once with every glyph
  * made transparent. Diffing them gives a mask of THE PIXELS THE GLYPHS

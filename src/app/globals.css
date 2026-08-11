@@ -1002,104 +1002,132 @@ body::before {
 .hero-note { margin-top: 20px; }
 
 /* ==========================================================================
-   THE BAND SCENES: the band IS the picture.
-   "The background is a plain colour" was said four times and answered with
-   objects, then duotone gradients, then a photograph screenprinted in ONE
-   INK. All three were still, correctly, a plain colour. The screenprint
-   most of all: greyscale multiplied into a band can only ever lay down
-   more of that band's own ink, so the very property that made it safe for
-   the palette is what made it invisible. It read as an outline behind a
-   colour, which is exactly what it was.
+   THE MURAL: one painting, cut into one slice per band.
 
-   So these are painted instead of found: gradient skies, flat clouds built
-   from unions of circles, hard horizons, a sun that is a plain disc,
-   stippled flower fields, print grain and a 1px channel misregistration
-   over the whole pull. Drawn means every colour is CHOSEN, which is the
-   only way scenery enters a strict palette without becoming a second one,
-   and it means the quiet part of a picture can be put where the words go.
-   scripts/riso-scenes.py is the press.
+   "The background is a plain colour" was said five times. It was answered
+   with objects, then duotone gradients, then a photograph screenprinted in
+   one ink, then a painted landscape pinned to the foot of each band with
+   its sky continuing above as flat colour. Every answer was still,
+   correctly, a plain colour, and the last one is the most instructive: on
+   a 900px band it was a picture, and on the 2200px band it was 60% flat
+   colour with a picture along the bottom edge.
 
-   THEY ARE FULL OPACITY, ON PURPOSE. Anything less mixes the scene with
-   the band colour underneath and makes the contrast a function of two
-   layers instead of one. At opacity 1 the numbers baked into the file are
-   the numbers on the screen. The band colour stays as the load-time and
+   That cap existed because `cover` on a tall band magnifies the drawing
+   1.6x and turns a stippled field into confetti. Both faults are the same
+   fault: the picture was being fitted to the band by SCALING it.
+
+   IT IS FITTED BY HEIGHT NOW, AND THE BAND HEIGHTS SAY THAT WORKS.
+   Measured at 390 / 768 / 1440 / 1920, every band's height moves by at
+   most ~1.3x while its width moves by 5x. So `background-size: auto 100%`
+   fills the band edge to edge, never touches the aspect, and lands
+   EXACTLY on the top and bottom edges at every viewport. That last part is
+   the whole trick: an exact fit at both edges means slice N's bottom row
+   meets slice N+1's top row at every viewport too. The page is one
+   painting, not ten pictures.
+
+   REPEAT-X SUPPLIES THE WIDTH. A phone shows the middle of a slice; an
+   ultrawide runs out of drawing and gets the next tile. Every routine in
+   riso-mural.py wraps in x for this reason: integer-harmonic ridgelines,
+   clouds and blooms stamped again at x +/- W, a channel misregistration
+   applied with np.roll rather than a shift that would leave a raw stripe
+   down the seam.
+
+   THE JOINS. Neighbours in the same register share an exact colour and the
+   seam is invisible. Where the register flips they cannot: the two
+   lightness windows do not overlap, so no colour is legal on both sides.
+   That join is a hard horizon instead, which is not a compromise: land
+   against a bright sky is the reference board's favourite picture.
+
+   THEY ARE FULL OPACITY, ON PURPOSE. Anything less mixes the painting with
+   the band colour underneath and makes contrast a function of two layers
+   instead of one. At opacity 1 the numbers baked into the file are the
+   numbers on the screen. The band colour stays as the load-time and
    fallback field, which is all it was ever load-bearing for.
 
-   TWO REGISTERS, BECAUSE THE PAPER BANDS INVERT. Blue and forest are dark
-   in both themes, so one dark picture serves both. Ochre and rose are
-   cream by day and near-black by night, and a pale sky behind dark mode's
-   light type would be a worse bug than the flat colour this replaces, so
-   those two are drawn twice and the second pull is the same landscape
-   after sunset. The page has a time of day.
+   TWO REGISTERS, BECAUSE THE PAPER BANDS INVERT. Six bands are dark in
+   both themes, so one pull serves both. The four paper ones are cream by
+   day and near-black by night, and a pale sky behind dark mode's light
+   type would be a worse bug than the flat colour this replaces, so those
+   are drawn twice. Light theme walks a whole day, morning to first light;
+   dark theme walks the same ground after sunset.
 
    CONTRAST IS DECIDED IN THE RAMP. Ink is oklch 0.165, so a ground at
-   oklch L 0.635 is exactly 4.5:1: the paper scenes are built entirely
+   oklch L 0.635 is exactly 4.5:1: the paper slices are built entirely
    above 0.66. `--on-color` is oklch 0.97, so a ground at L 0.52 is exactly
-   4.5:1: the dark scenes are built entirely below 0.50. riso-scenes.py
-   refuses to write a file that leaves its window, and re-measures the
-   rendered pixels afterwards because grain moves them. Worst measured
-   ground across the six is 5.43:1 at the 99.98th percentile.
+   4.5:1: the dark slices are built entirely below 0.50. riso-mural.py
+   refuses to write a file that leaves its window and re-measures the
+   rendered pixels afterwards because grain moves them.
    ========================================================================== */
-/* THE LANDSCAPE SITS AT THE FOOT AND THE SKY CARRIES ON ABOVE IT, which
-   is a fix and an improvement at the same time. `cover` over a whole band
-   sounds right until a band is 1900px tall: the picture is then blown up
-   1.65x, and a field of stippled flowers at 1.65x is a field of confetti.
-   Capping the picture and continuing its sky as flat colour keeps every
-   scene at roughly its drawn scale whatever the band does, and it happens
-   to be how the reference posters are built: a lot of sky, a horizon low
-   down, the detail along the bottom edge.
-
-   The flat colour is the mean of each file's top six rows, so the join is
-   invisible. Re-sample it if a sky is repainted. */
 .scene {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-color: var(--sky);
-  /* depth at the top of a continuing sky. It can only ever show in the
-     flat region, because the picture is a CHILD and paints over its own
-     parent's background, so on a band short enough to be all picture
-     this costs nothing and is not even drawn. */
-  background-image: linear-gradient(180deg, rgb(0 0 0 / 0.1), transparent 300px);
-}
-.scene::before {
-  content: "";
-  position: absolute;
-  inset: auto 0 0 0;
-  height: min(100%, 820px);
   background-image: var(--scene);
-  background-repeat: no-repeat;
-  background-size: cover;
-  /* anchored BOTTOM: a short band should lose sky, never the ground. A
-     landscape with its ground cropped off is not a landscape. */
-  background-position: center bottom;
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  /* centred, so the phone that can only show a third of a slice shows the
+     third that was composed */
+  background-position: center top;
 }
 /* `.band > *` sets z-index 1 on every direct child, which would put the
-   scenery on top of the words. Same fix as .rays and .stickers. */
+   painting on top of the words. Same fix as .rays and .stickers. */
 .band > .scene { z-index: 0; }
 
-.scene--flowers { --scene: url("/media/scene-flowers.webp"); --sky: #bbe4fc; }
-.scene--meadow  { --scene: url("/media/scene-meadow.webp");  --sky: #88cbf9; }
-.scene--night   { --scene: url("/media/scene-night.webp");   --sky: #1d1046; }
-.scene--hills   { --scene: url("/media/scene-hills.webp");   --sky: #15255f; }
-[data-theme="dark"] .scene--flowers {
-  --scene: url("/media/scene-flowers-dark.webp");
-  --sky: #1e1547;
-}
-[data-theme="dark"] .scene--meadow {
-  --scene: url("/media/scene-meadow-dark.webp");
-  --sky: #08092c;
-}
+/* NO RULE ABOVE A SLICE. `.band + .band` draws a hairline at every seam,
+   which is right for stacked sheets of stock and wrong for one continuous
+   painting: it is the only thing left that would say "these are separate
+   pictures". Same for the footer's own top rule. */
+.band + .band:has(> .scene) { border-top: 0; }
+.footer:has(> .scene) { border-top: 0; }
 
-/* A SCENED BAND IS A SATURATED BAND, whatever colour its stock is. The
-   muted ink on the paper bands was sized against flat tinted stock; over a
-   picture it is dimming type that is already working against a busy field.
-   The rule for the saturated bands has said so since they went duotone, "on a saturated field there is no dimming at all", and a band with a
-   sunflower meadow in it qualifies. `:has` rather than a modifier class so
-   that adding a scene tomorrow brings its own ink with it; the two can
-   never drift apart because there is only one fact. */
-.band:has(> .scene) { --fg-soft: currentColor; }
+.scene--sky    { --scene: url("/media/scene-sky.webp"); }
+.scene--hedge  { --scene: url("/media/scene-hedge.webp"); }
+.scene--shade  { --scene: url("/media/scene-shade.webp"); }
+.scene--field  { --scene: url("/media/scene-field.webp"); }
+.scene--sunset { --scene: url("/media/scene-sunset.webp"); }
+.scene--meadow { --scene: url("/media/scene-meadow.webp"); }
+.scene--dusk   { --scene: url("/media/scene-dusk.webp"); }
+.scene--lake   { --scene: url("/media/scene-lake.webp"); }
+.scene--night  { --scene: url("/media/scene-night.webp"); }
+.scene--dawn   { --scene: url("/media/scene-dawn.webp"); }
+/* the four that invert. A background rather than an <img> pair is what
+   makes this possible at all: only a background can be swapped by an
+   attribute selector, and only one of the pair is ever downloaded. */
+[data-theme="dark"] .scene--sky    { --scene: url("/media/scene-sky-dark.webp"); }
+/* the marigold band does NOT invert (`--on-color-dark` is oklch 0.17 in
+   both themes), so this one stays a paper slice at night. It gets a dusk
+   pull rather than a night one: without it the page walks out of a night
+   sky into a sunlit hedgerow for ninety pixels and back again. */
+[data-theme="dark"] .scene--hedge  { --scene: url("/media/scene-hedge-dark.webp"); }
+[data-theme="dark"] .scene--field  { --scene: url("/media/scene-field-dark.webp"); }
+[data-theme="dark"] .scene--meadow { --scene: url("/media/scene-meadow-dark.webp"); }
+[data-theme="dark"] .scene--dawn   { --scene: url("/media/scene-dawn-dark.webp"); }
+
+/* A SCENED BAND IS A SATURATED BAND, whatever colour its stock is. Muted
+   ink was sized against flat tinted stock; over a painting it is dimming
+   type that is already working against a busy field. The rule for the
+   saturated bands has said so since they went duotone, "on a saturated
+   field there is no dimming at all", and a band with a sunflower meadow in
+   it qualifies.
+
+   AND ACCENT RED COMES OFF ENTIRELY. `--accent-text` is oklch 0.44 by day
+   and 0.75 by night, and neither survives a painted field: 11px of red on
+   the palest sky this system permits is 2.93:1 against a 4.5 requirement.
+   Lifting the red was tried on the previous set and does not reach 4.5
+   even at oklch L 0.88, by which point it is not red. So the red goes to
+   ink here and keeps its own field elsewhere, on buttons and on unscened
+   stock. It also buys the night slices their colour back: the third
+   lightness window the old set needed to protect this red capped them at
+   oklch 0.325, and they run to 0.50 now.
+
+   `:has` rather than a modifier class so that adding a slice tomorrow
+   brings its own ink with it; the two can never drift apart because there
+   is only one fact. */
+.band:has(> .scene) {
+  --fg-soft: currentColor;
+  --accent-text: currentColor;
+}
 
 /* ==========================================================================
    THE CUTOUTS: people pasted on top of the layout.
@@ -1543,7 +1571,12 @@ body::before {
      the poster line, the biggest sentence on the page, sat at 2.34:1
      against a 3.0 requirement wherever that happened. Multiply can only
      ever darken, which for cream type is the safe direction and is the
-     same one-ink rule the band scenes follow. */
+     same one-ink rule the screenprinted scenes used to follow.
+
+     DEAD ON THE PAGE, KEPT ON PURPOSE. The mural is the picture on this
+     band now, and a photograph multiplied over a painted sunset is mud.
+     The markup came out of page.tsx; this rule and the `poster-still`
+     entry in `media` are what a decision to put it back would need. */
   mix-blend-mode: multiply;
   opacity: 0.5;
 }
@@ -1724,6 +1757,19 @@ body::before {
 }
 
 /* ---------- nav ---------- */
+/* THE MASTHEAD STAYS SOLID, AND THAT WAS TESTED RATHER THAN ASSUMED.
+   It is the one strip of the site the mural does not reach, so it was
+   built as a window: 78% paper with a backdrop blur, letting the painting
+   through. It fails, and not on taste. The bar is STICKY, so the ground
+   behind it is every band in turn, and `check:contrast` scored the mono
+   links at 3.28:1 the moment the field stopped being a known colour. The
+   arithmetic agrees: at night, 22% of the marigold band's sunlit hedgerow
+   is enough to lift the field under cream type to about 2.9:1, and the
+   opacity that fixes that (94%) shows no painting at all.
+
+   So it is paper, one hairline underneath, exactly as nav.tsx describes
+   it. A masthead is chrome, and chrome that cannot promise a field is
+   chrome that cannot promise a reader. */
 .nav {
   position: sticky;
   top: 0;
@@ -1789,6 +1835,9 @@ body::before {
     top: 62px;
     left: 0;
     right: 0;
+    /* solid, deliberately. The bar above can afford to be a window
+       because it holds six words; a dropped panel of links over a
+       flower field cannot. */
     background: var(--bg);
     border-bottom: 1px solid var(--rule-strong);
     flex-direction: column;

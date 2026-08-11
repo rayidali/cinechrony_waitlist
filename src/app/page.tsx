@@ -51,7 +51,6 @@ const CREW = [
 
 export default function LandingPage() {
   const beta = site.testflightUrl;
-  const still = media["poster-still"].src;
 
   return (
     <>
@@ -62,6 +61,7 @@ export default function LandingPage() {
             by its own overhang, 32px of horizontal scroll on a phone, which
             reads as a broken layout rather than as a bleed */}
         <section className="band band--paper hero cut-band">
+          <BandScene id="sky" />
           <Stickers scene="hero" />
           <div className="hero-shell">
             <div className="hero-layout">
@@ -111,6 +111,7 @@ export default function LandingPage() {
         {/* the marquee, built as one: chasing bulbs above and below the
             running titles, and a house board set into the left */}
         <section className="band band--marigold marquee-band">
+          <BandScene id="hedge" />
           <span className="bulbs bulbs--top" aria-hidden="true" />
           <span className="now-showing">now showing</span>
           <Ticker />
@@ -122,6 +123,7 @@ export default function LandingPage() {
             same argument in about a second, and without asking anyone to
             read three paragraphs about how films are better with people. */}
         <section className="band band--rust section" id="story">
+          <BandScene id="shade" />
           <span className="rays" aria-hidden="true" />
           <div className="wrap">
             <Reveal>
@@ -159,7 +161,7 @@ export default function LandingPage() {
 
         {/* ---------------- reel 02 · the grab ---------------- */}
         <section className="band band--ochre section cut-band" id="how">
-          <BandScene id="flowers" />
+          <BandScene id="field" />
           <Stickers scene="grab" />
           {/* Sitting on the seam. The stickers next door are clipped by the
               band edge so they read as pasted onto ONE sheet; these are
@@ -229,11 +231,14 @@ export default function LandingPage() {
         </section>
 
         {/* ---------------- the poster ---------------- */}
+        {/* The full-bleed photograph that used to multiply into this band
+            came out with the mural. It was a one-ink screenprint under the
+            red, and the argument for it (a flat field needs a texture) is
+            the argument the painting now answers outright; two pictures on
+            one band is just mud. `poster-still` stays registered in
+            `media`, benched rather than deleted, like crew-4/5/9. */}
         <section className="band band--red section--xl poster-band">
-          {still ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img className="poster-band__still" src={still} alt="" loading="lazy" />
-          ) : null}
+          <BandScene id="sunset" />
           <Stickers scene="poster" />
           <div className="wrap center">
             <Reveal>
@@ -336,7 +341,7 @@ export default function LandingPage() {
 
         {/* ---------------- movie night ---------------- */}
         <section className="band band--blue section cut-band">
-          <BandScene id="night" />
+          <BandScene id="dusk" />
           <Stickers scene="night" />
           <Cutout id="cut-bench" className="cut--bench" h={206} rotate={-1} />
           <div className="wrap">
@@ -369,7 +374,7 @@ export default function LandingPage() {
 
         {/* ---------------- the year ---------------- */}
         <section className="band band--forest section">
-          <BandScene id="hills" />
+          <BandScene id="lake" />
           <div className="wrap">
             <div className="year">
               <Reveal className="year__copy">
@@ -396,6 +401,7 @@ export default function LandingPage() {
 
         {/* ---------------- the close ---------------- */}
         <section className="band band--aura section--xl" id="try">
+          <BandScene id="night" />
           <Stickers scene="close" />
           <span className="seats" aria-hidden="true" />
           <div className="wrap center">

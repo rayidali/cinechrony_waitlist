@@ -1,8 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { BandScene } from "@/components/cutouts";
 import { site } from "@/lib/site";
 
 /**
+ * The colophon, and the last slice of the mural: `dawn` is where the
+ * painting that starts at the top of the landing page finishes, which is
+ * also why it appears on every route rather than only the ones with bands.
+ *
  * The colophon. Small mono headings, lowercase links, and the wordmark
  * knocked out in outline at the bottom of the sheet: the one place the
  * site is allowed to be purely graphic, because there is nothing left to
@@ -18,6 +23,7 @@ export function Footer({
   if (variant === "minimal") {
     return (
       <footer className="footer band band--paper">
+        <BandScene id="dawn" />
         <div className="wrap">
           <div className="footer-bottom" style={{ borderTop: 0, paddingTop: 0 }}>
             <Link className="brand" href="/">
@@ -36,6 +42,7 @@ export function Footer({
 
   return (
     <footer className="footer band band--paper">
+      <BandScene id="dawn" />
       <div className="wrap">
         <div className="footer-grid">
           <div>

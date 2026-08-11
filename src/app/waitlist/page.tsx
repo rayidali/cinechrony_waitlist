@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BandScene } from "@/components/cutouts";
 import { Footer } from "@/components/footer";
 import { Reveal } from "@/components/reveal";
 import { WaitlistForm } from "@/components/waitlist-form";
@@ -27,6 +28,7 @@ export default function WaitlistPage() {
     <>
       <main id="main">
         <section className="band band--paper section">
+        <BandScene id="sky" />
           <div className="wrap">
             <Reveal>
               <div className="marker">
@@ -66,6 +68,7 @@ export default function WaitlistPage() {
         </section>
 
         <section className="band band--ink section--tight">
+        <BandScene id="night" />
           <div className="wrap center">
             <Reveal>
               <p className="label" style={{ marginBottom: 18 }}>

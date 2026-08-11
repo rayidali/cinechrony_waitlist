@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BandScene } from "@/components/cutouts";
 import { Footer } from "@/components/footer";
 import { site } from "@/lib/site";
 
@@ -13,7 +14,8 @@ export default function PrivacyPage() {
   return (
     <>
     <main id="main">
-      <section className="section">
+      <section className="band band--paper section">
+        <BandScene id="sky" />
         <div className="wrap">
           {/* Legal copy is never gated behind a scroll-triggered reveal --
               this content must render immediately for every visitor, crawler,

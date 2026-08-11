@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BandScene } from "@/components/cutouts";
 import { Footer } from "@/components/footer";
 import { Frame } from "@/components/frame";
 import { Reveal } from "@/components/reveal";
@@ -20,6 +21,7 @@ export default function BetaPage() {
     <>
       <main id="main">
         <section className="band band--paper section">
+        <BandScene id="sky" />
           <div className="wrap">
             <div className="beta-hero">
               <Reveal>
@@ -69,6 +71,7 @@ export default function BetaPage() {
         </section>
 
         <section className="band band--ochre section">
+        <BandScene id="field" />
           <div className="wrap">
             <Reveal>
               <div className="marker">

@@ -18,21 +18,37 @@ import { media, type MediaId } from "@/lib/site";
  * Decoration throughout: aria-hidden, empty alt, pointer-events none.
  */
 /**
- * A painted landscape filling a whole band.
+ * One slice of the mural.
+ *
+ * These are not ten pictures. scripts/riso-mural.py paints ONE landscape
+ * running from the top of the page to the bottom of the footer and cuts it
+ * into a slice per band, so the bottom row of each is the top row of the
+ * next. The order below is the order down the page and it is load-bearing:
+ * move a band and its slice no longer joins its neighbours.
  *
  * The file is a CSS background rather than an <img>, and that is not a
- * style preference. Each of the paper scenes needs a second version for
- * dark mode, and only a background can be swapped by `[data-theme]`, so
- * the theme toggle is obeyed and exactly one of the pair is ever
- * downloaded. Two <img>s would fetch both and then hide one.
+ * style preference. Four of the slices need a second version for dark
+ * mode, and only a background can be swapped by `[data-theme]`, so the
+ * theme toggle is obeyed and exactly one of the pair is ever downloaded.
+ * Two <img>s would fetch both and then hide one.
  *
  * It is also why there is no `media` entry and no src here: an empty span
  * is the whole component, and everything true about these sits in
- * globals.css next to the URLs. scripts/riso-scenes.py draws them, and the
- * lightness window each one is built inside is a contrast decision it
- * checks at build time.
+ * globals.css next to the URLs, including the lightness window each slice
+ * is painted inside, which is a contrast decision the press checks at
+ * build time.
  */
-export type SceneId = "flowers" | "meadow" | "night" | "hills";
+export type SceneId =
+  | "sky" //     hero: morning, almost all sky
+  | "hedge" //   the marquee strip: a hedgerow, no sky at all
+  | "shade" //   the crew wall: under the canopy, a lit horizon at the foot
+  | "field" //   the grab: a sunflower field
+  | "sunset" //  the poster: the day turns here
+  | "meadow" //  what it does: wildflowers, the tallest band on the page
+  | "dusk" //    movie night: a moon and a bank of flat cloud
+  | "lake" //    the year: ridges receding, water holding the light
+  | "night" //   the close: deepest point, no horizon in it
+  | "dawn"; //   the footer: first light, and the walk ends where it began
 
 export function BandScene({ id }: { id: SceneId }) {
   return <span className={`scene scene--${id}`} aria-hidden="true" />;
