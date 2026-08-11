@@ -92,6 +92,15 @@ the whole pull. So each slice is a flat plate that is never blurred, a
 drift layer that is blurred hard, and a third layer for the car, which at
 the smear length that turns scrub into wisps would otherwise vanish.
 
+**The tooth is NOT in these files, and do not put it back.** It was, and
+the encoder ate it: measured on a flat patch of shipped sky, the grain came
+to a deviation of 4.44 of which 3.73 was low-frequency blotch, because
+lossy compression is a low-pass filter and fine noise is pure
+high-frequency entropy. It threw away the part that reads as paper and kept
+the part that reads as dirt. Keeping it costs 350KB per slice at q90
+against 3KB clean. `.scene::after` in globals.css carries it now, at one
+device pixel.
+
 **One thing to know before you touch it: the order is load-bearing.** Each
 slice's bottom row is the next slice's top row, so moving a band in
 `page.tsx` without moving its slice breaks the join. The build prints the

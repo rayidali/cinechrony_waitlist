@@ -19,8 +19,11 @@ not that and never was. It is a painting, and four things make it:
      into streaks and only a little grit survives.
   3. THE HORIZON IS A DIAGONAL, and it stays crisp while the smear runs
      past it.
-  4. HEAVY PAPER GRAIN over the whole pull, with the colour separating
-     slightly along the smear.
+  4. HEAVY PAPER TOOTH over the whole pull, with the colour separating
+     slightly along the smear. That tooth is a CSS layer rather than
+     something this file bakes in, and `tooth()` below says why: a lossy
+     encoder eats fine noise and keeps coarse blotch, so baking it shipped
+     dirt instead of paper.
 
 Point 3 is the one that decides the architecture. Blurring along a line
 does not blur an edge PARALLEL to that line, so the crest and the smear
@@ -309,7 +312,7 @@ def _smear(a: np.ndarray, n: int, sigma: float, step: int) -> np.ndarray:
     return out
 
 
-def smear(a: np.ndarray, length: int, keep: float = 0.16, core: int = 5) -> np.ndarray:
+def smear(a: np.ndarray, length: int, keep: float = 0.11, core: int = 5) -> np.ndarray:
     """Two scales at once, and the short one is the point. A single long
     kernel gives a wash: every dab dissolves and the result is a gradient
     with a grain overlay. The reference keeps bright cores with long trails
@@ -349,35 +352,8 @@ def settle(a: np.ndarray, top, bottom, k: int = 6) -> np.ndarray:
     return out
 
 
-CLIP = 1.7  # sigmas; see below
-
-
-def press(a: np.ndarray, grain: float, seed: int) -> np.ndarray:
-    """Paper tooth. Heavier than the last press by a lot, because in the
-    reference it is not a finish, it is half the surface: a flat blue sky
-    with nothing in it reads as a painting only because of the tooth.
-
-    THE NOISE IS CLIPPED, AND THAT IS A CONTRAST DECISION RATHER THAN A
-    TASTE ONE. Gaussian tails are unbounded, so on a few million pixels the
-    0.02nd percentile sits about 3.5 sigma out: the first pull of this took
-    a sky asking for 5.83:1 and rendered it at 4.15:1, and the audit
-    refused it. Clipping at 1.7 sigma halves the worst excursion, costs
-    about a tenth of the tooth by eye, and is the difference between a
-    grain you can feel and one that quietly spends a stop and a half of
-    everybody's contrast."""
-    rng = np.random.default_rng(seed)
-    h, w = a.shape[:2]
-    fine = np.clip(rng.normal(0, grain, (h, w)), -CLIP * grain, CLIP * grain)
-    cg = grain * 0.95
-    coarse = np.clip(rng.normal(0, cg, (max(2, h // 9), max(2, w // 9))), -CLIP * cg, CLIP * cg)
-    coarse = np.asarray(
-        Image.fromarray(coarse.astype(np.float32), mode="F").resize((w, h), Image.BICUBIC)
-    )
-    return np.clip(a + (fine + coarse)[:, :, None], 0, 1)
-
-
 # ------------------------------------------------------------- the build ---
-def render(sc: Sc, length: float, grain: float, keep: float = 0.16) -> Image.Image:
+def render(sc: Sc, length: float, keep: float = 0.11) -> np.ndarray:
     def over(base: np.ndarray, layer: Image.Image, px: int, keep_: float) -> np.ndarray:
         lay = np.asarray(layer.resize((sc.w, sc.h), Image.LANCZOS)).astype(np.float32) / 255
         rgb, alpha = lay[:, :, :3], lay[:, :, 3:4]
@@ -389,6 +365,58 @@ def render(sc: Sc, length: float, grain: float, keep: float = 0.16) -> Image.Ima
     out = over(plate, sc.drift, int(length * sc.w), keep)
     out = over(out, sc.sharp, max(6, int(length * sc.w * 0.19)), 0.42)
     return fringe(out, 2)
+
+
+# The CSS layer this file is painted to sit under: `.scene::after` carries
+# soft-light noise at this opacity. The audit simulates it, because a
+# contrast number measured on a picture that is not the one on screen is
+# not a measurement.
+TOOTH = 0.40
+
+# MEASURED IN A REAL BROWSER, NOT MODELLED. `--grain-fine` is SVG
+# turbulence and Python cannot reproduce feTurbulence, so these are the
+# 99.98th-percentile LIFT the composited layer applies, sampled by backdrop
+# value off a canvas at TOOTH opacity. Two things about the real layer that
+# a reasonable guess got wrong in both directions: its luminance is
+# entirely ABOVE 0.5 (mean 0.732), so soft-light only ever LIGHTENS, which
+# makes it harmless under dark ink and dangerous under light ink; and its
+# alpha averages 0.5, which halves everything. The first cut of this audit
+# assumed noise centred on 0.5 at full alpha and failed a paper slice that
+# could not have failed.
+_LIFT_AT = np.arange(0.05, 0.96, 0.10)
+_LIFT = np.array([0.0273, 0.0524, 0.0560, 0.0541, 0.0495,
+                  0.0429, 0.0350, 0.0260, 0.0161, 0.0055])
+
+
+def tooth(a: np.ndarray, dark_band: bool) -> np.ndarray:
+    """What the CSS grain will do to these pixels. NOT written to the file.
+
+    THE TOOTH IS NOT BAKED ANY MORE, AND THE ENCODER IS THE WHOLE REASON.
+    It used to be, in two octaves, and it was measured: on a flat patch of
+    sky the shipped WebP carried a total deviation of 4.44, of which 3.73
+    was LOW-FREQUENCY BLOTCH. Lossy compression is a low-pass filter and
+    fine noise is pure high-frequency entropy, so the codec threw away the
+    part that reads as paper and kept the part that reads as dirt, which is
+    exactly how it was reported: a layer of dirt with spots on it. Pushing
+    the tooth through the encoder is not an option either, because fine
+    grain alone survives at q90 and costs 350KB for ONE slice against 3KB
+    for the same picture clean.
+
+    So the painting ships clean and the tooth is a CSS layer at exactly one
+    device pixel, where it is never resampled and never compressed. It is
+    scoped to `.scene`, not to the viewport, which is the whole difference
+    between this and the fixed film pass that came off the page: this one
+    scrolls with the picture it belongs to.
+
+    Soft-light rather than overlay: overlay pushes saturation and contrast,
+    which is a second opinion about colours this file has already measured.
+
+    Applied for the audit ONLY on a dark band, because the layer only
+    lightens: that closes on light ink and opens up under dark ink, so
+    leaving a paper slice alone is the pessimistic reading of both."""
+    if not dark_band:
+        return a
+    return np.clip(a + np.interp(a, _LIFT_AT, _LIFT), 0, 1)
 
 
 def audit(name: str, im: np.ndarray, ramp: Ramp) -> None:
@@ -624,23 +652,23 @@ def sc_dawn(c: Ramp, night: bool) -> tuple[Sc, float]:
     return sc, 0.120
 
 
-# name -> (paint, grain, ink it must survive, night register?)
+# name -> (paint, ink it must survive, night register?)
 SCENES = {
-    "scene-sky": (sc_sky, 0.020, INK, False),
-    "scene-sky-dark": (sc_sky, 0.016, ON_COLOR, True),
-    "scene-hedge": (sc_hedge, 0.018, INK, False),
-    "scene-hedge-dark": (sc_hedge, 0.018, INK, True),
-    "scene-shade": (sc_shade, 0.016, ON_COLOR, True),
-    "scene-field": (sc_field, 0.020, INK, False),
-    "scene-field-dark": (sc_field, 0.016, ON_COLOR, True),
-    "scene-sunset": (sc_sunset, 0.018, ON_COLOR, True),
-    "scene-meadow": (sc_meadow, 0.020, INK, False),
-    "scene-meadow-dark": (sc_meadow, 0.016, ON_COLOR, True),
-    "scene-dusk": (sc_dusk, 0.016, ON_COLOR, True),
-    "scene-lake": (sc_lake, 0.016, ON_COLOR, True),
-    "scene-night": (sc_night, 0.016, ON_BUTTON, True),
-    "scene-dawn": (sc_dawn, 0.020, INK, False),
-    "scene-dawn-dark": (sc_dawn, 0.016, ON_COLOR, True),
+    "scene-sky": (sc_sky, INK, False),
+    "scene-sky-dark": (sc_sky, ON_COLOR, True),
+    "scene-hedge": (sc_hedge, INK, False),
+    "scene-hedge-dark": (sc_hedge, INK, True),
+    "scene-shade": (sc_shade, ON_COLOR, True),
+    "scene-field": (sc_field, INK, False),
+    "scene-field-dark": (sc_field, ON_COLOR, True),
+    "scene-sunset": (sc_sunset, ON_COLOR, True),
+    "scene-meadow": (sc_meadow, INK, False),
+    "scene-meadow-dark": (sc_meadow, ON_COLOR, True),
+    "scene-dusk": (sc_dusk, ON_COLOR, True),
+    "scene-lake": (sc_lake, ON_COLOR, True),
+    "scene-night": (sc_night, ON_BUTTON, True),
+    "scene-dawn": (sc_dawn, INK, False),
+    "scene-dawn-dark": (sc_dawn, ON_COLOR, True),
 }
 
 ORDER = ["scene-sky", "scene-hedge", "scene-shade", "scene-field", "scene-sunset",
@@ -657,26 +685,25 @@ def seam(im: np.ndarray) -> float:
 def main() -> None:
     OUT.mkdir(exist_ok=True)
     edges: dict[str, tuple] = {}
-    for name, (fn, grain, over, night) in SCENES.items():
+    for name, (fn, over, night) in SCENES.items():
         print(f"  {name}")
         ramp = Ramp(over)
         sc, length = fn(ramp, night)
         print(f"      {sc.w}x{sc.h}, ramp worst {ramp.report():.2f}:1")
-        im = render(sc, length, grain)
+        im = render(sc, length)
         # the joins are read off the picture before grain, then enforced,
         # so a slice that drifts away from its neighbour is a build failure
         # rather than a seam somebody notices on a preview
         top = tuple(int(v) for v in im[0].mean(axis=0) * 255)
         bot = tuple(int(v) for v in im[-1].mean(axis=0) * 255)
         im = settle(im, top, bot)
-        im = press(im, grain, seed=abs(hash(name)) % 9973)
         out = Image.fromarray((im * 255).round().astype(np.uint8))
         for paint in sc.post:
             paint(out)  # after the smear, so a sun is a disc and not a lozenge
         # re-read, because a disc painted after the audit is a colour nobody
         # checked, and the sun is the brightest thing in three of these
         im = np.asarray(out).astype(np.float32) / 255
-        audit(name, im, ramp)
+        audit(name, tooth(im, ramp.dark_band), ramp)
         print(f"      tile seam {seam(im):.1f}/255")
         edges[name] = (top, bot)
         out.save(OUT / f"{name}.png")

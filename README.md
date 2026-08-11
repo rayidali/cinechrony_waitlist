@@ -113,6 +113,28 @@ better. So:
   runs, and accent red comes off a scened band entirely because 11px of red
   on a sky this saturated is around 2.9:1 and lifting the red does not reach
   4.5 even at oklch 0.88, by which point it is not red.
+- **The paper tooth is a CSS layer, and the encoder decided that.** It was
+  baked into the files in two octaves, and measured on a flat patch of
+  shipped sky it came to a deviation of 4.44 of which **3.73 was
+  low-frequency blotch**. Lossy compression is a low-pass filter and fine
+  noise is pure high-frequency entropy, so WebP threw away the part that
+  reads as paper and kept the part that reads as dirt, which is exactly how
+  it was reported. Keeping the grain through the encoder is not an
+  alternative either: fine grain alone survives at q90 and costs 350KB for
+  **one** slice against 3KB for the same picture clean. So the paintings
+  ship clean and `.scene::after` carries the tooth at one device pixel,
+  where it is never resampled and never compressed. It is scoped to the
+  scene rather than the viewport, which is the whole difference between it
+  and the fixed film pass below.
+- **The build audits a layer it cannot draw, from numbers measured in a
+  browser.** Python cannot reproduce `feTurbulence`, so a canvas probe
+  samples the real layer's worst-case lift by backdrop value and
+  paint-mural.py interpolates that curve. Two things a reasonable guess got
+  wrong in both directions: the noise's luminance is entirely ABOVE 0.5
+  (mean 0.732), so soft-light only ever LIGHTENS, which is harmless under
+  dark ink and dangerous under cream; and its alpha averages 0.5, which
+  halves the whole effect. The first cut assumed noise centred on 0.5 at
+  full alpha and failed a slice that could not have failed.
 - **The page-wide film pass is gone, and `position: fixed` is the reason.**
   Two full-page grain layers (fine at 0.38 `overlay`, clump at 0.2
   `soft-light`) and a vignette reaching 42% black at the corners in dark

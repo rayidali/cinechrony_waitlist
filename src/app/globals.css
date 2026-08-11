@@ -1062,6 +1062,38 @@ button { font: inherit; color: inherit; }
    painting on top of the words. Same fix as .rays and .stickers. */
 .band > .scene { z-index: 0; }
 
+/* THE PAPER TOOTH LIVES HERE, NOT IN THE FILE, AND THE ENCODER DECIDED
+   THAT. It was baked in, in two octaves, and measured on a flat patch of
+   shipped sky it came to a deviation of 4.44 of which 3.73 was LOW
+   FREQUENCY. Lossy compression is a low-pass filter and fine noise is pure
+   high-frequency entropy, so WebP threw away the part that reads as paper
+   and kept the part that reads as dirt. Keeping the fine grain through the
+   encoder is not an alternative: it survives at q90 and costs 350KB for one
+   slice, against 3KB for the same picture clean.
+
+   Here it is one device pixel, never resampled, never compressed, and the
+   files got about five times smaller as a side effect. It is scoped to the
+   scene rather than the viewport, which is the whole difference between
+   this and the fixed film pass that came off the page: this one scrolls
+   with the picture it belongs to.
+
+   Soft-light rather than overlay, because overlay pushes saturation and
+   contrast, and that is a second opinion about colours paint-mural.py has
+   already measured. The opacity is not a taste number either: the layer's
+   luminance is entirely above 0.5, so it only ever LIGHTENS, which is the
+   dangerous direction under cream type. 0.40 was picked off a measured
+   curve of its worst-case lift by backdrop value, and the same curve is
+   what the build audits against. */
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--grain-fine);
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+}
+
 /* NO RULE ABOVE A SLICE. `.band + .band` draws a hairline at every seam,
    which is right for stacked sheets of stock and wrong for one continuous
    painting: it is the only thing left that would say "these are separate
