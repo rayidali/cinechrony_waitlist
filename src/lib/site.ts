@@ -28,7 +28,7 @@ export const site = {
     mailingList: "cmk23xm1l0ugo0i1pfwfi2y8l",
   },
 
-  legalUpdated: "02.07.26",
+  legalUpdated: "08.09.26",
 } as const;
 
 /**

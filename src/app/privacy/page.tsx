@@ -43,9 +43,11 @@ export default function PrivacyPage() {
                 <a href="#use">03 · How we use it</a>
                 <a href="#ai">04 · The AI feature</a>
                 <a href="#services">05 · Third-party services</a>
-                <a href="#retention">06 · Keeping and deleting</a>
-                <a href="#rights">07 · Your rights</a>
-                <a href="#contact">08 · Contact</a>
+                <a href="#where">06 · Where it is stored</a>
+                <a href="#retention">07 · Keeping and deleting</a>
+                <a href="#rights">08 · Your rights</a>
+                <a href="#children">09 · Children</a>
+                <a href="#contact">10 · Contact</a>
               </nav>
               <div className="prose">
                 <h2 id="collect">What we collect</h2>
@@ -55,70 +57,104 @@ export default function PrivacyPage() {
                 <ul>
                   <li>
                     <strong>Account data.</strong> Your email address and a
-                    password, handled by Firebase Authentication.
+                    password, stored only as a salted hash. If you sign in with
+                    Apple or Google we receive the identifier they give us and
+                    your email, which Apple lets you hide behind a relay
+                    address.
                   </li>
                   <li>
                     <strong>Profile data.</strong> Your username, display name,
-                    bio, profile photo, and favorite movies.
+                    bio, profile photo, and favourite films.
                   </li>
                   <li>
                     <strong>Content you create.</strong> Watchlists, the films
-                    you add, notes, reviews, ratings, comments, who you follow,
-                    and the clips you attach.
+                    you add, notes, reviews, ratings, comments, posts, photos
+                    and videos you upload, movie nights you plan, who you
+                    follow, and the clips you attach.
+                  </li>
+                  <li>
+                    <strong>Viewing history.</strong> When you mark a film
+                    watched or rate it, the film and the date, so your diary
+                    and calendar work.
                   </li>
                   <li>
                     <strong>Notification data.</strong> If you enable push
-                    notifications, a device push token so we can deliver them.
+                    notifications, a device push token, your notification
+                    preferences, and your device&apos;s UTC offset, so we
+                    don&apos;t send you anything at 3am.
+                  </li>
+                  <li>
+                    <strong>Links you scan.</strong> The video link you share
+                    and the films we identify from it.
+                  </li>
+                  <li>
+                    <strong>Letterboxd import.</strong> If you choose to
+                    import, the username you give us and the public data on
+                    that profile.
                   </li>
                   <li>
                     <strong>Waitlist signups.</strong> Your email plus any name
-                    or note you choose to add, so we can tell you when the app
-                    is ready.
+                    or note you choose to add.
                   </li>
                   <li>
-                    <strong>Usage logs.</strong> Basic logs to keep the service
-                    running and secure.
+                    <strong>Analytics and diagnostics.</strong> Which screens
+                    you open and key actions you take, tied to your account id,
+                    plus crash reports. No note, review or caption text is
+                    sent.
+                  </li>
+                  <li>
+                    <strong>Usage logs.</strong> IP address and request
+                    metadata, used to serve requests, rate-limit, and prevent
+                    abuse.
                   </li>
                 </ul>
                 <p>
                   We do <strong>not</strong> use third-party advertising or
-                  analytics trackers, and we do not sell your data.
+                  tracking networks, and we do not sell your data.
                 </p>
 
                 <h2 id="public">What is public</h2>
                 <p>
                   Your username, display name, photo, bio, public lists,
-                  reviews, and follower counts are visible to other users. Your
-                  email address is stored privately and is never shown.
+                  reviews, ratings, posts and follower counts are visible to
+                  other users. Your email address, private lists, notification
+                  preferences, blocks and mutes, and scan history are not.
                 </p>
                 <p>
                   Content you add to a shared list is visible to the other
                   members of that list. That&apos;s the point of a shared list.
+                  A movie night marked private is visible only to the people
+                  you invite, and anyone holding a night&apos;s share link can
+                  see and respond to it, because the link is the invitation.
                 </p>
 
                 <h2 id="use">How we use it</h2>
                 <p>
-                  We use your information to run the product: to show you your
-                  lists, sync them across your devices, and share them with the
-                  people you invite. We do not use it to build advertising
-                  profiles.
+                  We use your information to run the product: to sign you in,
+                  show you your lists, sync them across your devices, deliver
+                  the notifications you asked for, and share what you choose
+                  with the people you invite. We do not use it to build
+                  advertising profiles.
                 </p>
-                <ul>
-                  <li>To operate and improve Cinechrony.</li>
-                  <li>
-                    To send account and service emails you&apos;d expect.
-                  </li>
-                  <li>To keep the service safe and prevent abuse.</li>
-                </ul>
+                <p>
+                  Where UK or EU law applies, our legal bases are
+                  <strong> contract</strong> (providing the app you signed up
+                  for), <strong>legitimate interests</strong> (security, abuse
+                  prevention, and understanding which features are useful), and
+                  <strong> consent</strong> where you give it — push
+                  notifications, camera and photo access, and the Letterboxd
+                  import. You can withdraw consent at any time in Settings or
+                  your device settings.
+                </p>
 
                 <h2 id="ai">The AI feature</h2>
                 <p>
-                  When you share a clip for scanning, the video or its link is
-                  processed to identify the films in it. We send only
-                  what&apos;s needed to complete that match, and we don&apos;t
-                  use your clips to train third-party models. The films it
-                  finds, and the clip you attached, stay on your list under
-                  your account.
+                  When you share a clip for scanning, the video is fetched and
+                  analysed to identify the films in it. We send only what&apos;s
+                  needed to complete that match, we don&apos;t republish or
+                  store the video itself, and we don&apos;t use your clips to
+                  train third-party models. The films it finds, and the clip
+                  you attached, stay on your list under your account.
                 </p>
 
                 <h2 id="services">Third-party services</h2>
@@ -130,22 +166,50 @@ export default function PrivacyPage() {
                 </p>
                 <ul>
                   <li>
-                    <strong>Google Firebase.</strong> Authentication and
-                    database. Data is stored on Google Cloud infrastructure.
+                    <strong>Supabase.</strong> Our database and sign-in
+                    provider, hosted on AWS in the United States.
                   </li>
                   <li>
-                    <strong>Cloudflare R2.</strong> Storage for profile and
-                    list cover images.
+                    <strong>Vercel.</strong> Hosting.
                   </li>
                   <li>
-                    <strong>TMDB.</strong> Movie and TV metadata, posters, and
+                    <strong>Google Firebase.</strong> Delivers notifications to
+                    older versions of the app, and retained while we finish
+                    migrating away from it.
+                  </li>
+                  <li>
+                    <strong>Apple.</strong> Delivery of push notifications and
+                    Live Activities to iOS devices.
+                  </li>
+                  <li>
+                    <strong>Cloudflare R2.</strong> Storage for profile photos,
+                    list covers and post media, and for database backups.
+                  </li>
+                  <li>
+                    <strong>TMDB.</strong> Film and TV metadata, posters, and
                     search.
                   </li>
                   <li>
                     <strong>OMDb.</strong> Supplementary IMDb ratings.
                   </li>
                   <li>
-                    <strong>Vercel.</strong> Hosting.
+                    <strong>Apify.</strong> Fetches the video behind a link you
+                    scan, and the public Letterboxd profile you ask us to
+                    import.
+                  </li>
+                  <li>
+                    <strong>Google (Gemini).</strong> Analyses a scanned video
+                    to identify the films in it.
+                  </li>
+                  <li>
+                    <strong>Resend.</strong> Transactional email, such as
+                    password resets.
+                  </li>
+                  <li>
+                    <strong>PostHog.</strong> Product analytics.
+                  </li>
+                  <li>
+                    <strong>Sentry.</strong> Error and crash monitoring.
                   </li>
                   <li>
                     <strong>Loops.</strong> Waitlist and launch email.
@@ -156,13 +220,31 @@ export default function PrivacyPage() {
                   certified by TMDB.
                 </p>
 
+                <h2 id="where">Where it is stored</h2>
+                <p>
+                  Your data is stored and processed in the{" "}
+                  <strong>United States</strong>. If you are in the UK, EEA or
+                  Switzerland, that means it is transferred outside your
+                  country, and those transfers rely on the European
+                  Commission&apos;s Standard Contractual Clauses or an
+                  equivalent safeguard in our providers&apos; terms.
+                </p>
+
                 <h2 id="retention">Keeping and deleting</h2>
                 <p>
                   We keep your information for as long as your account is
                   active. You can permanently delete your account from Settings
-                  in the app. That removes your profile, lists, reviews,
-                  ratings, and follows. Deletion is immediate and cannot be
-                  undone.
+                  in the app. That removes your profile, lists, films, reviews,
+                  ratings, watches, posts, comments and follows. Deletion is
+                  immediate and cannot be undone.
+                </p>
+                <p>
+                  Two exceptions worth stating plainly. Database backups are
+                  kept for <strong>30 days</strong> and then permanently
+                  deleted, so deleted content can persist in a backup for up to
+                  that long before it is gone everywhere. Scan jobs and cached
+                  scan results expire on their own about 30 days after the
+                  scan.
                 </p>
                 <p>
                   If you unsubscribe from the waitlist, we remove your email
@@ -173,9 +255,27 @@ export default function PrivacyPage() {
                 <h2 id="rights">Your rights</h2>
                 <p>
                   You can access, correct, export, or delete your information.
-                  Depending on where you live, you may have additional rights
-                  under laws like GDPR or CCPA. To exercise any of them, email
-                  us from the address on your account.
+                  Deletion and correction are built into Settings; for anything
+                  else, email us from the address on your account and we will
+                  respond within 30 days.
+                </p>
+                <p>
+                  Depending on where you live you may have additional rights.
+                  California residents have the right to know, delete and
+                  correct their personal information, and not to be
+                  discriminated against for exercising it — we do not sell or
+                  share personal information for cross-context behavioural
+                  advertising. If you are in the UK or EEA and are unhappy with
+                  our response, you may complain to your local data protection
+                  authority.
+                </p>
+
+                <h2 id="children">Children</h2>
+                <p>
+                  Cinechrony is not directed to children under 13, and we do
+                  not knowingly collect personal data from them. If you believe
+                  a child under 13 has created an account, write to us and we
+                  will delete it.
                 </p>
 
                 <h2 id="contact">Contact</h2>
@@ -184,7 +284,8 @@ export default function PrivacyPage() {
                   <a href={`mailto:${site.supportEmail}`}>
                     {site.supportEmail}
                   </a>{" "}
-                  and a real person will answer.
+                  and a real person will answer. We are the data controller for
+                  the personal data described here.
                 </p>
               </div>
             </div>

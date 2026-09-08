@@ -42,12 +42,14 @@ export default function TermsPage() {
                 <a href="#account">03 · Your account</a>
                 <a href="#content">04 · Your content</a>
                 <a href="#conduct">05 · Acceptable use</a>
-                <a href="#reporting">06 · Reporting and blocking</a>
-                <a href="#service">07 · The service and movie data</a>
-                <a href="#liability">08 · Liability</a>
-                <a href="#termination">09 · Termination</a>
-                <a href="#law">10 · Governing law</a>
-                <a href="#contact">11 · Contact</a>
+                <a href="#reporting">06 · Reporting and moderation</a>
+                <a href="#copyright">07 · Copyright</a>
+                <a href="#service">08 · The service and movie data</a>
+                <a href="#apple">09 · App Store terms</a>
+                <a href="#liability">10 · Liability</a>
+                <a href="#termination">11 · Termination</a>
+                <a href="#law">12 · Governing law</a>
+                <a href="#contact">13 · Contact</a>
               </nav>
               <div className="prose">
                 <h2 id="agreement">The agreement</h2>
@@ -92,13 +94,33 @@ export default function TermsPage() {
                   <li>No scraping or automated abuse of the service.</li>
                 </ul>
 
-                <h2 id="reporting">Reporting and blocking</h2>
+                <h2 id="reporting">Reporting and moderation</h2>
                 <p>
-                  Every post, comment, list, and review can be reported. We review reports and act
-                  on content that violates these terms. You can also block any user, so they
-                  can&apos;t see your content or interact with you, and you won&apos;t see theirs.
-                  For urgent safety issues, write to us directly at{" "}
-                  <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a>.
+                  Every post, comment, list, review and profile can be reported from its
+                  &ldquo;Report&rdquo; action. You can also block any user, so they can&apos;t see
+                  your content or interact with you, and you won&apos;t see theirs.
+                </p>
+                <p>
+                  <strong>
+                    We review every report of objectionable content within 24 hours.
+                  </strong>{" "}
+                  Content that violates these terms is removed, and the user who posted it may be
+                  suspended or permanently ejected from the service. Where there is a risk to
+                  someone&apos;s safety we act without notice. For urgent safety issues &mdash;
+                  threats, exploitation, or risk of harm &mdash; write to us directly at{" "}
+                  <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a> and we will
+                  prioritise it.
+                </p>
+
+                <h2 id="copyright">Copyright</h2>
+                <p>
+                  If you believe content on Cinechrony infringes your copyright, email{" "}
+                  <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a> with the work you
+                  say is infringed, a link to the content in question, your contact details, a
+                  statement that you believe in good faith the use is unauthorised, and a statement
+                  that your notice is accurate and that you are the rights holder or authorised to
+                  act for them. We remove infringing content and terminate repeat
+                  infringers&apos; accounts.
                 </p>
 
                 <h2 id="service">The service and movie data</h2>
@@ -108,6 +130,22 @@ export default function TermsPage() {
                   perfect. Movie metadata and posters come from TMDB. Cinechrony uses the TMDB API
                   but is not endorsed or certified by TMDB. Supplementary IMDb ratings are provided
                   by OMDb. These third parties have their own terms, and their data belongs to them.
+                </p>
+
+                <h2 id="apple">App Store terms</h2>
+                <p>
+                  These terms are between you and us only &mdash; <strong>not with Apple</strong>.
+                  Apple is not responsible for the app or its content, and has no obligation to
+                  provide maintenance or support for it. If the app fails to conform to any
+                  applicable warranty, you may notify Apple and Apple will refund the purchase
+                  price, if any; to the maximum extent permitted by law, Apple has no other
+                  warranty obligation. Apple is not responsible for addressing any claim by you or
+                  a third party relating to the app, including product liability, legal or
+                  regulatory non-compliance, or consumer protection claims. You confirm you are not
+                  located in a country subject to a US Government embargo or designated as
+                  terrorist-supporting, and that you are not on any US Government prohibited-party
+                  list. Apple and its subsidiaries are third party beneficiaries of these terms and
+                  may enforce them against you.
                 </p>
 
                 <h2 id="liability">Liability</h2>
@@ -128,9 +166,11 @@ export default function TermsPage() {
 
                 <h2 id="law">Governing law</h2>
                 <p>
-                  These terms are governed by the laws of the jurisdiction in which Cinechrony is
-                  operated. Disputes that can&apos;t be resolved informally will be handled in the
-                  courts of that jurisdiction.
+                  These terms are governed by the laws of the State of Delaware, United States,
+                  without regard to conflict-of-laws rules. Disputes that can&apos;t be resolved
+                  informally will be handled by the state or federal courts located in Delaware. If
+                  you are a consumer, you keep the benefit of any mandatory protections of the law
+                  where you live.
                 </p>
 
                 <h2 id="contact">Contact</h2>
