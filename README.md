@@ -311,8 +311,42 @@ inks) and turns photographic the moment files land in `media`. See
 | `/install` | Add-to-home-screen guide for iPhone and Android |
 | `/waitlist` | The list, now aimed at the App Store release (Loops) |
 | `/support` | Support email and FAQ (App Store support URL) |
-| `/privacy` | Canonical privacy policy (App Store privacy URL) |
-| `/terms` | Canonical terms of service |
+| `/privacy` | **Canonical** privacy policy — the page App Review opens |
+| `/terms` | **Canonical** terms of service |
+
+### The legal pages are canonical, and that is load-bearing
+
+App Store Connect's `privacyPolicyUrl` resolves here. The app repo has its own
+`/privacy` and `/terms` at `src/app/`, but those are only what the APP links to
+from its signup screen and Settings, and they ship inside a frozen native
+bundle — so they reach a phone only on the next build, and **they are not what
+a reviewer or a regulator reads.**
+
+**On 2026-09-08 this page was dated 02.07.26 and told visitors their account
+data was "handled by Firebase Authentication".** Firebase had stopped being the
+identity provider and the database at the app's 2026-09-04 Supabase cutover, so
+the canonical document named the wrong company as the holder of every user's
+account. Editing only the app repo would have fixed nothing visible; editing
+only this one would have left two versions of one policy disagreeing.
+
+**The rule: when a processor changes, both repos change in the same commit
+pass, and you fetch the live URL afterwards** — a green `npm run build` is not
+a live page.
+
+Both pages were rewritten on 2026-09-08 (`f661e70`). Privacy now names the real
+processor set (Supabase on AWS us-east-1, Vercel, Firebase for legacy push
+only, Apple/APNs, Cloudflare R2 for media and 30-day database backups, TMDB,
+OMDb, Apify, Google Gemini, Resend, PostHog, Sentry, Loops), states US storage
+and the transfer basis, and adds legal bases, a children's section and
+GDPR/CCPA rights. Terms gained **Apple guideline 1.2's published commitment to
+review objectionable-content reports within 24 hours and eject the offender**
+(its absence is one of the most common UGC rejections), Apple's
+licensed-application clauses, a copyright process, scanning acceptable-use, an
+anti-scraping clause, and a governing law that names a jurisdiction (Delaware)
+instead of "the jurisdiction in which Cinechrony is operated".
+
+The date on both pages comes from `site.legalUpdated` in `src/lib/site.ts`.
+**Bump it whenever you touch either page.**
 
 ## Development
 
@@ -354,7 +388,13 @@ Everything that changes at launch lives in one file: `src/lib/site.ts`.
 - The app moves to `app.cinechrony.com`. A PWA installs whatever origin
   you are on, so `/install` always sends people to the app origin first.
 - App Store Connect points at `cinechrony.com/privacy`, `/terms` and
-  `/support`. Keep those routes stable.
+  `/support`. Keep those routes stable — and keep their CONTENT current; see
+  "The legal pages are canonical" above.
+- `site.appUrl` still points at `movienight-kappa.vercel.app` pending the
+  `app.cinechrony.com` DNS add. Not an App Store blocker.
+- **Next website task: swap the TestFlight CTA for an App Store badge on
+  approval.** v1.0 is `WAITING_FOR_REVIEW` on build 34 as of 2026-09-09
+  01:19 UTC; the layout was built for that substitution.
 
 ## Deploying
 
