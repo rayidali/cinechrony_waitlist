@@ -14,7 +14,7 @@ import puppeteer from 'puppeteer-core';
  * piece of text, finds the field it actually sits on: including sampling
  * every stop of a gradient, and taking the worst one, and reports the ratio.
  */
-const PAGES = ['/', '/beta', '/waitlist', '/support', '/install', '/privacy', '/terms'];
+const PAGES = ['/', '/support', '/privacy', '/terms'];
 const BASE = process.env.BASE || 'http://localhost:3000';
 const b = await puppeteer.launch({
   executablePath:

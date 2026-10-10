@@ -82,13 +82,17 @@ export default function SupportPage() {
               </details>
               <details>
                 <summary>is it free?</summary>
-                <p>Yes. Web now, the iOS beta throughout, and free to download on the App Store.</p>
+                <p>
+                  Yes. It is free to download, and there are no in-app purchases or subscriptions.
+                </p>
               </details>
               <details>
-                <summary>can i get it on my iphone?</summary>
+                <summary>how do i get it?</summary>
                 <p>
-                  Yes, today, on TestFlight. <Link href="/beta">Here is how</Link>. You need
-                  Apple&rsquo;s free TestFlight app first, which is the bit that catches people out.
+                  <a href={site.appStoreUrl} target="_blank" rel="noopener">
+                    Download it from the App Store
+                  </a>
+                  . It runs on iPhone with iOS {site.minimumIos} or later.
                 </p>
               </details>
               <details>

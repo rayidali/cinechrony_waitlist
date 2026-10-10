@@ -1,6 +1,5 @@
 /**
- * Single source of truth for every external URL and launch flag.
- * Flip these as infrastructure lands; no page code needs to change.
+ * Single source of truth for every external URL.
  */
 
 export const site = {
@@ -10,23 +9,18 @@ export const site = {
     "You find films while scrolling. Share the reel and cinechrony pulls out every film in it, keeps it, and puts it on a list you share with friends.",
   url: "https://www.cinechrony.com",
 
-  // The live product. Currently the PWA on Vercel; switch to
-  // https://app.cinechrony.com once the subdomain split happens.
-  appUrl: "https://movienight-kappa.vercel.app",
+  // The App Store listing, live since 2026-10-08. Every way to get the app
+  // on this site is this one link: the TestFlight beta, the waitlist and the
+  // add-to-home-screen web app came out with the release. No storefront in
+  // the path, so Apple sends each visitor to their own country's store.
+  appStoreId: "6792422740",
+  appStoreUrl: "https://apps.apple.com/app/cinechrony/id6792422740",
+  // read off the live listing (itunes lookup, minimumOsVersion), not off the
+  // Xcode project, because the listing is what a visitor's phone is checked
+  // against
+  minimumIos: "15",
 
   supportEmail: "support@cinechrony.com",
-
-  // The public TestFlight link. Live since 2026-07-21, capped at 150.
-  // This sat null for nineteen days while the beta was open and empty,
-  // so /beta told every visitor it had not started yet.
-  testflightUrl: "https://testflight.apple.com/join/CRPFhKen" as string | null,
-
-  // Loops newsletter form. Signups land in the existing Loops audience.
-  waitlist: {
-    endpoint:
-      "https://app.loops.so/api/newsletter-form/cmk1swus4060d0i0fl3b686aj",
-    mailingList: "cmk23xm1l0ugo0i1pfwfi2y8l",
-  },
 
   legalUpdated: "08.09.26",
 } as const;

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { AppStoreBadge } from "@/components/app-store-badge";
 import { BandScene, Cutout } from "@/components/cutouts";
 import { Footer } from "@/components/footer";
 import { Frame } from "@/components/frame";
@@ -50,8 +50,6 @@ const CREW = [
 ] as const;
 
 export default function LandingPage() {
-  const beta = site.testflightUrl;
-
   return (
     <>
       <main id="main">
@@ -67,7 +65,7 @@ export default function LandingPage() {
             <div className="hero-layout">
               <Reveal className="hero-copy">
                 <span className="label label--red" style={{ marginBottom: 26 }}>
-                  est. 2026 · iphone + web
+                  est. 2026 · on the app store
                 </span>
                 <h1 className="d1">
                   share the reel.
@@ -75,21 +73,14 @@ export default function LandingPage() {
                   keep the <em>film.</em>
                 </h1>
                 <p className="hero-sub">your group chat&rsquo;s watchlist, finally in one place.</p>
+                {/* one way in. The beta pill and the "or open it in a
+                    browser" link both came out with the release: a store
+                    page beside a second door reads as a product that has
+                    not decided what it is. */}
                 <div className="cta-row">
-                  {beta ? (
-                    <a className="btn btn--accent btn--lg" href={beta} target="_blank" rel="noopener">
-                      get the ios beta
-                    </a>
-                  ) : (
-                    <Link className="btn btn--accent btn--lg" href="/waitlist">
-                      join the waitlist
-                    </Link>
-                  )}
-                  <a className="link-quiet" href={site.appUrl} target="_blank" rel="noopener">
-                    or open it in a browser
-                  </a>
+                  <AppStoreBadge />
                 </div>
-                <span className="label hero-note">free · testflight, then the app store</span>
+                <span className="label hero-note">free · iphone · ios {site.minimumIos} or later</span>
               </Reveal>
 
               <Reveal delay={120} className="hero-grid-col">
@@ -412,22 +403,13 @@ export default function LandingPage() {
               <h2 className="d2">
                 stop losing the <em>film.</em>
               </h2>
+              {/* the aura is dark in both themes, so the badge is the white
+                  one here whatever the page theme says */}
               <div className="cta-row" style={{ justifyContent: "center" }}>
-                {beta ? (
-                  <a className="btn btn--accent btn--lg" href={beta} target="_blank" rel="noopener">
-                    get the ios beta
-                  </a>
-                ) : (
-                  <Link className="btn btn--accent btn--lg" href="/waitlist">
-                    join the waitlist
-                  </Link>
-                )}
-                <a className="btn btn--lg" href={site.appUrl} target="_blank" rel="noopener">
-                  open the web app
-                </a>
+                <AppStoreBadge tone="light" />
               </div>
               <span className="label" style={{ marginTop: 22 }}>
-                iphone · testflight app needed first
+                free · no in-app purchases
               </span>
             </Reveal>
           </div>

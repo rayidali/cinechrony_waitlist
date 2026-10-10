@@ -11,15 +11,11 @@ import { site } from "@/lib/site";
  * no blur, no floating pill: the wordmark holds the left, small mono links
  * hold the right, and the actual ask lives in the page.
  */
-/* Three, not five. "how it works" and "features" both pointed at anchors
-   two scrolls down a page that is now short enough to just scroll, and a
-   masthead with five links plus a button plus a theme toggle is a SaaS
-   chrome bar wearing paper. The references carry two or three. */
-const links = [
-  { href: "/beta", label: "ios beta" },
-  { href: "/install", label: "install" },
-  { href: "/support", label: "support" },
-];
+/* One link and one button. "how it works" and "features" came out first,
+   because they pointed at anchors two scrolls down a page short enough to
+   just scroll; "ios beta" and "install" came out with the App Store release,
+   because the button is now the only way to get the app. */
+const links = [{ href: "/support", label: "support" }];
 
 export function Nav() {
   const [open, setOpen] = useState(false);
@@ -54,8 +50,8 @@ export function Nav() {
             ),
           )}
           <ThemeToggle />
-          <a className="btn btn--sm" href={site.appUrl} target="_blank" rel="noopener">
-            open the app
+          <a className="btn btn--sm" href={site.appStoreUrl} target="_blank" rel="noopener">
+            get the app
           </a>
         </nav>
       </div>

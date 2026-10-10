@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { AppStoreBadge } from "@/components/app-store-badge";
 import { BandScene } from "@/components/cutouts";
-import { site } from "@/lib/site";
 
 /**
  * The colophon, and the last slice of the mural: `dawn` is where the
@@ -58,31 +58,17 @@ export function Footer({
             </p>
           </div>
           <div>
-            {/* the three in-page anchors came out: on a page this short
-                they are a table of contents for two scrolls */}
+            {/* the three in-page anchors came out first, then the beta,
+                the home-screen guide and the web app with the App Store
+                release: the badge is the whole column now */}
             <h3>get it</h3>
-            <ul>
-              <li>
-                <Link href="/beta">ios beta</Link>
-              </li>
-              <li>
-                <Link href="/install">add to home screen</Link>
-              </li>
-              <li>
-                <a href={site.appUrl} target="_blank" rel="noopener">
-                  open the web app
-                </a>
-              </li>
-            </ul>
+            <AppStoreBadge size="sm" />
           </div>
           <div>
             <h3>the small print</h3>
             <ul>
               <li>
                 <Link href="/support">support</Link>
-              </li>
-              <li>
-                <Link href="/waitlist">waitlist</Link>
               </li>
               <li>
                 <Link href="/privacy">privacy</Link>

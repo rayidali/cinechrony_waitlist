@@ -11,6 +11,16 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/opengraph-image": ["./public/fonts/**"],
   },
+  // The three pre-release pages came out with the App Store release. Their
+  // URLs are in old messages, bios and search results, so they land on the
+  // home page, whose first screen is the store badge, instead of a 404.
+  async redirects() {
+    return ["/beta", "/install", "/waitlist"].map((source) => ({
+      source,
+      destination: "/",
+      permanent: true,
+    }));
+  },
 };
 
 export default nextConfig;

@@ -65,6 +65,11 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "./",
   },
+  // Safari's Smart App Banner: on an iPhone, a native "cinechrony · open /
+  // get" bar above the page, drawn by iOS and pointed at the store listing
+  itunes: {
+    appId: site.appStoreId,
+  },
 };
 
 export const viewport: Viewport = {

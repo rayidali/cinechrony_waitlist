@@ -37,7 +37,7 @@ import { PNG } from 'pngjs';
  * text run that is clipped or overdrawn and it costs two full-page
  * screenshots per route; the CSS one is cheap and exhaustive. Run both.
  */
-const PAGES = (process.env.PAGES || '/,/beta,/waitlist,/support,/install,/privacy,/terms').split(',');
+const PAGES = (process.env.PAGES || '/,/support,/privacy,/terms').split(',');
 const BASE = process.env.BASE || 'http://localhost:3000';
 
 const srgb = (v) => {

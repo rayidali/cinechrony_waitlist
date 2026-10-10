@@ -202,7 +202,8 @@ in the app repo and convert the same way.
 
 ## Links, not files
 
-- **TestFlight**: wired. `site.testflightUrl` points at the live public
-  link, so `/beta` shows the real join flow.
-- **App Store badge + link**: add when the App Store release lands. It
-  goes in the hero and the closing band, next to the TestFlight button.
+- **App Store badge + link**: live since 2026-10-10. `site.appStoreUrl`
+  is the listing, and the badge is Apple's own artwork in
+  `public/brand/app-store-badge-{black,white}.svg` (README § "The App
+  Store badge"). The TestFlight link, the waitlist and the web-app install
+  guide came out in the same pass.

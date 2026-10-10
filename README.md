@@ -307,9 +307,6 @@ inks) and turns photographic the moment files land in `media`. See
 | Route | Purpose |
 |---|---|
 | `/` | Landing: the diary hero, the grab, the poster, what it does, movie night, the year, the story, the close |
-| `/beta` | TestFlight join flow (live) |
-| `/install` | Add-to-home-screen guide for iPhone and Android |
-| `/waitlist` | The list, now aimed at the App Store release (Loops) |
 | `/support` | Support email and FAQ (App Store support URL) |
 | `/privacy` | **Canonical** privacy policy — the page App Review opens |
 | `/terms` | **Canonical** terms of service |
@@ -368,33 +365,42 @@ completely. `CHROME=` overrides the browser path, `BASE=` the origin.
 
 ## Configuration
 
-Everything that changes at launch lives in one file: `src/lib/site.ts`.
+Every external URL lives in one file: `src/lib/site.ts`.
 
-- `appUrl`: where every "open the web app" button points. Currently the
-  PWA on Vercel; switch to `https://app.cinechrony.com` after the subdomain
-  split.
-- `testflightUrl`: the public TestFlight link. **Live.** It sat `null` for
-  nineteen days while the beta was open and empty, so `/beta` spent that
-  whole time telling visitors the beta had not started. If you ever set it
-  back to `null`, `/beta` and the hero fall back to the waitlist on their
-  own.
-- `waitlist`: the Loops form endpoint.
+- `appStoreUrl` / `appStoreId`: the App Store listing, live since
+  2026-10-08. It is the only way to get the app that this site offers: the
+  hero, the close, the footer and the nav button all point at it, and the
+  root layout's `itunes` metadata puts Safari's Smart App Banner on every
+  page. The URL carries no storefront, so Apple routes each visitor to their
+  own country's store.
+- `minimumIos`: read off the live listing (`minimumOsVersion` in the iTunes
+  lookup), and printed under the hero badge and in the FAQ. Change it when
+  a new build raises the deployment target.
 - `media`. Every screenshot, photograph and video slot. Five are real; the
   rest render designed placeholders until a file exists.
+
+### The App Store badge
+
+`src/components/app-store-badge.tsx` renders Apple's official "Download on
+the App Store" artwork from `public/brand/app-store-badge-{black,white}.svg`,
+unmodified, as Apple's marketing guidelines require. Never redraw it as a
+pill or restyle it with the site's button classes. The black file shows on
+paper and the white one on dark: `tone="auto"` follows the theme,
+`tone="light"` is for a field that is dark in both themes (the aura close).
+54px in the page, 40px (Apple's minimum) in the footer. The files came from
+`toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/{black,white}/en-us`.
 
 ## Domain architecture
 
 - `cinechrony.com` (apex + `www`) serves this site.
-- The app moves to `app.cinechrony.com`. A PWA installs whatever origin
-  you are on, so `/install` always sends people to the app origin first.
 - App Store Connect points at `cinechrony.com/privacy`, `/terms` and
   `/support`. Keep those routes stable — and keep their CONTENT current; see
   "The legal pages are canonical" above.
-- `site.appUrl` still points at `movienight-kappa.vercel.app` pending the
-  `app.cinechrony.com` DNS add. Not an App Store blocker.
-- **Next website task: swap the TestFlight CTA for an App Store badge on
-  approval.** v1.0 is `WAITING_FOR_REVIEW` on build 34 as of 2026-09-09
-  01:19 UTC; the layout was built for that substitution.
+- `/beta`, `/install` and `/waitlist` were removed with the App Store
+  release (2026-10-10) and 308 to `/` (`next.config.ts`), because their URLs
+  live on in old messages and search results. The Loops audience the
+  waitlist collected still exists; the privacy policy's Loops entry covers
+  it until that list is retired.
 
 ## Deploying
 

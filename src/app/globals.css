@@ -708,6 +708,20 @@ button { font: inherit; color: inherit; }
 }
 .link-quiet:hover { opacity: 0.6; }
 
+/* ---------- the app store badge ----------
+   Apple's artwork, never restyled: no offset shadow, no lift, no lowercase.
+   54px matches btn--lg so the badge sits where the red pill used to; 40px is
+   Apple's floor. Two files, one shown: black on paper, white on dark. */
+.appstore-badge { display: inline-flex; line-height: 0; border-radius: 9px; }
+.appstore-badge img { display: block; height: 54px; width: auto; }
+.appstore-badge--sm img { height: 40px; }
+.appstore-badge .appstore-badge__white { display: none; }
+.appstore-badge--light .appstore-badge__black,
+[data-theme="dark"] .appstore-badge--auto .appstore-badge__black { display: none; }
+.appstore-badge--light .appstore-badge__white,
+[data-theme="dark"] .appstore-badge--auto .appstore-badge__white { display: block; }
+.appstore-badge:hover { opacity: 0.82; }
+
 .cta-row, .hero-cta-row {
   display: flex;
   flex-wrap: wrap;
@@ -723,8 +737,6 @@ button { font: inherit; color: inherit; }
 .block-head { display: grid; gap: 16px; justify-items: start; }
 .rule-eyebrow { display: flex; align-items: center; gap: 14px; width: 100%; }
 .rule-eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--rule-strong); }
-.hero-split { display: grid; gap: clamp(32px, 5vw, 64px); }
-@media (min-width: 860px) { .hero-split { grid-template-columns: 1fr 1fr; } }
 
 /* small square chips: data, not decoration */
 .pill {
@@ -1726,17 +1738,6 @@ button { font: inherit; color: inherit; }
 }
 @media (max-width: 859px) { .row__media { display: flex; justify-content: center; } }
 
-.promises { display: grid; gap: 0; margin-top: 30px; border-top: 1px solid var(--rule-strong); }
-.promise {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 18px;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--rule-strong);
-  align-items: baseline;
-}
-.promise .body { font-size: 1rem; color: var(--fg-soft); }
-
 .support-card {
   margin-top: 44px;
   display: flex;
@@ -1747,12 +1748,6 @@ button { font: inherit; color: inherit; }
 }
 .support-card .h2 { border-bottom: 2px solid var(--rule-strong); }
 .support-card .h2:hover { border-bottom-color: var(--accent); }
-
-.beta-hero { display: grid; gap: clamp(32px, 5vw, 64px); align-items: center; }
-@media (min-width: 860px) { .beta-hero { grid-template-columns: 1.1fr 0.9fr; } }
-.beta-shot { display: flex; justify-content: flex-end; }
-.beta-shot .frame { width: 300px; max-width: 100%; }
-@media (max-width: 859px) { .beta-shot { justify-content: center; } }
 
 .night { display: grid; gap: clamp(32px, 5vw, 64px); align-items: center; }
 @media (min-width: 860px) { .night { grid-template-columns: 1.1fr 0.9fr; } }
@@ -1932,101 +1927,13 @@ button { font: inherit; color: inherit; }
 .footer-end { text-align: center; padding: 10px 0 4px; }
 .footer-ghost { margin-bottom: -3.2vw; text-align: center; }
 
-/* ---------- forms ---------- */
-.field {
-  width: 100%;
-  font-family: var(--f-display);
-  font-size: 1rem;
-  padding: 14px 16px;
-  background: var(--surface);
-  border: 1.5px solid var(--rule-strong);
-  color: var(--fg);
-  border-radius: 0;
-  transition: border-color var(--dur) var(--ease);
-}
-.field:focus { outline: none; border-color: var(--fg); }
-.field::placeholder { color: var(--ink-faint); }
-.lbl {
-  font-family: var(--f-mono);
-  font-size: 0.6875rem;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: var(--fg-soft);
-}
-.form-error {
-  font-family: var(--f-mono);
-  font-size: 0.75rem;
-  color: var(--red);
-  margin: 0;
-}
-.wl-row { display: grid; gap: 14px; align-items: end; }
-.wl-row__field { display: flex; flex-direction: column; gap: 8px; }
-@media (min-width: 641px) { .wl-row { grid-template-columns: 1fr auto; } }
-
-/* ---------- cards, callouts, steps, faq, docs ---------- */
+/* ---------- cards, faq, docs ---------- */
 .card {
   border: 1.5px solid currentColor;
   background: var(--surface);
   padding: 26px;
 }
 .card--pad-lg { padding: clamp(26px, 4vw, 40px); }
-
-.callout {
-  display: grid;
-  gap: 12px;
-  border-left: 3px solid var(--red);
-  padding: 18px 22px;
-  background: var(--surface);
-}
-
-.isteps { display: grid; gap: 1px; background: var(--rule-strong); border: 1px solid var(--rule-strong); }
-@media (min-width: 700px) { .isteps { grid-template-columns: repeat(3, 1fr); } }
-@media (min-width: 700px) { .isteps--4 { grid-template-columns: repeat(4, 1fr); } }
-.istep { display: grid; gap: 16px; padding: 26px 22px; background: var(--bg); }
-.istep__ic {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border: 1.5px solid var(--fg);
-  color: var(--fg);
-}
-.istep__ic svg { width: 19px; height: 19px; }
-.istep__ic img { width: 26px; height: 26px; }
-.istep__t .n {
-  font-family: var(--f-mono);
-  font-size: 0.6875rem;
-  text-transform: uppercase;
-  letter-spacing: var(--track-label);
-  color: var(--accent-text);
-  display: block;
-  margin-bottom: 9px;
-}
-.istep__t h2, .istep__t h3 {
-  font-family: var(--f-display);
-  font-weight: 700;
-  font-size: 1.05rem;
-  text-transform: lowercase;
-  letter-spacing: -0.03em;
-  margin: 0 0 7px;
-}
-.istep__t p { font-family: var(--f-serif); font-size: 0.95rem; line-height: 1.5; color: var(--fg-soft); margin: 0; }
-
-.seg { display: inline-flex; border: 1.5px solid var(--fg); }
-.seg button {
-  font-family: var(--f-mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  padding: 11px 20px;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  color: var(--fg-soft);
-  min-height: 42px;
-}
-.seg button + button { border-left: 1.5px solid var(--fg); }
-.seg button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
 
 .faq { border-top: 1px solid var(--rule-strong); }
 .faq details { border-bottom: 1px solid var(--rule-strong); }
