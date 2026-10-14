@@ -26,7 +26,7 @@ export default function PrivacyPage() {
             </div>
             <h1 className="display-2">Privacy policy</h1>
             <p className="meta" style={{ marginTop: 16 }}>
-              Last updated {site.legalUpdated}
+              Last updated {site.privacyUpdated}
             </p>
             <p className="lead" style={{ marginTop: 20, maxWidth: "52ch" }}>
               The plain version: we collect the little we need to run
@@ -146,6 +146,16 @@ export default function PrivacyPage() {
                   import. You can withdraw consent at any time in Settings or
                   your device settings.
                 </p>
+                <p>
+                  We email you about your account: a code to confirm your
+                  email address when you sign up, password resets, and similar
+                  messages you need to use the app. A couple of days after you
+                  sign up, the founder also sends you one short note asking how
+                  cinechrony is working for you; replies go straight to the founder.
+                  That note carries an unsubscribe link, and you can also reply
+                  &ldquo;unsubscribe&rdquo;. Account emails stop only when you
+                  delete your account.
+                </p>
 
                 <h2 id="ai">The AI feature</h2>
                 <p>
@@ -202,8 +212,9 @@ export default function PrivacyPage() {
                     to identify the films in it.
                   </li>
                   <li>
-                    <strong>Resend.</strong> Transactional email, such as
-                    password resets.
+                    <strong>Resend.</strong> Our email: sign-up codes,
+                    password resets, and the founder&apos;s note after you sign
+                    up.
                   </li>
                   <li>
                     <strong>PostHog.</strong> Product analytics.
