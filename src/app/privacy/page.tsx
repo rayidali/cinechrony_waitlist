@@ -99,8 +99,11 @@ export default function PrivacyPage() {
                   <li>
                     <strong>Analytics and diagnostics.</strong> Which screens
                     you open and key actions you take, tied to your account id,
-                    plus crash reports. No note, review or caption text is
-                    sent.
+                    plus crash reports. In the app, we also record how screens
+                    are used (session replays: layout, taps and scrolling) to
+                    find bugs and confusing screens; every word on screen and
+                    everything you type is hidden from these recordings. No
+                    note, review or caption text is sent.
                   </li>
                   <li>
                     <strong>Usage logs.</strong> IP address and request
@@ -217,7 +220,7 @@ export default function PrivacyPage() {
                     up.
                   </li>
                   <li>
-                    <strong>PostHog.</strong> Product analytics.
+                    <strong>PostHog.</strong> Product analytics and session replays, with all text hidden.
                   </li>
                   <li>
                     <strong>Sentry.</strong> Error and crash monitoring.

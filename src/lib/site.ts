@@ -23,7 +23,7 @@ export const site = {
   supportEmail: "support@cinechrony.com",
 
   legalUpdated: "08.09.26",
-  privacyUpdated: "14.10.26",
+  privacyUpdated: "23.10.26",
 } as const;
 
 /**
