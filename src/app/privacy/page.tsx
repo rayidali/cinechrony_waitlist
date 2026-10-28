@@ -165,12 +165,15 @@ export default function PrivacyPage() {
                   When you share a clip for scanning, the video is fetched and
                   analysed to identify the films in it. The analysis runs on
                   Google&apos;s Gemini API. We send the clip and its caption,
-                  never your name, email or account details. Under
-                  Google&apos;s terms for this service, Google may use what we
-                  send to improve its products, and its reviewers may see it.
-                  We don&apos;t republish or store the video itself. The films
-                  it finds, and the clip you attached, stay on your list under
-                  your account.
+                  and we don&apos;t attach your Cinechrony account details,
+                  though the clip or caption may itself contain personal
+                  information. Under Google&apos;s terms for this service,
+                  Google may use what we send to improve its products, and its
+                  reviewers may see it. We don&apos;t keep a copy of the video
+                  or republish it. Longer clips are uploaded to Google for the
+                  analysis, and Google deletes them after about 48 hours. The
+                  films it finds, and the clip you attached, stay on your list
+                  under your account.
                 </p>
 
                 <h2 id="services">Third-party services</h2>
@@ -260,9 +263,10 @@ export default function PrivacyPage() {
                   Two exceptions worth stating plainly. Database backups are
                   kept for <strong>30 days</strong> and then permanently
                   deleted, so deleted content can persist in a backup for up to
-                  that long before it is gone everywhere. Scan jobs and cached
-                  scan results expire on their own about 30 days after the
-                  scan.
+                  that long before it is gone everywhere. Scan records (the link
+                  scanned, the films found and when) are kept, including after
+                  an account is deleted, so a clip scanned once is instant for
+                  everyone. Email us to have yours deleted.
                 </p>
                 <p>
                   If you unsubscribe from the waitlist, we remove your email

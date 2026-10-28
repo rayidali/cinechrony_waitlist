@@ -126,13 +126,10 @@ export default function TermsPage() {
                   infringers&apos; accounts.
                 </p>
                 <p>
-                  If we removed something you shared after a copyright complaint and you believe
+                  If something you shared was removed after a copyright complaint and you think
                   that was a mistake, email{" "}
-                  <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a> with your contact
-                  details, what was removed, a statement under penalty of perjury that you believe
-                  it was removed by mistake, and your consent to the jurisdiction of the federal
-                  court for your district. We&apos;ll pass it to the person who complained and
-                  restore the content unless they tell us they&apos;ve taken legal action.
+                  <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a> and tell us why.
+                  We&apos;ll review it and let you know what we decide.
                 </p>
 
                 <h2 id="service">The service and movie data</h2>
