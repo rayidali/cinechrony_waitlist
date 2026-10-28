@@ -265,8 +265,7 @@ export default function PrivacyPage() {
                   deleted, so deleted content can persist in a backup for up to
                   that long before it is gone everywhere. Scan records (the link
                   scanned, the films found and when) are kept, including after
-                  an account is deleted, so a clip scanned once is instant for
-                  everyone. Email us to have yours deleted.
+                  an account is deleted. Email us to have yours deleted.
                 </p>
                 <p>
                   If you unsubscribe from the waitlist, we remove your email
