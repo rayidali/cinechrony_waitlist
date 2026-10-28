@@ -80,7 +80,10 @@ export default function TermsPage() {
                   other people. You keep ownership of everything you post. You grant us a worldwide,
                   royalty-free license to host, display, reproduce, and distribute that content so
                   we can operate the product, including showing it to the people you share a list
-                  with. Don&apos;t post anything you don&apos;t have the rights to share.
+                  with. Don&apos;t post anything you don&apos;t have the rights to share. That
+                  includes the links you send us to scan: you&apos;re responsible for what you
+                  share, and by sharing it you confirm it doesn&apos;t infringe anyone else&apos;s
+                  rights.
                 </p>
 
                 <h2 id="conduct">Acceptable use</h2>
@@ -121,6 +124,15 @@ export default function TermsPage() {
                   that your notice is accurate and that you are the rights holder or authorised to
                   act for them. We remove infringing content and terminate repeat
                   infringers&apos; accounts.
+                </p>
+                <p>
+                  If we removed something you shared after a copyright complaint and you believe
+                  that was a mistake, email{" "}
+                  <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a> with your contact
+                  details, what was removed, a statement under penalty of perjury that you believe
+                  it was removed by mistake, and your consent to the jurisdiction of the federal
+                  court for your district. We&apos;ll pass it to the person who complained and
+                  restore the content unless they tell us they&apos;ve taken legal action.
                 </p>
 
                 <h2 id="service">The service and movie data</h2>

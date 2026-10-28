@@ -163,11 +163,14 @@ export default function PrivacyPage() {
                 <h2 id="ai">The AI feature</h2>
                 <p>
                   When you share a clip for scanning, the video is fetched and
-                  analysed to identify the films in it. We send only what&apos;s
-                  needed to complete that match, we don&apos;t republish or
-                  store the video itself, and we don&apos;t use your clips to
-                  train third-party models. The films it finds, and the clip
-                  you attached, stay on your list under your account.
+                  analysed to identify the films in it. The analysis runs on
+                  Google&apos;s Gemini API. We send the clip and its caption,
+                  never your name, email or account details. Under
+                  Google&apos;s terms for this service, Google may use what we
+                  send to improve its products, and its reviewers may see it.
+                  We don&apos;t republish or store the video itself. The films
+                  it finds, and the clip you attached, stay on your list under
+                  your account.
                 </p>
 
                 <h2 id="services">Third-party services</h2>
@@ -212,7 +215,8 @@ export default function PrivacyPage() {
                   </li>
                   <li>
                     <strong>Google (Gemini).</strong> Analyses a scanned video
-                    to identify the films in it.
+                    to identify the films in it. Google may use what we send to
+                    improve its products (see &ldquo;The AI feature&rdquo;).
                   </li>
                   <li>
                     <strong>Resend.</strong> Our email: sign-up codes,
