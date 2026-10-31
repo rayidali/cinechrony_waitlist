@@ -213,8 +213,13 @@ export default function PrivacyPage() {
                   </li>
                   <li>
                     <strong>Apify.</strong> Fetches the video behind a link you
-                    scan, and the public Letterboxd profile you ask us to
-                    import.
+                    scan, each film&apos;s official trailer (once per film), and
+                    the public Letterboxd profile you ask us to import.
+                  </li>
+                  <li>
+                    <strong>Mux.</strong> Stores and streams film trailers. Like
+                    any video host, it sees the network address of a device
+                    that plays one.
                   </li>
                   <li>
                     <strong>Google (Gemini).</strong> Analyses a scanned video
