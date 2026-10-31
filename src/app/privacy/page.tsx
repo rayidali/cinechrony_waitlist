@@ -177,8 +177,9 @@ export default function PrivacyPage() {
                   information. We use Google&apos;s paid service, under whose
                   terms Google does not use what we send to improve its
                   products; it keeps it for a limited time only to detect and
-                  prevent misuse and for legal requirements, and may hold it
-                  briefly in any country where it has facilities. Longer clips
+                  prevent misuse and for legal requirements, and may store it
+                  temporarily or cache it in any country where Google or its
+                  agents have facilities. Longer clips
                   are uploaded to Google for
                   the analysis, and Google deletes them after about 48 hours.
                   We don&apos;t keep the video, except when the app tells you,
