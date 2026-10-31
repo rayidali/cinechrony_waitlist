@@ -99,7 +99,7 @@ export default function TermsPage() {
 
                 <h2 id="reporting">Reporting and moderation</h2>
                 <p>
-                  Every post, comment, list, review and profile can be reported from its
+                  Every post, comment, list, review, profile and clip can be reported from its
                   &ldquo;Report&rdquo; action. You can also block any user, so they can&apos;t see
                   your content or interact with you, and you won&apos;t see theirs.
                 </p>
@@ -113,6 +113,19 @@ export default function TermsPage() {
                   threats, exploitation, or risk of harm &mdash; write to us directly at{" "}
                   <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a> and we will
                   prioritise it.
+                </p>
+
+                <p>
+                  <strong>Clips.</strong> When the app tells you, as you scan, that it may keep a
+                  copy, we keep the video so it can play inside Cinechrony, on a page of its own
+                  that credits the account that posted it and links to the original. Other people
+                  see that page only once the clip passes our checks, including an automatic safety
+                  check that can miss things (see the Privacy Policy). Anyone signed in can report
+                  a clip, and a report hides it from everyone while we review it; without an
+                  account, email{" "}
+                  <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a> with a link to
+                  it. If you posted a clip and want it removed, email us; we remove it and do not
+                  keep it again.
                 </p>
 
                 <h2 id="copyright">Copyright</h2>

@@ -85,7 +85,14 @@ export default function PrivacyPage() {
                   </li>
                   <li>
                     <strong>Links you scan.</strong> The video link you share
-                    and the films we identify from it.
+                    and the films we identify from it. We keep these results and
+                    may answer a later scan of the same link from them.
+                  </li>
+                  <li>
+                    <strong>Clips we keep.</strong> When the app tells you, as
+                    you scan, that it may keep a copy, we store the scanned
+                    video so it can play inside Cinechrony. See{" "}
+                    <a href="#clips">Clips and clip pages</a>.
                   </li>
                   <li>
                     <strong>Letterboxd import.</strong> If you choose to
@@ -169,11 +176,41 @@ export default function PrivacyPage() {
                   though the clip or caption may itself contain personal
                   information. Under Google&apos;s terms for this service,
                   Google may use what we send to improve its products, and its
-                  reviewers may see it. We don&apos;t keep a copy of the video
-                  or republish it. Longer clips are uploaded to Google for the
-                  analysis, and Google deletes them after about 48 hours. The
-                  films it finds, and the clip you attached, stay on your list
-                  under your account.
+                  reviewers may see it. Longer clips are uploaded to Google for
+                  the analysis, and Google deletes them after about 48 hours.
+                  We don&apos;t keep the video, except when the app tells you,
+                  as you scan, that it may keep a copy: then we store it with
+                  Mux so it can play inside Cinechrony. The films it finds, and
+                  the clip you attached, stay on your list under your account.
+                </p>
+
+                <h2 id="clips">Clips and clip pages</h2>
+                <p>
+                  A clip we keep gets its own page: the video, the films in it,
+                  and how many people kept a film from it. The page credits the
+                  account that posted the clip where we know it, links to the
+                  original post, and never shows who scanned the clip or who
+                  kept a film from it.
+                </p>
+                <p>
+                  At first only the people who scanned a clip see its page.
+                  Other people can see it, on its page and among suggestions,
+                  only when it is a public post, a film was found in it,
+                  someone kept a film from it, it passed Mux&apos;s automatic
+                  safety check, and nobody has reported it. That check looks at
+                  frames sampled from the video and scores how likely they are
+                  to be sexually explicit; it is automatic and can miss things.
+                  A report, which needs a Cinechrony account, hides a clip from
+                  everyone while we review it: new views stop at once, and a
+                  page someone already has open stops playing within about two
+                  minutes. Without an account, email{" "}
+                  <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a>{" "}
+                  with a link to the clip.
+                </p>
+                <p>
+                  If you posted a clip and want it removed, email{" "}
+                  <a href={`mailto:${site.supportEmail}`}>{site.supportEmail}</a>{" "}
+                  with a link to it. We remove it and do not keep it again.
                 </p>
 
                 <h2 id="services">Third-party services</h2>
@@ -217,9 +254,10 @@ export default function PrivacyPage() {
                     the public Letterboxd profile you ask us to import.
                   </li>
                   <li>
-                    <strong>Mux.</strong> Stores and streams film trailers. Like
-                    any video host, it sees the network address of a device
-                    that plays one.
+                    <strong>Mux.</strong> Stores and streams film trailers and
+                    the clips we keep, and runs an automatic safety check on
+                    each kept clip. Like any video host, it sees the network
+                    address of a device that plays one.
                   </li>
                   <li>
                     <strong>Google (Gemini).</strong> Analyses a scanned video
@@ -270,7 +308,10 @@ export default function PrivacyPage() {
                   deleted, so deleted content can persist in a backup for up to
                   that long before it is gone everywhere. Scan records (the link
                   scanned, the films found and when) are kept, including after
-                  an account is deleted. Email us to have yours deleted.
+                  an account is deleted. Email us to have yours deleted. A clip
+                  we keep stays until it is removed: on request, after a report
+                  we uphold, or if we stop offering clips; a removed clip&apos;s
+                  video is deleted from Mux.
                 </p>
                 <p>
                   If you unsubscribe from the waitlist, we remove your email

@@ -72,7 +72,9 @@ export default function LandingPage() {
                   <br />
                   keep the <em>film.</em>
                 </h1>
-                <p className="hero-sub">your group chat&rsquo;s watchlist, finally in one place.</p>
+                {/* the line (owner, 10-28): "from saved to seen."; "finally" left
+                    with it (another app's voice, REVAMP-PLAN § 2). */}
+                <p className="hero-sub">from saved to seen: your group chat&rsquo;s watchlist, in one place.</p>
                 {/* one way in. The beta pill and the "or open it in a
                     browser" link both came out with the release: a store
                     page beside a second door reads as a product that has
