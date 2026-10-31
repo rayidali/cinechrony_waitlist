@@ -174,9 +174,12 @@ export default function PrivacyPage() {
                   Google&apos;s Gemini API. We send the clip and its caption,
                   and we don&apos;t attach your Cinechrony account details,
                   though the clip or caption may itself contain personal
-                  information. Under Google&apos;s terms for this service,
-                  Google may use what we send to improve its products, and its
-                  reviewers may see it. Longer clips are uploaded to Google for
+                  information. We use Google&apos;s paid service, under whose
+                  terms Google does not use what we send to improve its
+                  products; it keeps it for a limited time only to detect and
+                  prevent misuse and for legal requirements, and may hold it
+                  briefly in any country where it has facilities. Longer clips
+                  are uploaded to Google for
                   the analysis, and Google deletes them after about 48 hours.
                   We don&apos;t keep the video, except when the app tells you,
                   as you scan, that it may keep a copy: then we store it with
@@ -261,8 +264,8 @@ export default function PrivacyPage() {
                   </li>
                   <li>
                     <strong>Google (Gemini).</strong> Analyses a scanned video
-                    to identify the films in it. Google may use what we send to
-                    improve its products (see &ldquo;The AI feature&rdquo;).
+                    to identify the films in it. Google does not use what we
+                    send to improve its products (see &ldquo;The AI feature&rdquo;).
                   </li>
                   <li>
                     <strong>Resend.</strong> Our email: sign-up codes,
