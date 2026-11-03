@@ -89,9 +89,9 @@ export default function PrivacyPage() {
                     may answer a later scan of the same link from them.
                   </li>
                   <li>
-                    <strong>Clips we keep.</strong> When the app tells you, as
-                    you scan, that it may keep a copy, we store the scanned
-                    video so it can play inside Cinechrony. See{" "}
+                    <strong>Clips we keep.</strong> When you scan a clip, we
+                    may store its video so it can play inside Cinechrony.
+                    See{" "}
                     <a href="#clips">Clips and clip pages</a>.
                   </li>
                   <li>
@@ -182,9 +182,8 @@ export default function PrivacyPage() {
                   agents have facilities. Longer clips
                   are uploaded to Google for
                   the analysis, and Google deletes them after about 48 hours.
-                  We don&apos;t keep the video, except when the app tells you,
-                  as you scan, that it may keep a copy: then we store it with
-                  Mux so it can play inside Cinechrony. The films it finds, and
+                  We don&apos;t keep the video, except a copy we may store with
+                  Mux so the clip can play inside Cinechrony. The films it finds, and
                   the clip you attached, stay on your list under your account.
                 </p>
 
@@ -198,7 +197,8 @@ export default function PrivacyPage() {
                 </p>
                 <p>
                   At first only the people who scanned a clip see its page.
-                  Other people can see it, on its page and among suggestions,
+                  Other people can see it, on its page, in the app&apos;s list
+                  of clips and among suggestions,
                   only when it is a public post, a film was found in it,
                   someone kept a film from it, it passed Mux&apos;s automatic
                   safety check, and nobody has reported it. That check looks at

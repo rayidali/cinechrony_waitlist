@@ -116,8 +116,8 @@ export default function TermsPage() {
                 </p>
 
                 <p>
-                  <strong>Clips.</strong> When the app tells you, as you scan, that it may keep a
-                  copy, we keep the video so it can play inside Cinechrony, on a page of its own
+                  <strong>Clips.</strong> When you scan a clip, we may keep its video so it can
+                  play inside Cinechrony, on a page of its own
                   that credits the account that posted it and links to the original. Other people
                   see that page only once the clip passes our checks, including an automatic safety
                   check that can miss things (see the Privacy Policy). Anyone signed in can report
